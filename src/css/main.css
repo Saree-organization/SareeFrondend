@@ -1,0 +1,22 @@
+
+:root {
+  --color-dark-red: #8B0000;
+  --color-white: #fff;
+  --color-border: #ddd;
+  --color-text-primary: #666666; /* changed to lighter gray */
+  --color-hover: #b22222;
+  --color-cart-count: #e60000;
+  --font-size-top-bar: 14px;
+  --font-size-navbar-icon: 20px;
+  --font-size-cart-count: 12px;
+  --font-size-nav-links: 16px;
+}
+
+/* Padding-top to prevent content hiding behind fixed header */
+body, #root {
+  padding-top: 94px; /* 30px top-bar + 64px navbar */
+  margin: 0;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* updated font stack */
+  background: #fff;
+  color: var(--color-text-primary);
+}

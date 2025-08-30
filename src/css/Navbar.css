@@ -1,0 +1,135 @@
+@import "main.css";
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--color-white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Top Bar */
+.top-bar {
+  background: var(--color-dark-red);
+  color: var(--color-white);
+  padding: 6px 20px;
+  font-size: var(--font-size-top-bar);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+.top-bar-center {
+  flex: 1;
+  text-align: center;
+}
+
+/* Main Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+  padding-left: 270px;    /* Your original padding */
+  padding-right: 150px;   /* Your original padding */
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  height: 64px;
+}
+
+/* Left icons */
+.navbar-left .icon {
+  font-size: var(--font-size-navbar-icon);
+  cursor: pointer;
+}
+
+/* Logo */
+.logo {
+  height: 40px;
+}
+
+/* Right side: icons only for desktop */
+.navbar-right.desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-right: 0;
+}
+
+/* Right icons styling */
+.navbar-right .icon {
+  font-size: var(--font-size-navbar-icon);
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* Cart icon wrapper */
+.cart-icon {
+  position: relative;
+  margin-left: 12px;
+}
+
+/* Bottom Links */
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+  background: var(--color-white);
+  font-size: var(--font-size-nav-links);
+}
+
+/* Links styling */
+.nav-links a {
+  text-decoration: none;
+  color: var(--color-text-primary);
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--color-hover);
+}
+
+/* Mobile menu icon (hamburger) hidden by default */
+.mobile-menu-icon {
+  display: none;
+  cursor: pointer;
+  padding-right: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar-right.desktop-menu {
+    display: none;
+  }
+
+  .mobile-menu-icon {
+    display: block;
+  }
+
+  .navbar {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .nav-links.mobile-active {
+    display: flex;
+    background: var(--color-white);
+  }
+
+  .nav-links a {
+    font-size: 18px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
