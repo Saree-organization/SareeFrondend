@@ -16,7 +16,7 @@
 body, #root {
   padding-top: 94px; /* 30px top-bar + 64px navbar */
   margin: 0;
-  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* updated font stack */
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* updated font stack */
   background: #fff;
   color: var(--color-text-primary);
 }
