@@ -7,7 +7,7 @@ import {
   FaBars,
   FaTimes,
 } from "react-icons/fa";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/image-1.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +18,8 @@ function Navbar() {
     <header>
       {/* Top Bar */}
       <div className="top-bar">
-        <span className="top-bar-center">CHANDERI PURE SILK SAREES</span>
+        <div></div>
+        <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
         <div className="top-right">
           <span>India | INR ₹</span>
         </div>
@@ -69,3 +70,4 @@ function Navbar() {
 }
 
 export default Navbar;
+ 
