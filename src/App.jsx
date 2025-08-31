@@ -1,17 +1,19 @@
-import React from "react";
-import Navbar from "./component/Navbar"; // Make sure the path is correct
-import "../src/css/Navbar.css"; // Optional: for global styles
+import Home from "./Pages/Home";
+import UserLayout from "./layouts/UserLayout";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
   return (
     <div className="App">
-      <Navbar />
-      <main>
-        {/* <h1>Hello World!</h1> */}
-        {/* Add more conten here */}
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<UserLayout />}>
+            <Route path="home" element={<Home />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
-  );
+  )
 };
 
 export default App;

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import "../css/Navbar.css";
-import {
-  FaSearch,
-  FaUser,
-  FaShoppingBag,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
 import logo from "../assets/images/logo.png";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,15 +49,15 @@ function Navbar() {
 
       {/* Bottom Links */}
       <div className={`nav-links ${menuOpen ? "mobile-active" : ""}`}>
-        <a href="#home">Home</a>
-        <a href="#all-saree">All saree</a>
-        <a href="#katan-silk">Katan silk saree</a>
-        <a href="#tissue-silk">Tissue silk saree</a>
-        <a href="#celebrity">Celebrity saree</a>
-        <a href="#contact">Contact us</a>
-        <a href="#track">Track order</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#tags">Tags</a>
+        <Link to ="/home">Home</Link>
+        <Link to ="/all-saree">All saree</Link>
+        <Link to ="/katan-silk">Katan silk saree</Link>
+        <Link to ="/tissue-silk">Tissue silk saree</Link>
+        <Link to ="/celebrity">Celebrity saree</Link>
+        <Link to ="/contact">Contact us</Link>
+        <Link to ="/track">Track order</Link>
+        <Link to ="/reviews">Reviews</Link>
+        <Link to ="/tags">Tags</Link>
       </div>
     </header>
   );
