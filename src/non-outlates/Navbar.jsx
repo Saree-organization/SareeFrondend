@@ -13,7 +13,8 @@ function Navbar() {
     <header>
       {/* Top Bar */}
       <div className="top-bar">
-        <span className="top-bar-center">CHANDERI PURE SILK SAREES</span>
+        
+        <div className="top-bar-center">CHANDERI PURE SILK SAREES</div>
         <div className="top-right">
           <span>India | INR ₹</span>
         </div>
