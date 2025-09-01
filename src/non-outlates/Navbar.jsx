@@ -29,8 +29,10 @@ function Navbar() {
       {/* Top Bar */}
       <div className="top-bar">
 
+
         
         
+
 
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
