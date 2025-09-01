@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD:src/component/Navbar.jsx
-import "../css/Navbar.css";
+// import "../css/Navbar.css";
 import {
   FaSearch,
   FaUser,
@@ -9,12 +8,12 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
-=======
-import "./css/Navbar.css";
-import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
-import logo from "../assets/images/logo.png";
+// import "./css/Navbar.css";
+import "../non-outlates/css/Navbar.css";
+// import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
+// import logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
->>>>>>> 0f3afeece7d192d1263d5fd32c73c62337723f54:src/non-outlates/Navbar.jsx
+
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
