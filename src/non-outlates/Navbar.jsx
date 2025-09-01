@@ -1,8 +1,23 @@
 import React, { useState } from "react";
-import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
-import logo from "../assets/images/logo.png";
+
+
+import {
+  FaSearch,
+  FaUser,
+  FaShoppingBag,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
+import logo from "../assets/images/image-1.png";
+// import "./css/Navbar.css";
+import "../non-outlates/css/Navbar.css";
+// import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
+// import logo from "../assets/images/logo.png";
+
+
 import { Link } from "react-router-dom";
 import "../css/Navbar.css";
+
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,8 +28,12 @@ function Navbar() {
     <header>
       {/* Top Bar */}
       <div className="top-bar">
+
         
         <div className="top-bar-center">CHANDERI PURE SILK SAREES</div>
+
+        <div></div>
+        <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
         <div className="top-right">
           <span>India | INR ₹</span>
         </div>
@@ -65,3 +84,4 @@ function Navbar() {
 }
 
 export default Navbar;
+ 
