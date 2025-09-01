@@ -30,7 +30,7 @@ function Navbar() {
       <div className="top-bar">
 
         
-        <div className="top-bar-center">CHANDERI PURE SILK SAREES</div>
+        
 
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
