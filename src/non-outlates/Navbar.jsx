@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
 // import "./css/Navbar.css";
-import "../non-outlates/css/Navbar.css";
+import "../css/Navbar.css";
 // import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
 // import logo from "../assets/images/logo.png";
 
