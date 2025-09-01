@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 // import "../css/Navbar.css";
 import {
   FaSearch,
@@ -12,7 +13,10 @@ import logo from "../assets/images/image-1.png";
 import "../non-outlates/css/Navbar.css";
 // import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
 // import logo from "../assets/images/logo.png";
+
+
 import { Link } from "react-router-dom";
+import "./css/Navbar.css";
 
 
 function Navbar() {
