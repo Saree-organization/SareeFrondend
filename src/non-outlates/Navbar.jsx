@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// import "../css/Navbar.css";
+
 import {
   FaSearch,
   FaUser,
@@ -10,13 +10,13 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
 // import "./css/Navbar.css";
-import "../non-outlates/css/Navbar.css";
+import "../css/Navbar.css";
 // import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
 // import logo from "../assets/images/logo.png";
 
 
 import { Link } from "react-router-dom";
-import "./css/Navbar.css";
+import "../css/Navbar.css";
 
 
 function Navbar() {
@@ -28,6 +28,10 @@ function Navbar() {
     <header>
       {/* Top Bar */}
       <div className="top-bar">
+
+        
+        <div className="top-bar-center">CHANDERI PURE SILK SAREES</div>
+
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
         <div className="top-right">
