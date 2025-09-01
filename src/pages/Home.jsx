@@ -1,16 +1,16 @@
-import React from "react";
+
 import Slide from "../components/Slide";
-import "./css/home.css";
+import "../css/home.css";
 
 // import all data
-import { newArrivals, collections, offers, highestSales, testimonials, video } from "./homeData.js";
+import { newArrivals, collections, offers, highestSales, testimonials, video } from "../data/homeData";
 
 function Home() {
   return (
     <>
       <Slide />
       <div className="home">
-        
+
         {/* NEW ARRIVALS */}
         <div className="sec sec-1">
           <h2 className="heading">NEW ARRIVALS - SAREES</h2>
@@ -27,22 +27,24 @@ function Home() {
 
 
 
-       
-      <div className="sec sec-video">
-        <h2 className="heading">VIDEO SHOWCASE</h2>
-        <div className="videos">
-          {video.map((item, i) => (
-            <div key={i} className="video-card">
-              <video src={item.video} autoPlay    muted loop className="video-player"/>
-              <div className="about-video">
-                <p>Price: ₹{item.price}</p>
-                <p>Discount: {item.discount}</p>
-                <p>After Discount: ₹{item.priceAfterDiscount}</p>
+
+        <div className="sec sec-video">
+          <h2 className="heading">VIDEO SHOWCASE</h2>
+          <div className="videos">
+            {video.map((item, i) => (
+              <div key={i} className="video-card">
+                <video src={item.video} autoPlay muted loop className="video-player" />
+                <div className="about-video">
+                  <div>{item.name}</div>
+                  <div className="price">
+                    <div className="sales-price"> ₹{item.price}</div>
+                    <div className="after-discount">{item.priceAfterDiscount}</div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
         {/* SHOP BY COLLECTION */}
         <div className="sec sec-2">

@@ -24,66 +24,77 @@ export const video = [
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_kucoz12rl2gsd177qcvyqwuu.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_nla85o337pegaa2ttry5kf78.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_wlailk11r9d7gvmdsi8or5po.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_ihyhob8lwx0qlq1ckolvy8t9.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_iz552hla9lywtw3xd30mlvzq.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_aovllaex1a8g3qrluc621vv6.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_nla85o337pegaa2ttry5kf78.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_wlailk11r9d7gvmdsi8or5po.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_ihyhob8lwx0qlq1ckolvy8t9.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_iz552hla9lywtw3xd30mlvzq.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
   {
     video: "https://www.rootshandloom.com/cdn/shop/files/quinn_aovllaex1a8g3qrluc621vv6.mp4#t=0.1",
     price: 7000,
+    name:"best Sarii of this platform",
     discount: "10%",
     priceAfterDiscount:"6300"
    },
@@ -191,5 +202,41 @@ export const testimonials = [
     img: "https://cdn.shopify.com/s/files/1/0053/9122/0771/files/aishwarya.jpg?v=1681634329",
     text: "Loved the fabric and style!",
     name: "Aishwarya Gupta",
+  },
+];
+
+
+// src/data/footerData.js
+
+export const footerSections = [
+  {
+    title: "Quick Links",
+    links: [
+      { name: "Search", url: "/search" },
+      { name: "About Us", url: "/about" },
+      { name: "Domestic Tracking", url: "/tracking" },
+      { name: "Contact Us", url: "/contact" },
+      { name: "Career@Roots", url: "/career" },
+    ],
+  },
+  {
+    title: "Policies",
+    links: [
+      { name: "Delivery & Shipping Policy", url: "/shipping" },
+      { name: "Privacy Policy", url: "/privacy" },
+      { name: "Return, Exchange & Cancellation Policy", url: "/returns" },
+      { name: "Terms of Service", url: "/terms" },
+      { name: "FAQs: International customers", url: "/faq" },
+    ],
+  },
+  {
+    title: "Shop",
+    links: [
+      { name: "Pashmina", url: "/pashmina" },
+      { name: "Maharani", url: "/maharani" },
+      { name: "Banthan", url: "/banthan" },
+      { name: "Katha", url: "/katha" },
+      { name: "Baali by Roots", url: "/baali" },
+    ],
   },
 ];

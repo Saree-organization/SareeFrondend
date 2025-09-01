@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
 import logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
-import "./css/Navbar.css";
+import "../css/Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

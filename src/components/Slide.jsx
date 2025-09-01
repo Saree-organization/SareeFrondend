@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import Carousel from 'react-bootstrap/Carousel';
-import "./css/slide.css"
+import "../css/slide.css"
 function Slide() {
 
 
