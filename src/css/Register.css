@@ -1,0 +1,232 @@
+/* Import the main CSS file containing global variables and styles */
+@import url('./main.css');
+
+/* Register Page Specific Styles */
+
+.register-container {
+  display: flex;
+  width: 90%;
+  max-width: 1100px; /* INCREASED: From 1000px to 1100px for more width */
+  min-height: 480px;  /* DECREASED: From 550px to 480px for less height */
+  margin: 5vh auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--color-white);
+}
+
+/* Left Panel Styling */
+.left-panel {
+  flex: 1;
+  background-color: var(--color-dark-red);
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.brand-content .logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.left-panel h1 {
+  font-size: 2.5em;
+  margin: 0;
+  font-family: inherit;
+}
+
+.left-panel p {
+  font-size: 1.2em;
+  margin-top: 10px;
+  max-width: 80%;
+}
+
+/* Right Panel Styling */
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: var(--color-white);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.form-container h2 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.form-container p {
+  color: var(--color-text-primary);
+  margin-bottom: 25px;
+  font-family: inherit;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
+}
+
+.phone-input-group {
+  display: flex;
+}
+
+/* Removed country-code specific styles as it's not in the JSX */
+
+.phone-input-group input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 12px;
+  font-size: 1em;
+  font-family: inherit;
+}
+
+.phone-input-group input:focus {
+  outline: none;
+  border-color: var(--color-dark-red);
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+}
+
+.submit-btn {
+  background-color: var(--color-dark-red);
+  color: var(--color-white);
+  border: none;
+  padding: 12px;
+  font-size: 1.1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: inherit;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.privacy-note, .login-link {
+  font-size: 0.9em;
+  color: var(--color-text-primary);
+  margin-top: 20px;
+}
+
+.privacy-note a, .login-link a {
+  color: var(--color-dark-red);
+  text-decoration: none;
+}
+
+.privacy-note a:hover, .login-link a:hover {
+  text-decoration: underline;
+}
+
+/* Styles for OTP and Error Messages */
+.otp-sent-message {
+  font-size: 0.9rem;
+  color: #333;
+  margin-top: -10px; /* Adjust spacing */
+  margin-bottom: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.change-number-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 5px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.change-number-btn:hover {
+  color: #0056b3;
+}
+
+.error-message {
+  color: #d93025;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 15px; /* Ensure spacing for the error */
+}
+
+/* =================================
+   Responsive Design for Mobile
+   ================================= */
+@media (max-width: 992px) {
+  .register-container {
+    flex-direction: column; /* Stack columns vertically */
+    width: 90%; /* Use more width on tablets */
+    min-height: auto;
+    height: auto;
+    margin: 5vh auto;
+  }
+  
+  .left-panel {
+    /* Optional: Hide the left panel on smaller tablets to save space */
+    /* display: none; */
+  }
+
+  .left-panel, .right-panel {
+    flex: 1 1 100%; /* Allow panels to take full width */
+    padding: 30px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  /* On mobile, completely hide the decorative left panel */
+  .left-panel {
+    display: none;
+  }
+  
+  .register-container {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    min-height: 100vh; /* Make it full height on mobile */
+    justify-content: center;
+  }
+
+  .right-panel {
+    padding: 20px;
+  }
+
+  .form-container {
+    max-width: 100%;
+  }
+
+  .form-container h2 {
+    font-size: 1.8em;
+  }
+}
