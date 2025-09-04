@@ -2,12 +2,11 @@
 @import url('./main.css');
 
 /* Register Page Specific Styles */
-
 .register-container {
   display: flex;
   width: 90%;
-  max-width: 1100px; /* INCREASED: From 1000px to 1100px for more width */
-  min-height: 480px;  /* DECREASED: From 550px to 480px for less height */
+  max-width: 1100px;
+  min-height: 480px;
   margin: 5vh auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -35,15 +34,16 @@
 }
 
 .left-panel h1 {
-  font-size: 2.5em;
+  font-size: var(--font-size-h1);
   margin: 0;
   font-family: inherit;
 }
 
 .left-panel p {
-  font-size: 1.2em;
+  font-size: var(--font-size-p);
   margin-top: 10px;
   max-width: 80%;
+  font-family: inherit;
 }
 
 /* Right Panel Styling */
@@ -63,8 +63,8 @@
 }
 
 .form-container h2 {
-  font-size: 2em;
-  color: #333;
+  font-size: var(--font-size-h2);
+  color: var(--color-text-primary);
   margin-bottom: 10px;
   font-family: inherit;
 }
@@ -88,7 +88,7 @@
 .form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #555;
+  color: var(--color-text-primary);
   font-weight: bold;
 }
 
@@ -96,14 +96,12 @@
   display: flex;
 }
 
-/* Removed country-code specific styles as it's not in the JSX */
-
 .phone-input-group input {
   width: 100%;
   border: 1px solid var(--color-border);
   border-radius: 5px;
   padding: 12px;
-  font-size: 1em;
+  font-size: var(--font-size-label);
   font-family: inherit;
 }
 
@@ -118,7 +116,7 @@
   color: var(--color-white);
   border: none;
   padding: 12px;
-  font-size: 1.1em;
+  font-size: var(--font-size-btn);
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -130,7 +128,7 @@
 }
 
 .privacy-note, .login-link {
-  font-size: 0.9em;
+  font-size: var(--font-size-note);
   color: var(--color-text-primary);
   margin-top: 20px;
 }
@@ -144,11 +142,10 @@
   text-decoration: underline;
 }
 
-/* Styles for OTP and Error Messages */
 .otp-sent-message {
-  font-size: 0.9rem;
-  color: #333;
-  margin-top: -10px; /* Adjust spacing */
+  font-size: var(--font-size-note);
+  color: var(--color-text-primary);
+  margin-top: -10px;
   margin-bottom: 15px;
   text-align: center;
   display: flex;
@@ -164,7 +161,7 @@
   text-decoration: underline;
   cursor: pointer;
   padding: 0 5px;
-  font-size: 0.9rem;
+  font-size: var(--font-size-note);
   font-family: inherit;
 }
 
@@ -174,37 +171,28 @@
 
 .error-message {
   color: #d93025;
-  font-size: 0.85rem;
+  font-size: var(--font-size-error);
   text-align: center;
-  margin-top: 15px; /* Ensure spacing for the error */
+  margin-top: 15px;
 }
 
-/* =================================
-   Responsive Design for Mobile
-   ================================= */
+/* Responsive Design for Mobile */
 @media (max-width: 992px) {
   .register-container {
-    flex-direction: column; /* Stack columns vertically */
-    width: 90%; /* Use more width on tablets */
+    flex-direction: column;
+    width: 90%;
     min-height: auto;
     height: auto;
     margin: 5vh auto;
   }
   
-  .left-panel {
-    /* Optional: Hide the left panel on smaller tablets to save space */
-    /* display: none; */
-  }
-
   .left-panel, .right-panel {
-    flex: 1 1 100%; /* Allow panels to take full width */
+    flex: 1 1 100%;
     padding: 30px;
   }
 }
 
-
 @media (max-width: 768px) {
-  /* On mobile, completely hide the decorative left panel */
   .left-panel {
     display: none;
   }
@@ -214,7 +202,7 @@
     box-shadow: none;
     border-radius: 0;
     margin: 0;
-    min-height: 100vh; /* Make it full height on mobile */
+    min-height: 100vh;
     justify-content: center;
   }
 
