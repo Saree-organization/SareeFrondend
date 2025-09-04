@@ -1,5 +1,7 @@
 import Home from "./pages/Home";
 import UserLayout from "./layouts/UserLayout";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
@@ -8,12 +10,18 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<UserLayout />}>
+            {/* BADLAV YAHAN HAI: 'path="home"' ko 'index' se badal diya gaya hai */}
+            {/* Yeh badlav zaroori hai */}
+            <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
+            {/* Yeh behtar practice hai (leading "/" hata diya gaya hai) */}
+            <Route path="register" element={<Register />} />
+            <Route path="login" element={<Login />} />
           </Route>
         </Routes>
       </BrowserRouter>
     </div>
-  )
+  );
 };
 
 export default App;
