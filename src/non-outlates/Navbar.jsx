@@ -8,18 +8,28 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
+
 import { Link } from "react-router-dom";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("login");
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const handleLinkClick = () => setMenuOpen(false);
 
-  // <-- 1. NAYA FUNCTION: Yeh menu ko band karne ke liye hai
-  const handleLinkClick = () => {
-    setMenuOpen(false);
+  const openModal = (type) => {
+    setIsModalOpen(true);
+    setModalType(type);
+    setMenuOpen(false); // Close mobile menu if open
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalType("");
   };
 
   return (
@@ -34,7 +44,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Main Navbar (No change) */}
+      {/* Main Navbar */}
       <nav className="navbar">
         <div className="navbar-left">
           <FaSearch className="icon" />
@@ -45,14 +55,8 @@ function Navbar() {
           </Link>
         </div>
         <div className="navbar-right desktop-menu">
-          <div className="user-icon-wrapper" onClick={toggleDropdown}>
+          <div className="user-icon-wrapper" onClick={() => openModal("login")}>
             <FaUser className="icon" />
-            {dropdownOpen && (
-              <div className="user-dropdown">
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
-              </div>
-            )}
           </div>
           <div className="cart-icon">
             <FaShoppingBag className="icon" />
@@ -70,21 +74,61 @@ function Navbar() {
       {/* Bottom Links for Desktop and Mobile Menu */}
       <div
         className={`nav-links ${menuOpen ? "mobile-active" : ""}`}
-        onClick={handleLinkClick} // <-- 2. onClick EVENT YAHAN ADD KIYA GAYA HAI
+        onClick={handleLinkClick}
       >
-        <Link to="/register" className="mobile-auth-link">
+        <div
+          className="mobile-auth-link"
+          onClick={(e) => {
+            e.stopPropagation();
+            openModal("login");
+          }}
+        >
           <FaUser /> Login / Register
+        </div>
+        <Link to="/" onClick={handleLinkClick}>
+          Home
         </Link>
-        <Link to="/">Home</Link>
-        <Link to="/all-saree">All saree</Link>
-        <Link to="/katan-silk">Katan silk saree</Link>
-        <Link to="/tissue-silk">Tissue silk saree</Link>
-        <Link to="/celebrity">Celebrity saree</Link>
-        <Link to="/contact">Contact us</Link>
-        <Link to="/track">Track order</Link>
-        <Link to="/reviews">Reviews</Link>
-        <Link to="/tags">Tags</Link>
+        <Link to="/all-saree" onClick={handleLinkClick}>
+          All saree
+        </Link>
+        <Link to="/katan-silk" onClick={handleLinkClick}>
+          Katan silk saree
+        </Link>
+        <Link to="/tissue-silk" onClick={handleLinkClick}>
+          Tissue silk saree
+        </Link>
+        <Link to="/celebrity" onClick={handleLinkClick}>
+          Celebrity saree
+        </Link>
+        <Link to="/contact" onClick={handleLinkClick}>
+          Contact us
+        </Link>
+        <Link to="/track" onClick={handleLinkClick}>
+          Track order
+        </Link>
+        <Link to="/reviews" onClick={handleLinkClick}>
+          Reviews
+        </Link>
+        <Link to="/tags" onClick={handleLinkClick}>
+          Tags
+        </Link>
       </div>
+
+      {/* The Modal/Popup */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={closeModal}>
+              &times;
+            </button>
+            {modalType === "login" ? (
+              <Login setModalType={setModalType} />
+            ) : (
+              <Register setModalType={setModalType} />
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
