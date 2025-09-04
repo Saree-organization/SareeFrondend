@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 import Slide from "../components/Slide";
 import "../css/home.css";
 
@@ -6,8 +7,12 @@ import "../css/home.css";
 import { newArrivals, collections, offers, highestSales, testimonials, video } from "../data/homeData";
 
 function Home() {
+  const navTo = useNavigate();
   return (
     <>
+    
+    <button onClick={()=>navTo("/sarees/add")}>Add Saree</button>
+       
       <Slide />
       <div className="home">
 
