@@ -26,6 +26,7 @@ function Navbar() {
     <header>
       {/* Top Bar (No change) */}
       <div className="top-bar">
+
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
         <div className="top-right">
