@@ -8,6 +8,9 @@ import { newArrivals, collections, offers, highestSales, testimonials, video } f
 function Home() {
   return (
     <>
+    
+    
+       
       <Slide />
       <div className="home">
 

@@ -3,7 +3,7 @@ import UserLayout from "./layouts/UserLayout";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import AddSaree from "./pages/AddSaree";
 const App = () => {
   return (
     <div className="App">
@@ -14,9 +14,13 @@ const App = () => {
             {/* Yeh badlav zaroori hai */}
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
+
+            <Route path="sarees/add" element={<AddSaree />} />1
+
             {/* Yeh behtar practice hai (leading "/" hata diya gaya hai) */}
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
+
           </Route>
         </Routes>
       </BrowserRouter>
