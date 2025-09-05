@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-import logo from "../assets/images/image-1.png";
-import "../css/Register.css";
+import logo from "../../assets/images/image-1.png";
+import "../../css/Register.css";
 
 const Register = ({ setModalType }) => {
   const [phoneNumber, setPhoneNumber] = useState("");

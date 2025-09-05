@@ -10,8 +10,8 @@ import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
 
 import { Link } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/auth-pages/Login";
+import Register from "../pages/auth-pages/Register";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

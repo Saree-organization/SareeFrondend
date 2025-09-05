@@ -1,9 +1,9 @@
 import Home from "./pages/Home";
 import UserLayout from "./layouts/UserLayout";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Register from "./pages/auth-pages/Register";
+import Login from "./pages/auth-pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AddSaree from "./pages/AddSaree";
+import AddSaree from "./pages/admin-pages/AddSaree";
 const App = () => {
   return (
     <div className="App">

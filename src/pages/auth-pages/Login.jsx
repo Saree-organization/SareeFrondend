@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../css/Login.css";
-import logo from "../assets/images/image-1.png";
+import "../../css/Login.css";
+import logo from "../../assets/images/image-1.png";
 
 const Login = ({ setModalType }) => {
   const navigate = useNavigate();

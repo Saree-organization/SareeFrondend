@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../api/API"; // make sure API is configured for your backend
+import API from "../../api/API.jsx" // make sure API is configured for your backend
 
 function AddSaree() {
   const [step, setStep] = useState(1);
