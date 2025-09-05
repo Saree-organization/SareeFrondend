@@ -62,7 +62,6 @@ const Login = ({ setModalType }) => {
 
   return (
     <div className="login-container">
-      {/* Brand content can be styled differently for modal if needed */}
       <div className="brand-content">
         <img src={logo} alt="Website Logo" className="logo" />
         <h1>CHANDERI SILK ELEGANT</h1>

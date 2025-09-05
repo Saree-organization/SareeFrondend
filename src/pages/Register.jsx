@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 import logo from "../assets/images/image-1.png";
-import  "../css/Register.css";
+import "../css/Register.css";
 
 const Register = ({ setModalType }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -62,7 +62,6 @@ const Register = ({ setModalType }) => {
 
   return (
     <div className="register-container">
-      {/* Brand content can be styled differently for modal if needed */}
       <div className="brand-content">
         <img src={logo} alt="Website Logo" className="logo" />
         <h1>CHANDERI SILK ELEGANT</h1>
