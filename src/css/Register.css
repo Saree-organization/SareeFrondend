@@ -1,0 +1,220 @@
+/* Import the main CSS file containing global variables and styles */
+@import url('./main.css');
+
+/* Register Page Specific Styles */
+.register-container {
+  display: flex;
+  width: 90%;
+  max-width: 1100px;
+  min-height: 480px;
+  margin: 5vh auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--color-white);
+}
+
+/* Left Panel Styling */
+.left-panel {
+  flex: 1;
+  background-color: var(--color-dark-red);
+  color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.brand-content .logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.left-panel h1 {
+  font-size: var(--font-size-h1);
+  margin: 0;
+  font-family: inherit;
+}
+
+.left-panel p {
+  font-size: var(--font-size-p);
+  margin-top: 10px;
+  max-width: 80%;
+  font-family: inherit;
+}
+
+/* Right Panel Styling */
+.right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-color: var(--color-white);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.form-container h2 {
+  font-size: var(--font-size-h2);
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.form-container p {
+  color: var(--color-text-primary);
+  margin-bottom: 25px;
+  font-family: inherit;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-text-primary);
+  font-weight: bold;
+}
+
+.phone-input-group {
+  display: flex;
+}
+
+.phone-input-group input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 12px;
+  font-size: var(--font-size-label);
+  font-family: inherit;
+}
+
+.phone-input-group input:focus {
+  outline: none;
+  border-color: var(--color-dark-red);
+  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+}
+
+.submit-btn {
+  background-color: var(--color-dark-red);
+  color: var(--color-white);
+  border: none;
+  padding: 12px;
+  font-size: var(--font-size-btn);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: inherit;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.privacy-note, .login-link {
+  font-size: var(--font-size-note);
+  color: var(--color-text-primary);
+  margin-top: 20px;
+}
+
+.privacy-note a, .login-link a {
+  color: var(--color-dark-red);
+  text-decoration: none;
+}
+
+.privacy-note a:hover, .login-link a:hover {
+  text-decoration: underline;
+}
+
+.otp-sent-message {
+  font-size: var(--font-size-note);
+  color: var(--color-text-primary);
+  margin-top: -10px;
+  margin-bottom: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.change-number-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 5px;
+  font-size: var(--font-size-note);
+  font-family: inherit;
+}
+
+.change-number-btn:hover {
+  color: #0056b3;
+}
+
+.error-message {
+  color: #d93025;
+  font-size: var(--font-size-error);
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 992px) {
+  .register-container {
+    flex-direction: column;
+    width: 90%;
+    min-height: auto;
+    height: auto;
+    margin: 5vh auto;
+  }
+  
+  .left-panel, .right-panel {
+    flex: 1 1 100%;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
+  
+  .register-container {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    margin: 0;
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  .right-panel {
+    padding: 20px;
+  }
+
+  .form-container {
+    max-width: 100%;
+  }
+
+  .form-container h2 {
+    font-size: 1.8em;
+  }
+}

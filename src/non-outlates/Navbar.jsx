@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-
 import {
   FaSearch,
   FaUser,
@@ -9,24 +7,34 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
-// import "./css/Navbar.css";
 import "../css/Navbar.css";
-// import { FaSearch, FaUser, FaShoppingBag, FaBars, FaTimes} from "react-icons/fa";
-// import logo from "../assets/images/logo.png";
-
 
 import { Link } from "react-router-dom";
-import "../css/Navbar.css";
-
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("login");
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+  const handleLinkClick = () => setMenuOpen(false);
+
+  const openModal = (type) => {
+    setIsModalOpen(true);
+    setModalType(type);
+    setMenuOpen(false); // Close mobile menu if open
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalType("");
+  };
 
   return (
     <header>
-      {/* Top Bar */}
+      {/* Top Bar (No change) */}
       <div className="top-bar">
 
         <div></div>
@@ -41,20 +49,19 @@ function Navbar() {
         <div className="navbar-left">
           <FaSearch className="icon" />
         </div>
-
         <div className="navbar-center">
-          <img src={logo} alt="Logo" className="logo" />
+          <Link to="/">
+            <img src={logo} alt="Logo" className="logo" />
+          </Link>
         </div>
-
         <div className="navbar-right desktop-menu">
-          <span>India | INR ₹</span>
-          <FaUser className="icon" />
+          <div className="user-icon-wrapper" onClick={() => openModal("login")}>
+            <FaUser className="icon" />
+          </div>
           <div className="cart-icon">
             <FaShoppingBag className="icon" />
           </div>
         </div>
-
-        {/* Hamburger icon for mobile */}
         <div className="mobile-menu-icon" onClick={toggleMenu}>
           {menuOpen ? (
             <FaTimes className="icon" />
@@ -64,21 +71,66 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Bottom Links */}
-      <div className={`nav-links ${menuOpen ? "mobile-active" : ""}`}>
-        <Link to ="/home">Home</Link>
-        <Link to ="/all-saree">All saree</Link>
-        <Link to ="/katan-silk">Katan silk saree</Link>
-        <Link to ="/tissue-silk">Tissue silk saree</Link>
-        <Link to ="/celebrity">Celebrity saree</Link>
-        <Link to ="/contact">Contact us</Link>
-        <Link to ="/track">Track order</Link>
-        <Link to ="/reviews">Reviews</Link>
-        <Link to ="/tags">Tags</Link>
+      {/* Bottom Links for Desktop and Mobile Menu */}
+      <div
+        className={`nav-links ${menuOpen ? "mobile-active" : ""}`}
+        onClick={handleLinkClick}
+      >
+        <div
+          className="mobile-auth-link"
+          onClick={(e) => {
+            e.stopPropagation();
+            openModal("login");
+          }}
+        >
+          <FaUser /> Login / Register
+        </div>
+        <Link to="/" onClick={handleLinkClick}>
+          Home
+        </Link>
+        <Link to="/all-saree" onClick={handleLinkClick}>
+          All saree
+        </Link>
+        <Link to="/katan-silk" onClick={handleLinkClick}>
+          Katan silk saree
+        </Link>
+        <Link to="/tissue-silk" onClick={handleLinkClick}>
+          Tissue silk saree
+        </Link>
+        <Link to="/celebrity" onClick={handleLinkClick}>
+          Celebrity saree
+        </Link>
+        <Link to="/contact" onClick={handleLinkClick}>
+          Contact us
+        </Link>
+        <Link to="/track" onClick={handleLinkClick}>
+          Track order
+        </Link>
+        <Link to="/reviews" onClick={handleLinkClick}>
+          Reviews
+        </Link>
+        <Link to="/tags" onClick={handleLinkClick}>
+          Tags
+        </Link>
       </div>
+
+      {/* The Modal/Popup */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={closeModal}>
+              &times;
+            </button>
+            {modalType === "login" ? (
+              <Login setModalType={setModalType} />
+            ) : (
+              <Register setModalType={setModalType} />
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
 
 export default Navbar;
- 
