@@ -4,6 +4,8 @@ import Register from "./pages/auth-pages/Register";
 import Login from "./pages/auth-pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddSaree from "./pages/admin-pages/AddSaree";
+import AllSaree from "./pages/saree-pages/AllSaree";
+import SareeDetail from "./pages/saree-pages/SareeDetail";
 const App = () => {
   return (
     <div className="App">
@@ -15,7 +17,11 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
 
-            <Route path="sarees/add" element={<AddSaree />} />1
+
+            {/* SHAREE PAGES -------------->  */}
+            <Route path="sarees/add" element={<AddSaree />} />
+            <Route path="all-saree" element={<AllSaree/>} />
+            <Route path="/sarees/:id" element={<SareeDetail />} />
 
             {/* Yeh behtar practice hai (leading "/" hata diya gaya hai) */}
             <Route path="register" element={<Register />} />
