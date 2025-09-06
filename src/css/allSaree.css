@@ -1,0 +1,56 @@
+.saree-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.saree-card {
+  background: #fff;
+  max-width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.saree-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.saree-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.saree-card h2 {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #333;
+}
+
+.saree-card p {
+  font-size: 0.9rem;
+  margin: 4px 0;
+  color: #666;
+}
+
+.variants {
+  margin-top: 10px;
+}
+
+.variants span {
+  display: inline-block;
+  background: #f1f1f1;
+  color: #333;
+  padding: 4px 10px;
+  margin: 4px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  border: 1px solid #ddd;
+}
