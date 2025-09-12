@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/sareeDetail.css";
+import Reviews from "../../components/Reviews";
 
 function SareeDetail() {
   const { id } = useParams();
@@ -9,8 +10,7 @@ function SareeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef(null);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
 
   useEffect(() => {
     API.get(`/sarees/${id}`)
@@ -29,43 +29,37 @@ function SareeDetail() {
   if (!saree) return <p>No details found</p>;
 
   const currentVariant = saree.variants[selectedVariantIndex];
-
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
+  const mediaList = [...(currentVariant.images || []), currentVariant.video].filter(Boolean);
 
   return (
-    <div className="saree-detail">
-      <div className="saree-media">
-        <div className="masonry">
-          {currentVariant.images?.map((img, i) => (
-            <img key={i} src={img} alt={`${currentVariant.name}-${i}`} />
-          ))}
-
-          {currentVariant.video && (
-            <div className="video-wrapper">
-              <video
-                ref={videoRef}
-                src={currentVariant.video}
-                muted
-                onPause={() => setIsPlaying(false)}
-                onPlay={() => setIsPlaying(true)}
-              />
-              <button className="play-pause-btn" onClick={togglePlay}>
-                {isPlaying ? "❚❚" : "▶"}
-              </button>
-            </div>
-          )}
-        </div>
+    <div className="saree-detail-grid">
+      {/* Left side: media thumbnails */}
+      <div className="media-thumbnails">
+        {mediaList.map((m, i) => (
+          <div
+            key={i}
+            className={`thumb ${i === selectedMediaIndex ? "active" : ""}`}
+            onClick={() => setSelectedMediaIndex(i)}
+          >
+            {m.endsWith(".mp4") ? (
+              <video src={m} muted />
+            ) : (
+              <img src={m} alt={`media-${i}`} />
+            )}
+          </div>
+        ))}
       </div>
 
+      {/* Middle: main media */}
+      <div className="main-media">
+        {mediaList[selectedMediaIndex].endsWith(".mp4") ? (
+          <video src={mediaList[selectedMediaIndex]} controls />
+        ) : (
+          <img src={mediaList[selectedMediaIndex]} alt="main" />
+        )}
+      </div>
+
+      {/* Right side: saree details */}
       <div className="saree-info">
         <h1>{saree.fabrics} - {saree.design}</h1>
         <p><strong>Category:</strong> {saree.category}</p>
@@ -88,12 +82,19 @@ function SareeDetail() {
             <button
               key={i}
               className={`variant-btn ${i === selectedVariantIndex ? "active" : ""}`}
-              onClick={() => setSelectedVariantIndex(i)}
+              onClick={() => {
+                setSelectedVariantIndex(i);
+                setSelectedMediaIndex(0); // reset media when changing variant
+              }}
             >
               {v.color}
             </button>
           ))}
         </div>
+      </div>
+
+      <div className="saree-reviews">
+        <Reviews sareeId={id}/>
       </div>
     </div>
   );
