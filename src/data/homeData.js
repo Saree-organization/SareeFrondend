@@ -240,3 +240,12 @@ export const footerSections = [
     ],
   },
 ];
+
+
+export const reviews = [
+  { email: "user1@gmail.com", rating: 5, comment: "Awesome saree!" },
+  { email: "user2@gmail.com", rating: 4, comment: "Good quality." },
+  { email: "user3@gmail.com", rating: 3, comment: "Okay for price." },
+  { email: "user4@gmail.com", rating: 5, comment: "Loved it!" },
+  { email: "user5@gmail.com", rating: 4, comment: "Very nice color." }
+];
