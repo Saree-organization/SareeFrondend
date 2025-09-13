@@ -247,5 +247,5 @@ export const reviews = [
   { email: "user2@gmail.com", rating: 4, comment: "Good quality." },
   { email: "user3@gmail.com", rating: 3, comment: "Okay for price." },
   { email: "user4@gmail.com", rating: 5, comment: "Loved it!" },
-  { email: "user5@gmail.com", rating: 4, comment: "Very nice color." }
+  { email: "user5@gmail.com", rating: 4, comment: "Very nice color  Very nice color Very nice colorVery nice colorVery nice colorVery nice color." }
 ];
