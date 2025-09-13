@@ -47,7 +47,7 @@
 .discount {
   font-size: 0.8rem;
   color: #fff;
-  background-color: #e53935;
+  background-color: #750403;
   /* red badge */
   padding: 2px 6px;
   border-radius: 4px;
@@ -57,7 +57,7 @@
 .sale-price {
   font-size: 1rem;
   font-weight: 600;
-  color: #2e7d32;
+  color: #107617;
 
 }
 

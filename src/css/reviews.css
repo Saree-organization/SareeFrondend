@@ -1,0 +1,143 @@
+.reviews-list {
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  font-family: Arial, sans-serif;
+}
+
+.reviews-list h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* main rating distribution container */
+.rating-distribution {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  align-items: start;
+
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+/* average rating block */
+.avg-rating {
+  text-align: center;
+}
+
+.avg-rating p {
+  margin: 5px 0;
+}
+
+.avg-stars {
+  font-size: 1.4rem;
+  color: #000; /* star color */
+}
+
+/* star breakdown block */
+.rating-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* each row of stars + bar + count */
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.stars {
+  color: #000;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* progress bar container */
+.line-of-avarage {
+  flex: 1;
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* inner filled part */
+.line-of-avarage::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--avg-width, 0%);
+  background: #000000;
+  border-radius: 4px;
+}
+
+/* count text */
+.count {
+  color: #555;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* write review button */
+.write-review {
+  max-width: fit-content;
+  margin: auto;
+  align-self: center;
+  padding: 10px 16px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.write-review:hover {
+  background: #0056b3;
+}
+
+/* individual reviews container */
+.all-review {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.review-card {
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px 15px;
+}
+
+.review-card .email {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.review-card .star {
+  color: #000;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.review-card .comment {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+}

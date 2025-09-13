@@ -1,84 +1,163 @@
-.saree-detail {
+/* Grid layout */
+.saree-detail-grid {
+  display: grid;
+  grid-template-columns: 100px 550px 1fr;
+  padding: 1rem;
+  
+}
+
+.media-thumbnails {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
+  max-height: 700px;
+  /* reduced height */
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: none;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* Left side: media */
-.saree-media {
-  flex: 1;
+.media-thumbnails .thumb {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
 }
 
-.masonry {
-  column-count: 2; /* number of columns */
-  column-gap: 10px;
+.media-thumbnails .thumb.active {
+  border-color: #000;
 }
 
-.masonry img,
-.masonry video {
+.media-thumbnails img,
+.media-thumbnails video {
   width: 100%;
-  margin-bottom: 10px;
-  border-radius: 8px;
+  height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-/* Right side: details */
+/* Main Media */
+.main-media img,
+.main-media video {
+  height: 700px;
+  display: block;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+}
+
+/* Saree Info */
 .saree-info {
-  flex: 1;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 12px;
+  font-family: Arial, sans-serif;
 }
 
+.saree-info h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.saree-info p {
+  font-size: 16px;
+  margin: 4px 0;
+  color: #444;
+}
+
+.saree-info p strong {
+  color: #222;
+}
+
+/* Variant Card */
 .variant-card {
-  background: #fafafa;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
 }
 
+.variant-card p {
+  margin: 3px 0;
+  font-size: 15px;
+}
+
+.variant-card p strong {
+  font-weight: 600;
+}
+
+/* Variant Options */
 .variant-options {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
 .variant-btn {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 6px;
+  width: 70px;
+  height: 100px;
+  padding: 0;
+  border: 2px solid #ddd;
+  overflow: hidden;
+  background: #fff;
   cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 6px;
+}
+
+.variant-btn img {
+  width: 100%;
+  height: 190%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.variant-btn:hover {
+  border-color: #999;
 }
 
 .variant-btn.active {
-  background: #333;
-  color: white;
+  border-color: #ff0000;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
 }
 
-
-.video-wrapper {
-  position: relative;
-  width: 100%;
+/* Action Buttons */
+.saree-action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.video-wrapper video {
-  width: 100%;
-  border-radius: 8px;
-  display: block;
-}
-
-.play-pause-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  background: rgba(0, 0, 0, 0.6);
+.saree-action-buttons .btn {
+  padding: 10px 20px;
   border: none;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 50%;
   cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 16px;
+}
+
+.add-to-cart {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+.add-to-wishlist {
+  background-color: #fff;
+  color: #007bff;
+  border: 2px solid #007bff;
+}
+
+.add-to-wishlist:hover {
+  background-color: #007bff;
+  color: #fff;
 }
