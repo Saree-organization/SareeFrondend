@@ -11,12 +11,13 @@ function SareeDetail() {
   const [error, setError] = useState("");
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
-  console.log(saree)
+
   useEffect(() => {
     API.get(`/sarees/${id}`)
       .then((res) => {
         setSaree(res.data);
         setLoading(false);
+        console.log(res.data)
       })
       .catch(() => {
         setError("Failed to load saree details");
