@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../css/Login.css";
@@ -10,6 +10,21 @@ const Login = ({ setModalType }) => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [resendTimer, setResendTimer] = useState(60);
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
+
+  // useEffect to manage the countdown timer
+  useEffect(() => {
+    let timer;
+    if (isOtpSent && resendTimer > 0) {
+      timer = setInterval(() => {
+        setResendTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (resendTimer === 0) {
+      setIsResendDisabled(false);
+    }
+    return () => clearInterval(timer);
+  }, [isOtpSent, resendTimer]);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -22,9 +37,11 @@ const Login = ({ setModalType }) => {
 
     try {
       await axios.post("http://localhost:8080/api/auth/send-otp", {
-        email: email, // This is already correctly set to email
+        email: email,
       });
       setIsOtpSent(true);
+      setResendTimer(60);
+      setIsResendDisabled(true);
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -40,11 +57,10 @@ const Login = ({ setModalType }) => {
 
     try {
       await axios.post("http://localhost:8080/api/auth/verify-otp", {
-        email: email, // This is already correctly set to email
+        email: email,
         otp: otp,
       });
       alert("Login Successful!");
-      // Navigate after successful login
       navigate("/");
     } catch (err) {
       setError(
@@ -58,6 +74,24 @@ const Login = ({ setModalType }) => {
     setIsOtpSent(false);
     setError("");
     setOtp("");
+    setResendTimer(60);
+    setIsResendDisabled(true);
+  };
+
+  const handleResendOtp = async () => {
+    setResendTimer(60);
+    setIsResendDisabled(true);
+    setError("");
+    try {
+      await axios.post("http://localhost:8080/api/auth/send-otp", {
+        email: email,
+      });
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Failed to resend OTP. Please try again."
+      );
+      console.error("Resend OTP Error:", err);
+    }
   };
 
   return (
@@ -119,6 +153,16 @@ const Login = ({ setModalType }) => {
                 Verify & Login
               </button>
             </form>
+            <div className="resend-otp-container">
+              <p>Didn't receive the OTP?</p>
+              <button
+                onClick={handleResendOtp}
+                className="resend-btn"
+                disabled={isResendDisabled}
+              >
+                Resend OTP {isResendDisabled && `in ${resendTimer}s`}
+              </button>
+            </div>
           </>
         )}
 
