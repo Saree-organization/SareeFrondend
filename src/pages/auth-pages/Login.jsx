@@ -4,7 +4,7 @@ import axios from "axios";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
-const Login = ({ setModalType }) => {
+const Login = ({ setModalType, handleLoginSuccess }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -13,7 +13,6 @@ const Login = ({ setModalType }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  // useEffect to manage the countdown timer
   useEffect(() => {
     let timer;
     if (isOtpSent && resendTimer > 0) {
@@ -60,7 +59,7 @@ const Login = ({ setModalType }) => {
         email: email,
         otp: otp,
       });
-      alert("Login Successful!");
+      handleLoginSuccess(); // THIS IS THE KEY CHANGE
       navigate("/");
     } catch (err) {
       setError(

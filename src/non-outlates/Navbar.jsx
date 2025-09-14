@@ -17,6 +17,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
@@ -24,7 +25,7 @@ function Navbar() {
   const openModal = (type) => {
     setIsModalOpen(true);
     setModalType(type);
-    setMenuOpen(false); // Close mobile menu if open
+    setMenuOpen(false);
   };
 
   const closeModal = () => {
@@ -32,11 +33,22 @@ function Navbar() {
     setModalType("");
   };
 
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    closeModal();
+    alert("Login Successful!");
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    // You would also clear tokens or user data from localStorage/sessionStorage here
+    alert("You have been logged out.");
+  };
+
   return (
     <header>
       {/* Top Bar (No change) */}
       <div className="top-bar">
-
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
         <div className="top-right">
@@ -55,9 +67,19 @@ function Navbar() {
           </Link>
         </div>
         <div className="navbar-right desktop-menu">
-          <div className="user-icon-wrapper" onClick={() => openModal("login")}>
-            <FaUser className="icon" />
-          </div>
+          {isLoggedIn ? (
+            <div className="user-icon-wrapper" onClick={handleLogout}>
+              <FaUser className="icon" />
+              <div className="logout-text"></div>
+            </div>
+          ) : (
+            <div
+              className="user-icon-wrapper"
+              onClick={() => openModal("login")}
+            >
+              <FaUser className="icon" />
+            </div>
+          )}
           <div className="cart-icon">
             <FaShoppingBag className="icon" />
           </div>
@@ -76,15 +98,21 @@ function Navbar() {
         className={`nav-links ${menuOpen ? "mobile-active" : ""}`}
         onClick={handleLinkClick}
       >
-        <div
-          className="mobile-auth-link"
-          onClick={(e) => {
-            e.stopPropagation();
-            openModal("login");
-          }}
-        >
-          <FaUser /> Login / Register
-        </div>
+        {isLoggedIn ? (
+          <div className="mobile-auth-link" onClick={handleLogout}>
+            <FaUser /> Logout
+          </div>
+        ) : (
+          <div
+            className="mobile-auth-link"
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal("login");
+            }}
+          >
+            <FaUser /> Login / Register
+          </div>
+        )}
         <Link to="/" onClick={handleLinkClick}>
           Home
         </Link>
@@ -122,7 +150,10 @@ function Navbar() {
               &times;
             </button>
             {modalType === "login" ? (
-              <Login setModalType={setModalType} />
+              <Login
+                setModalType={setModalType}
+                handleLoginSuccess={handleLoginSuccess}
+              />
             ) : (
               <Register setModalType={setModalType} />
             )}
