@@ -5,7 +5,7 @@ import logo from "../../assets/images/image-1.png";
 import "../../css/Register.css";
 
 const Register = ({ setModalType }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -14,14 +14,14 @@ const Register = ({ setModalType }) => {
     e.preventDefault();
     setError("");
 
-    if (!/^\d{10}$/.test(phoneNumber)) {
-      setError("Please enter a valid 10-digit phone number.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
       return;
     }
 
     try {
       await axios.post("http://localhost:8080/api/auth/send-otp", {
-        phoneNumber: phoneNumber,
+        email: email, // This is already correctly set to email
       });
       setIsOtpSent(true);
     } catch (err) {
@@ -38,11 +38,10 @@ const Register = ({ setModalType }) => {
 
     try {
       await axios.post("http://localhost:8080/api/auth/verify-otp", {
-        phoneNumber: phoneNumber,
+        email: email, // This is already correctly set to email
         otp: otp,
       });
       alert("Registration Successful! Please log in.");
-      // Switch to the Login form within the modal
       if (setModalType) {
         setModalType("login");
       }
@@ -54,7 +53,7 @@ const Register = ({ setModalType }) => {
     }
   };
 
-  const handleChangeNumber = () => {
+  const handleChangeEmail = () => {
     setIsOtpSent(false);
     setError("");
     setOtp("");
@@ -70,18 +69,18 @@ const Register = ({ setModalType }) => {
 
       <div className="form-container">
         <h2>Create Your Account</h2>
-        <p>Enter your phone number to get started.</p>
+        <p>Enter your email address to get started.</p>
 
         <form className="register-form" onSubmit={handleSendOtp}>
           <div className="form-group">
-            <label htmlFor="phone-number">Phone Number</label>
-            <div className="phone-input-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="email-input-group">
               <input
-                type="tel"
-                id="phone-number"
-                placeholder="9876543210"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                type="email"
+                id="email"
+                placeholder="youremail@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isOtpSent}
               />
@@ -98,12 +97,9 @@ const Register = ({ setModalType }) => {
         {isOtpSent && (
           <>
             <p className="otp-sent-message">
-              An OTP has been sent to {phoneNumber}.
-              <button
-                onClick={handleChangeNumber}
-                className="change-number-btn"
-              >
-                Change Number
+              An OTP has been sent to {email}.
+              <button onClick={handleChangeEmail} className="change-email-btn">
+                Change Email
               </button>
             </p>
             <form className="register-form" onSubmit={handleVerifyOtp}>

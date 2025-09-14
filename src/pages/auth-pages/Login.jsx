@@ -6,7 +6,7 @@ import logo from "../../assets/images/image-1.png";
 
 const Login = ({ setModalType }) => {
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -15,14 +15,14 @@ const Login = ({ setModalType }) => {
     e.preventDefault();
     setError("");
 
-    if (!/^\d{10}$/.test(phoneNumber)) {
-      setError("Please enter a valid 10-digit phone number.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
       return;
     }
 
     try {
       await axios.post("http://localhost:8080/api/auth/send-otp", {
-        phoneNumber: phoneNumber,
+        email: email, // This is already correctly set to email
       });
       setIsOtpSent(true);
     } catch (err) {
@@ -40,7 +40,7 @@ const Login = ({ setModalType }) => {
 
     try {
       await axios.post("http://localhost:8080/api/auth/verify-otp", {
-        phoneNumber: phoneNumber,
+        email: email, // This is already correctly set to email
         otp: otp,
       });
       alert("Login Successful!");
@@ -54,7 +54,7 @@ const Login = ({ setModalType }) => {
     }
   };
 
-  const handleChangeNumber = () => {
+  const handleChangeEmail = () => {
     setIsOtpSent(false);
     setError("");
     setOtp("");
@@ -70,18 +70,18 @@ const Login = ({ setModalType }) => {
 
       <div className="form-container">
         <h2>Welcome Back!</h2>
-        <p>Enter your phone number to log in.</p>
+        <p>Enter your email address to log in.</p>
 
         <form className="login-form" onSubmit={handleSendOtp}>
           <div className="form-group">
-            <label htmlFor="phone-number">Phone Number</label>
-            <div className="phone-input-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="email-input-group">
               <input
-                type="tel"
-                id="phone-number"
-                placeholder="9876543210"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                type="email"
+                id="email"
+                placeholder="youremail@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isOtpSent}
               />
@@ -97,12 +97,9 @@ const Login = ({ setModalType }) => {
         {isOtpSent && (
           <>
             <p className="otp-sent-message">
-              An OTP has been sent to {phoneNumber}.
-              <button
-                onClick={handleChangeNumber}
-                className="change-number-btn"
-              >
-                Change Number
+              An OTP has been sent to {email}.
+              <button onClick={handleChangeEmail} className="change-email-btn">
+                Change Email
               </button>
             </p>
             <form className="login-form" onSubmit={handleVerifyOtp}>
