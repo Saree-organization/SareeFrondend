@@ -59,7 +59,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
         email: email,
         otp: otp,
       });
-      handleLoginSuccess(); // THIS IS THE KEY CHANGE
+      handleLoginSuccess();
       navigate("/");
     } catch (err) {
       setError(
