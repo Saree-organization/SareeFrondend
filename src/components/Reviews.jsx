@@ -58,10 +58,13 @@ function Reviews({ sareeId }) {
         {reviews.map((r, i) => (
           <div key={i} className="review-card">
             <div className="email">{r.email}</div>
+            <div  className="review">
             <div className="star">
               Rating: {"★".repeat(r.rating) + "☆".repeat(5 - r.rating)}
             </div>
             <div className="comment">{r.comment}</div>
+            </div>
+
           </div>
         ))}
       </div>

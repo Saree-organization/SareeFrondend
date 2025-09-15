@@ -57,20 +57,7 @@
   font-weight: 500;
 }
 
-.btn {
-  padding: 10px 18px;
-  background: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin-top: 15px;
-  cursor: pointer;
-  transition: 0.2s;
-}
 
-.btn:hover {
-  background: #357abd;
-}
 
 .btn.secondary {
   background: #34a853;
