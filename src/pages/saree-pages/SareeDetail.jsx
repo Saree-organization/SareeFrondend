@@ -11,6 +11,8 @@ function SareeDetail() {
   const [error, setError] = useState("");
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
+  
+
   console.log(saree)
   useEffect(() => {
     API.get(`/sarees/${id}`)
@@ -61,11 +63,11 @@ function SareeDetail() {
       <div className="saree-info">
         <h1>{saree.fabrics} - {saree.design}</h1>
         <div className="price-info">
-          <span className="cost-price">Rs {currentVariant.costPrice}</span>
+          <span className="sale-price-after-dicount">Rs {currentVariant.salesPrice}</span>
           <span className="discount">
             {currentVariant.discountPercent}% OFF
           </span>
-          <span className="sale-price">Rs {currentVariant.salesPrice} </span> <span>Inclusive of all taxes</span>
+          <span className="sale-price">Rs {currentVariant.salesPrice - currentVariant.salesPrice * (10/100)} </span> <span>Inclusive of all taxes</span>
         </div>
         <p><strong>Name:</strong> {currentVariant.name}</p>
         <p><strong>Category:</strong> {saree.category}</p>
@@ -96,8 +98,8 @@ function SareeDetail() {
 
         {/* New buttons */}
         <div className="saree-action-buttons">
-          <button className="btn add-to-cart">Add to Cart</button>
-          <button className="btn add-to-wishlist">Add to Wishlist</button>
+          <button className="add-to-cart">Add to Cart</button>
+          <button className="add-to-wishlist">Add to Wishlist</button>
         </div>
       </div>
 

@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 100px 550px 1fr;
   padding: 1rem;
-  
+
 }
 
 .media-thumbnails {
@@ -128,36 +128,31 @@
 /* Action Buttons */
 .saree-action-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 15px;
+  margin-top: 10px;
 }
 
-.saree-action-buttons .btn {
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background 0.2s ease, color 0.2s ease;
-  font-size: 16px;
-}
+
 
 .add-to-cart {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.add-to-cart:hover {
-  background-color: #0056b3;
+  background-color: rgb(182 158 94);
+  transition: all 0.2s ease;
+  border: 1px solid rgb(182 158 94);
 }
 
 .add-to-wishlist {
-  background-color: #fff;
-  color: #007bff;
-  border: 2px solid #007bff;
+  transition: all 0.2s ease;
+  border: 1px solid rgb(182 158 94);
+  color: rgb(152, 131, 73);
+  background: white;
+}
+
+.add-to-cart:hover {
+  border: 1px solid rgb(0, 0, 0);
+  
 }
 
 .add-to-wishlist:hover {
-  background-color: #007bff;
-  color: #fff;
+  border: 1px solid rgb(0, 0, 0);
+
 }
