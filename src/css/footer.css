@@ -1,66 +1,132 @@
 .footer {
-  background: #b9975b; /* gold like screenshot */
+  background-color: rgb(182, 158, 94);
+  padding: 30px 20px;
+  font-family: Arial, sans-serif;
   color: #fff;
-  margin-top: 10px;
-  padding: 40px 20px;
 }
 
-.footer-top {
+.footer-container {
   display: flex;
+  flex-wrap: wrap;     
   justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.footer-logo {
-  flex: 1;
-  min-width: 220px;
-}
-
-.logo-img {
-  width: 60px;
-  margin-bottom: 10px;
+  align-items: center; 
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 0;        
 }
 
 .footer-section {
-  flex: 1;
-  min-width: 180px;
+  flex: 1 1 220px;
+  min-width: 200px;
+  padding: 0 15px;
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: column;          /* content stacks inside */
+  justify-content: flex-start;
 }
 
-.footer-section h3 {
+/* remove border for the last section */
+.footer-section:last-child {
+  border-right: none;
+}
+
+/* On small screens stack sections without right borders but with bottom border */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .footer-section {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 0;
+  }
+
+  .footer-section:last-child {
+    border-bottom: none;
+  }
+}
+
+
+.footer-section img {
+  width: 120px;
   margin-bottom: 10px;
-  font-size: 16px;
+  filter: drop-shadow(0px  1px rgb(0, 0, 0));
+}
+
+.footer-title {
+  font-size: 22px;
   font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.footer-section h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.footer-section p {
+  margin: 4px 0;
 }
 
 .footer-section ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer-section ul li {
-  margin: 6px 0;
+  margin-bottom: 5px;
 }
 
-.footer-section a {
+.footer-section ul li a {
   color: #fff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.footer-section a:hover {
-  text-decoration: underline;
+.footer-section ul li a:hover {
+  color: #333; /* darker hover */
+}
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.social-icons a {
+  color: #fff;
+  font-size: 24px;
+  display: inline-flex;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: scale(1.1);
+}
+
+/* brand hover colours */
+.social-icons a.facebook:hover {
+  color: #1877F2; /* Facebook blue */
+}
+
+.social-icons a.instagram:hover {
+  color: #E1306C; /* Instagram pink */
+}
+
+.social-icons a.whatsapp:hover {
+  color: #25D366; /* WhatsApp green */
 }
 
 .footer-bottom {
-  border-top: 1px solid #ddd;
-  margin-top: 20px;
+  text-align: center;
   padding-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.region select {
-  padding: 5px;
-  border-radius: 4px;
-  border: none;
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  margin-top: 15px;
+  color: #f1f1f1;
 }

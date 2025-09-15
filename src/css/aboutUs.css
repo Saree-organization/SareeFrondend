@@ -1,0 +1,81 @@
+.about-us-page {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  background-color: #fff8f5;
+}
+
+/* Banner */
+.banner {
+  position: relative;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35); /* dark overlay for text readability */
+}
+
+.banner-text {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+
+.banner-text h1 {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.banner-text p {
+  font-size: 22px;
+  font-style: italic;
+}
+
+/* About Content */
+.about-content {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.about-content section {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+  transition: transform 0.3s;
+}
+
+.about-content section:hover {
+  transform: translateY(-5px);
+}
+
+.about-content h2 {
+  font-size: 28px;
+  color: #b34747; /* elegant reddish-brown */
+  margin-bottom: 15px;
+}
+
+.about-content p {
+  font-size: 18px;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.highlight {
+  color: #b34747;
+  font-weight: 600;
+}
