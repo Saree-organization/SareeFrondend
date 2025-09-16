@@ -11,11 +11,11 @@ import ProtectedRoute from "../src/components/ProtectedRoute"; // Import the new
 const App = () => {
   return (
     <div className="App">
-      {" "}
+      
       <BrowserRouter>
-        {" "}
+        
         <Routes>
-          {" "}
+          
           <Route path="/" element={<UserLayout />}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />{" "}
@@ -26,16 +26,16 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
                <Route path="sarees/add" element={<AddSaree />} />
               <Route path="all-saree" element={<AllSaree />} />
-              {" "}
+              
               <Route path="/sarees/:id" element={<SareeDetail />} />
             </Route>
-            {" "}
+            
           </Route>
-          {" "}
+          
         </Routes>
-      {" "}
+      
       </BrowserRouter>
-      {" "}
+      
     </div>
   );
 };
