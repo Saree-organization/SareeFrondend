@@ -1,141 +1,332 @@
-.reviews-list {
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  font-family: Arial, sans-serif;
+/* Reviews Component - A modern, clean, and minimalist style */
+
+.reviews-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  color: #2c3e50;
+  line-height: 1.6;
 }
 
-.reviews-list h3 {
-  font-size: 22px;
+.reviews-title {
+  font-size: 2rem;
   font-weight: 600;
-  margin-bottom: 15px;
+  color: #34495e;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
-/* main rating distribution container */
-.rating-distribution {
+/* Review Summary Section */
+.reviews-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  align-items: start;
-
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 20px;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  align-items: center;
+  padding-bottom: 1rem;
+  
+  border-bottom: 1px solid rgb(167, 167, 167);
 }
 
-/* average rating block */
-.avg-rating {
-  text-align: center;
+@media (max-width: 768px) {
+  .reviews-summary {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .review-form {
+    padding-left: 0 !important;
+    border-left: none !important;
+  }
 }
 
-.avg-rating p {
-  margin: 5px 0;
-}
-
-.avg-stars {
-  font-size: 1.4rem;
-  color: #000;
-  /* star color */
-}
-
-/* star breakdown block */
-.rating-breakdown {
+.reviews-average {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
-/* each row of stars + bar + count */
-.rating-row {
+.reviews-average p {
+  margin: 0;
+
+  color: #7f8c8d;
+}
+
+.reviews-average strong {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.reviews-average-stars {
+  font-size: 1.8rem;
+  color: #f39c12;
+  letter-spacing: 3px;
+  margin-top: 0.5rem;
+}
+
+/* Star Breakdown Section */
+.reviews-breakdown {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #9f9f9f;
+  border-left: 1px solid #9f9f9f;
+  justify-content: center;
+  gap: 10px;
+}
+
+.reviews-breakdown-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.stars {
-  color: #000;
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-/* progress bar container */
-.line-of-avarage {
-  flex: 1;
-  height: 8px;
-  background: #eee;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-/* inner filled part */
-.line-of-avarage::after {
-  content: "";
-  display: block;
-  height: 100%;
-  width: var(--avg-width, 0%);
-  background: #000000;
-  border-radius: 4px;
-}
-
-/* count text */
-.count {
-  color: #555;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-/* write review button */
-.write-review {
-  margin: auto;
-  transition: all 0.2s ease;
-}
-
-.write-review:hover {
-  border: 1px solid black;
-}
-
-/* individual reviews container */
-.all-review {
-  display: grid;
-  grid-template-columns: 1fr 1fr  1fr ; 
   gap: 15px;
 }
 
-.review-card {
-  display: grid;
-  grid-template-columns: 1fr ;
-  background: #ffffff;
+.reviews-breakdown-star {
+  font-size: 0.9rem;
+  color: #95a5a6;
+  width: 40px;
+  text-align: right;
+}
+
+.reviews-breakdown-bar {
+  flex-grow: 1;
+  height: 6px;
+  background-color: #ecf0f1;
+  border-radius: 3px;
+  position: relative;
+}
+
+.reviews-breakdown-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--bar-width);
+  background-color: #f39c12;
+  border-radius: 3px;
+  transition: width 0.5s ease-in-out;
+}
+
+.reviews-breakdown-count {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  width: 30px;
+}
+
+/* Review Form */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding-left: 2rem;
+}
+
+.review-form-stars {
+  display: flex;
+  font-size: 1.8rem;
+  color: #bdc3c7;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.star-icon {
+  transition: color 0.2s ease;
+}
+
+.star-icon.filled {
+  color: #f39c12;
+}
+
+.review-form-text {
+  width: 100%;
+  padding: 12px;
   border: 1px solid #000000;
   border-radius: 6px;
-  padding: 12px 15px;
+  font-size: 1rem;
+  color: #34495e;
+  background-color: #fafbfb;
+  transition: border-color 0.3s ease;
+  resize: vertical;
 }
 
-.review-card .email {
+.review-form-text:focus {
+  outline: none;
+  border-color: #000000;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+}
+
+.review-form-submit {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: rgb(255, 255, 255);
+  /* darker shade */
+  color: rgb(160 140 80);
+}
+
+
+/* Individual Reviews List */
+.reviews-list {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.review-item {
+  display: inline-block;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0 0 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  break-inside: avoid;
+  transition: all 0.3s ease;
+  /* 👈 here */
+}
+
+
+.review-item:hover {
+  transform: translateY(-3px);
+  /* small lift */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* deeper shadow */
+  background: #fafafa;
+  /* optional lighter bg */
+  transition: all 0.3s ease;
+  /* smooth animation */
+}
+
+.review-item-user {
   font-weight: 600;
-  color: #333;
-  margin-bottom: 5px;
-  font-size: 14px;
-}
-
-.review-card .review {
   display: flex;
-  gap: 3rem;
-}
-.review-card .star {
-  color: #000;
-  font-size: 14px;
-  margin-bottom: 6px;
+  align-items: center;
+  gap: 0.5rem;
+  color: #555;
+  margin-bottom: 0.5rem;
 }
 
-.review-card .comment {
-  font-size: 14px;
-  color: #555;
+.review-item-stars {
+  color: #f5b301;
+  /* gold color stars */
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-item-comment {
+  font-size: 0.9rem;
+  color: #333;
   line-height: 1.4;
+}
+
+
+.show-more-btn {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 8px 16px;
+  background: #10b981;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.show-more-btn:hover {
+  background: #059669;
+}
+
+/* Pagination */
+.reviews-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+
+
+/* Pagination - Swapped primary and secondary */
+.pagination-btn {
+  padding: 3px 8px;
+  border: 1px solid rgb(182 158 94);
+  /* new primary border */
+  border-radius: 6px;
+  background: rgb(182 158 94);
+  /* new primary background */
+  color: #000000;
+  /* new secondary text */
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #750403;
+  /* new secondary for disabled */
+  color: rgb(255, 255, 255);
+  /* new primary text */
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #750403;
+  color: rgb(255, 255, 255);
+  transform: translateY(-1px);
+}
+
+.active-page {
+  background: #750403;
+  color: rgb(249, 249, 249);
+
+  border-color: #750403;
+  transform: translateY(-1px);
+}
+
+
+.review-sort {
+  margin: 2rem auto ;
+  display: flex;
+  align-items: center;
+  gap: 8px;           /* space between label and select */
+  margin-bottom: 1rem;
+}
+
+.review-sort label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.review-sort select {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-sort select:hover {
+  border-color: #888;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-sort select:focus {
+  outline: none;
+  border-color: rgb(182, 158, 94);
+  box-shadow: 0 0 5px rgba(182, 158, 94, 0.4);
 }
