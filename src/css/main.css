@@ -32,7 +32,8 @@
   --font-family-body: "New York", "Iowan Old Style", "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif", "Times", "Source Serif Pro", serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-*{  font-family: var(--font-family-body);
+* {
+  font-family: var(--font-family-body);
 }
 
 body,
@@ -44,14 +45,21 @@ body,
   color: var(--color-text-primary);
 }
 
-button{
-  max-width: fit-content;
+button {
   align-self: center;
-  padding: 10px 16px;
+  padding: 8px 10px;
   background: rgb(182 158 94);
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: all 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: rgb(160 140 80); /* darker shade */
+  transform: scale(1.05);      /* slightly bigger */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  border: 1px solid black;
 }
