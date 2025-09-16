@@ -13,11 +13,9 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  // Check for an existing token on component mount
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      // User is already logged in, redirect them
       handleLoginSuccess();
       navigate("/");
     }
@@ -45,17 +43,22 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await axios.post("http://localhost:8080/api/auth/send-otp-login", {
         email: email,
       });
       setIsOtpSent(true);
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Failed to send OTP. User may not be registered."
-      );
+      // Check for specific error message from the backend
+      if (err.response?.data?.message === "User not found.") {
+        setError("No account found with this email. Please register first.");
+        setModalType("register"); // Automatically switch to the register modal
+      } else {
+        setError(
+          err.response?.data?.message || "Failed to send OTP. Please try again."
+        );
+      }
       console.error("Login Error:", err);
     }
   };
@@ -74,8 +77,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
       );
 
       const { token } = response.data;
-
-      // Save the token to local storage
       localStorage.setItem("authToken", token);
 
       handleLoginSuccess();
@@ -101,7 +102,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setIsResendDisabled(true);
     setError("");
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await axios.post("http://localhost:8080/api/auth/send-otp-login", {
         email: email,
       });
     } catch (err) {
