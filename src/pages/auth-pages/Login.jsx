@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../../api/API"; // Import the API instance
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
@@ -13,15 +13,8 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  // Check for an existing token on component mount
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      // User is already logged in, redirect them
-      handleLoginSuccess();
-      navigate("/");
-    }
-  }, [navigate, handleLoginSuccess]);
+  // The useEffect hook that was causing the bug has been removed.
+  // The Navbar component now handles token checks.
 
   useEffect(() => {
     let timer;
@@ -45,17 +38,20 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await API.post("/api/auth/send-otp-login", {
         email: email,
       });
       setIsOtpSent(true);
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Failed to send OTP. User may not be registered."
-      );
+      if (err.response?.status === 404) {
+        setError("This email is not registered. Please register first.");
+      } else {
+        setError(
+          err.response?.data?.message || "Failed to send OTP. Please try again."
+        );
+      }
       console.error("Login Error:", err);
     }
   };
@@ -65,21 +61,15 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/verify-otp",
-        {
-          email: email,
-          otp: otp,
-        }
-      );
+      const response = await API.post("/api/auth/verify-otp-login", {
+        email: email,
+        otp: otp,
+      });
 
       const { token } = response.data;
-
-      // Save the token to local storage
-      localStorage.setItem("authToken", token);
-
-      handleLoginSuccess();
-      navigate("/");
+      // Pass the token to the parent component's handler
+      handleLoginSuccess(token);
+      navigate("/"); // Navigate after successful login
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."
@@ -101,7 +91,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setIsResendDisabled(true);
     setError("");
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await API.post("/api/auth/send-otp-login", {
         email: email,
       });
     } catch (err) {
@@ -123,7 +113,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
       <div className="form-container">
         <h2>Welcome Back!</h2>
         <p>Enter your email address to log in.</p>
-
         <form className="login-form" onSubmit={handleSendOtp}>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
@@ -145,7 +134,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
             </button>
           )}
         </form>
-
         {isOtpSent && (
           <>
             <p className="otp-sent-message">
@@ -183,9 +171,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
             </div>
           </>
         )}
-
         {error && <p className="error-message">{error}</p>}
-
         <p className="register-link">
           Don't have an account?{" "}
           <span className="link-text" onClick={() => setModalType("register")}>
