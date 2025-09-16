@@ -25,10 +25,7 @@ function AllSaree() {
   return (
     <div className="saree-container">
       {sarees.map((s) => (
-        <>
         <SareeCard key={s.id} saree={s} />
-        <SareeCard key={s.id} saree={s} />
-        </>
       ))}
     </div>
   );

@@ -1,48 +1,64 @@
 import React from "react";
-import "../css/footer.css";
-import { footerSections } from "../data/homeData"
 
-function Footer() {
+import { Link } from "react-router-dom";
+import { CiFacebook } from "react-icons/ci";
+import { IoLogoInstagram } from "react-icons/io5";
+import { FaWhatsapp } from "react-icons/fa";
+import "../css/footer.css"; // external CSS
+import logo from "../assets/images/image-1.png"
+
+const Footer = () => {
   return (
     <footer className="footer">
-      <div className="footer-top">
-        {/* Logo + Info */}
-        <div className="footer-logo">
-          <img
-            src="/src/assets/images/logo.png"
-            alt="Roots Handloom"
-            className="logo-img"
-          />
-          <h3>Roots Handloom</h3>
-          <p>
-            Instagram: <a href="https://instagram.com/roots.handlooms">@roots.handlooms</a>
-          </p>
-          <p>
-            Email: <a href="mailto:rootshandloom@gmail.com">rootshandloom@gmail.com</a>
-          </p>
+      <div className="footer-container">
+        {/* Company info */}
+        <div className="footer-section">
+          <img  src={logo} alt="" />
         </div>
 
-        {/* Dynamic Footer Sections */}
-        {footerSections.map((section, idx) => (
-          <div key={idx} className="footer-section">
-            <h3>{section.title}</h3>
-            <ul>
-              {section.links.map((link, i) => (
-                <li key={i}>
-                  <a href={link.url}>{link.name}</a>
-                </li>
-              ))}
-            </ul>
+        {/* Quick links */}
+        <div className="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><Link to="/about-us">About Us</Link></li>
+            <li><Link to="/shop">Shop</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
+          </ul>
+        </div>
+        <div className="footer-section">
+          <h4>Policies</h4>
+          <ul>
+            <li><Link to="/delivery-shipping-policy">Delivery & Shipping Policy</Link></li>
+            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/return-exchange-cancellation-policy">Return, Exchange & Cancellation Policy</Link></li>
+            <li><Link to="/terms-of-service-policy">Terms of Service</Link></li>
+          </ul>
+        </div>
+
+
+        {/* Contact */}
+        <div className="footer-section">
+          <h4>Contact</h4>
+          <p>Email: support@sareestore.com</p>
+          <p>Phone: +91 98765 43210</p>
+          <div className="social-icons">
+            <a className="facebook" href="https://facebook.com" target="_blank" rel="noreferrer">
+              <CiFacebook /></a>
+            <a className="instagram" href="https://instagram.com" target="_blank" rel="noreferrer"            >
+              <IoLogoInstagram /></a>
+            <a className="whatsapp" href="https://wa.me/919876543210" target="_blank" rel="noreferrer">
+              <FaWhatsapp /></a>
           </div>
-        ))}
+
+        </div>
       </div>
 
-      {/* Bottom */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Roots Handloom. Powered by React</p>
+        <p>© {new Date().getFullYear()} Chanderi Silk Elegant. All rights reserved.</p>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;
