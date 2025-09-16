@@ -13,6 +13,16 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
+  // Check for an existing token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      // User is already logged in, redirect them
+      handleLoginSuccess();
+      navigate("/");
+    }
+  }, [navigate, handleLoginSuccess]);
+
   useEffect(() => {
     let timer;
     if (isOtpSent && resendTimer > 0) {
@@ -55,10 +65,19 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setError("");
 
     try {
-      await axios.post("http://localhost:8080/api/auth/verify-otp", {
-        email: email,
-        otp: otp,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/verify-otp",
+        {
+          email: email,
+          otp: otp,
+        }
+      );
+
+      const { token } = response.data;
+
+      // Save the token to local storage
+      localStorage.setItem("authToken", token);
+
       handleLoginSuccess();
       navigate("/");
     } catch (err) {
