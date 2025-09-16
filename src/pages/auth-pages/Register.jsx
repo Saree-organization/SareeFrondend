@@ -35,16 +35,26 @@ const Register = ({ setModalType }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await axios.post("http://localhost:8080/api/auth/send-otp-register", {
         email: email,
       });
       setIsOtpSent(true);
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Failed to send OTP. Please try again."
-      );
+      // Check for specific error message from the backend
+      if (
+        err.response?.data?.message === "User with this email already exists."
+      ) {
+        setError(
+          "An account with this email already exists. Please log in instead."
+        );
+        setModalType("login"); // Automatically switch to the login modal
+      } else {
+        setError(
+          err.response?.data?.message || "Failed to send OTP. Please try again."
+        );
+      }
       console.error("API Error:", err);
     }
   };
@@ -83,7 +93,7 @@ const Register = ({ setModalType }) => {
     setIsResendDisabled(true);
     setError("");
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp", {
+      await axios.post("http://localhost:8080/api/auth/send-otp-register", {
         email: email,
       });
     } catch (err) {
