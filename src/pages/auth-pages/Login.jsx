@@ -55,11 +55,16 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setError("");
 
     try {
-      await axios.post("http://localhost:8080/api/auth/verify-otp", {
-        email: email,
-        otp: otp,
-      });
-      handleLoginSuccess();
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/verify-otp",
+        {
+          email: email,
+          otp: otp,
+        }
+      );
+      // Assuming the response returns a token or user data
+      const token = response.data.token; // Or some user data
+      handleLoginSuccess(token); // Pass the token to the parent
       navigate("/");
     } catch (err) {
       setError(

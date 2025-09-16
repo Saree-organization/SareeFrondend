@@ -5,19 +5,19 @@ import {
   FaShoppingBag,
   FaBars,
   FaTimes,
+  FaHeart,
 } from "react-icons/fa";
 import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
-
 import { Link } from "react-router-dom";
 import Login from "../pages/auth-pages/Login";
 import Register from "../pages/auth-pages/Register";
 
-function Navbar() {
+// Accept isLoggedIn and handleLogout as props
+function Navbar({ isLoggedIn, handleLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("login");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
@@ -33,21 +33,14 @@ function Navbar() {
     setModalType("");
   };
 
+  // This function is now only for closing the modal
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
     closeModal();
-    alert("Login Successful!");
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    // You would also clear tokens or user data from localStorage/sessionStorage here
-    alert("You have been logged out.");
   };
 
   return (
     <header>
-      {/* Top Bar (No change) */}
+      {/* Top Bar */}
       <div className="top-bar">
         <div></div>
         <div className="top-bar-center"> CHANDERI SILK ELEGANT </div>
@@ -67,10 +60,11 @@ function Navbar() {
           </Link>
         </div>
         <div className="navbar-right desktop-menu">
+          {/* Use the isLoggedIn prop */}
           {isLoggedIn ? (
             <div className="user-icon-wrapper" onClick={handleLogout}>
               <FaUser className="icon" />
-              <div className="logout-text"></div>
+              <div className="logout-text">Logout</div>
             </div>
           ) : (
             <div
@@ -80,6 +74,13 @@ function Navbar() {
               <FaUser className="icon" />
             </div>
           )}
+          <Link
+            to="/wishlist"
+            className="wishlist-icon"
+            style={{ color: "red" }}
+          >
+            <FaHeart className="icon" />
+          </Link>
           <div className="cart-icon">
             <FaShoppingBag className="icon" />
           </div>
@@ -152,6 +153,7 @@ function Navbar() {
             {modalType === "login" ? (
               <Login
                 setModalType={setModalType}
+                // Pass the handleLoginSuccess prop received from App.js
                 handleLoginSuccess={handleLoginSuccess}
               />
             ) : (
