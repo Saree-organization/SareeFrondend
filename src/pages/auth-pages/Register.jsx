@@ -54,27 +54,29 @@ const Register = ({ setModalType }) => {
       console.error("API Error:", err);
     }
   };
+const handleVerifyOtp = async (e) => {
+  e.preventDefault();
+  setError("");
 
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      await API.post("/api/auth/verify-otp-register", {
-        email: email,
-        otp: otp,
-      });
-      alert("Registration Successful! Please log in.");
-      if (setModalType) {
-        setModalType("login");
-      }
-    } catch (err) {
-      setError(
-        err.response?.data?.message || "An error occurred. Please try again."
-      );
-      console.error("OTP Verification Error:", err);
+  try {
+    await API.post(
+      "/api/auth/verify-otp-register",
+      { email: email, otp: otp },
+      { headers: {} } // Removing Authorization header
+    );
+    alert("Registration Successful! Please log in.");
+    if (setModalType) {
+      setModalType("login");
     }
-  };
+  } catch (err) {
+    // Log the response details for debugging
+    console.error("Error during OTP verification:", err.response || err);
+    setError(
+      err.response?.data?.message || "An error occurred. Please try again."
+    );
+  }
+};
+
 
   const handleChangeEmail = () => {
     setIsOtpSent(false);
