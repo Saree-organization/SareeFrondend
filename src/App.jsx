@@ -63,9 +63,9 @@ const App = () => {
                   element={<TermsOfService />}
                 />
                 {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
+                {/* <Route element={<ProtectedRoute />}> */}
                   <Route path="sarees/add" element={<AddSaree />} />
-                </Route>
+                {/* </Route> */}
               </Route>
             </Routes>
           </CartProvider>
