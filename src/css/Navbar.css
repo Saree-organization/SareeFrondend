@@ -44,6 +44,9 @@ header {
   margin-left: 29px;
   margin-right: 10px;
 }
+.nav-links{
+  
+}
 
 .navbar-left .icon {
   font-size: var(--font-size-navbar-icon);
