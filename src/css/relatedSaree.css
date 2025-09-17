@@ -1,0 +1,28 @@
+
+.related-saree-container{
+    margin-top: 2rem;
+}
+.related-saree-list {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    
+    overflow-x: scroll;
+}
+
+.related-saree-container .saree-card {
+    min-width: 210px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.related-saree-container .saree-card img {
+    height: 200px;
+    
+}
+
+.related-saree-container .saree-card .review {
+    display: none;
+}
+
+

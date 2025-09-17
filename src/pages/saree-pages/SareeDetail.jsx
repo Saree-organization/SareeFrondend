@@ -5,7 +5,13 @@ import { useParams } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/sareeDetail.css";
 import Reviews from "../../components/Reviews";
-import { useWishlist } from "../../components/WishlistContext"; // IMPORT THE CUSTOM HOOK
+
+import { useWishlist } from "../../components/WishlistContext"; // IMPORT THE CUSTOM HOO
+import RelatedSaree from "../../components/RelatedSaree";
+import SimilarSarees from "../../components/SimilarSarees";
+import { IoBagOutline } from "react-icons/io5";
+
+import { CiHeart } from "react-icons/ci";
 
 function SareeDetail() {
   const { id } = useParams();
@@ -18,6 +24,7 @@ function SareeDetail() {
 
   // Use the custom hook to get the context functions
   const { fetchWishlistCount } = useWishlist();
+
 
   useEffect(() => {
     const fetchSareeDetailsAndWishlistStatus = async () => {
@@ -33,6 +40,22 @@ function SareeDetail() {
       } catch (err) {
         setError("Failed to load saree details or wishlist status");
       } finally {
+
+
+
+  useEffect(() => {
+
+
+    window.scrollTo(0, 0);
+
+    API.get(`/sarees/${id}`)
+      .then((res) => {
+        setSaree(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to load saree details");
+
         setLoading(false);
       }
     };
@@ -99,7 +122,27 @@ function SareeDetail() {
           ) : (
             <img src={mediaList[selectedMediaIndex]} alt="main" />
           )}
+        </div
+      {/* Right side: saree details */}
+      <div className="saree-info">
+        <h1>{saree.fabrics} - {saree.design}</h1>
+        <div className="saree-price-info">
+          <span className="saree-sales-price">Rs {currentVariant.salesPrice}</span>
+          <span className="saree-discount">
+            {currentVariant.discountPercent}% OFF
+          </span>
+          <span className="saree-sales-price-after-discount">Rs {currentVariant.salesPrice - currentVariant.salesPrice * (10 / 100)} 
+            <span className="tax-info"> (Inclusive of all taxes)</span>
+            </span> 
         </div>
+        <p><strong>Name:</strong> {currentVariant.name}</p>
+        <p><strong>Category:</strong> {saree.category}</p>
+        <p><strong>Fabrics:</strong> {saree.fabrics}</p>
+        <p><strong>Border:</strong> {saree.border}</p>
+        <p><strong>Description:</strong> {saree.description}</p>
+        <p><strong>Length:</strong> {saree.length} m</p>
+        <p><strong>Weight:</strong> {saree.weight} kg</p>
+
 
         <div className="saree-info">
           <h1>
@@ -172,6 +215,7 @@ function SareeDetail() {
             <button className="add-to-wishlist" onClick={handleWishlistToggle}>
               {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
             </button>
+
           </div>
         </div>
       </div>
@@ -180,6 +224,30 @@ function SareeDetail() {
         <Reviews sareeId={id} />
       </div>
     </>
+          ))}
+        </div>
+
+        {/* New buttons */}
+        <div className="saree-action-buttons">
+          <button className="add-btn add-to-cart">  `{<IoBagOutline />}` Add to Cart</button>
+          <button className="add-btn add-to-wishlist"> `{<CiHeart />}` Add to Wishlist</button>
+        </div>
+      </div>
+
+
+    </div>
+    <div className="saree-reviews">
+      <Reviews sareeId={id} />
+    </div>
+    <div className="related-sarees">
+      <RelatedSaree />
+    </div>
+    <div className="related-sarees">
+      <SimilarSarees />
+    </div>
+
+  </>
+
   );
 }
 
