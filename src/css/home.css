@@ -211,9 +211,9 @@
    Section 5: Testimonials
    ============================== */
 .sec-5 .images {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  max-width: 1200px;
+  display: flex;
+  /* max-width: 1200px; */
+  overflow-x: scroll;
   margin: 0 auto;
   gap: 20px;
 }
@@ -225,7 +225,9 @@
   padding: 20px;
   text-align: center;
   transition: all 0.3s ease;
+  width: 900px;
   box-shadow: 0 5px 15px var(--shadow-light);
+  border: 1px solid gainsboro;
 }
 
 .sec-5 .images > div:hover {
@@ -234,12 +236,9 @@
 }
 
 .sec-5 .images img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
+  width: 260px;
+  height: 100%;
   object-fit: cover;
-  margin-bottom: 12px;
-  border: 3px solid var(--color-dark-red);
 }
 
 .sec-5 .about-img p {
