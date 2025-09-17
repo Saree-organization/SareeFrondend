@@ -2,7 +2,8 @@
 
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { WishlistProvider } from "./components/WishlistContext"; // Import WishlistProvider
+import { WishlistProvider } from "./context/WishlistContext";
+import { CartProvider } from "./context/CartContext";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -10,6 +11,8 @@ import UserLayout from "./layouts/UserLayout";
 // Components
 import ProtectedRoute from "./components/ProtectedRoute";
 import Wishlist from "./components/Wishlist";
+// Import the new Cart component
+import Cart from "./pages/cart-page/Cart";
 
 // Pages
 import Home from "./pages/Home";
@@ -31,46 +34,44 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        {/* Wrap the entire application with WishlistProvider */}
         <WishlistProvider>
-          <Routes>
-            <Route path="/" element={<UserLayout />}>
-              <Route index element={<Home />} />
-              <Route path="home" element={<Home />} />
-
-              {/* Public Routes */}
-              <Route path="register" element={<Register />} />
-              <Route path="login" element={<Login />} />
-              <Route path="/all-saree" element={<AllSaree />} />
-              <Route path="/sarees/:id" element={<SareeDetail />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-
-              {/* Protected Routes */}
-              <Route element={<ProtectedRoute />}>
-                {/* Admin/User-only routes */}
-                <Route path="sarees/add" element={<AddSaree />} />
+          <CartProvider>
+            <Routes>
+              <Route path="/" element={<UserLayout />}>
+                <Route index element={<Home />} />
+                <Route path="home" element={<Home />} />
+                {/* Public Routes */}
+                <Route path="register" element={<Register />} />
+                <Route path="login" element={<Login />} />
+                <Route path="/all-saree" element={<AllSaree />} />
+                <Route path="/sarees/:id" element={<SareeDetail />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/cart" element={<Cart />} /> {/* New Cart Route */}
+                {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="sarees/add" element={<AddSaree />} />
+                </Route>
+                {/* Footer Page Routes */}
+                <Route path="about-us" element={<AboutUs />} />
+                <Route path="shop" element={<AllSaree />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="faq" element={<FAQ />} />
+                <Route
+                  path="delivery-shipping-policy"
+                  element={<DeliveryPolicy />}
+                />
+                <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                <Route
+                  path="return-exchange-cancellation-policy"
+                  element={<ReturnedAndExchangePolicy />}
+                />
+                <Route
+                  path="terms-of-service-policy"
+                  element={<TermsOfService />}
+                />
               </Route>
-
-              {/* Footer Page Routes */}
-              <Route path="about-us" element={<AboutUs />} />
-              <Route path="shop" element={<AllSaree />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="faq" element={<FAQ />} />
-              <Route
-                path="delivery-shipping-policy"
-                element={<DeliveryPolicy />}
-              />
-              <Route path="privacy-policy" element={<PrivacyPolicy />} />
-              <Route
-                path="return-exchange-cancellation-policy"
-                element={<ReturnedAndExchangePolicy />}
-              />
-              <Route
-                path="terms-of-service-policy"
-                element={<TermsOfService />}
-              />
-            </Route>
-          </Routes>
+            </Routes>
+          </CartProvider>
         </WishlistProvider>
       </BrowserRouter>
     </div>

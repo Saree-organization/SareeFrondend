@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/sareeDetail.css";
 import Reviews from "../../components/Reviews";
-import { useWishlist } from "../../components/WishlistContext"; // IMPORT THE CUSTOM HOOK
+import { useWishlist } from "../../context/WishlistContext"; // Updated path
+import { useCart } from "../../context/CartContext"; // IMPORT CART CONTEXT
 
 function SareeDetail() {
   const { id } = useParams();
@@ -16,8 +17,9 @@ function SareeDetail() {
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  // Use the custom hook to get the context functions
+  // Use the custom hooks to get the context functions
   const { fetchWishlistCount } = useWishlist();
+  const { fetchCartCount } = useCart();
 
   useEffect(() => {
     const fetchSareeDetailsAndWishlistStatus = async () => {
@@ -67,8 +69,26 @@ function SareeDetail() {
         setIsWishlisted(true);
         alert("Added to wishlist!");
       }
-      // Call the context function to update the count in the navbar
       fetchWishlistCount();
+    } catch (err) {
+      alert(err.response?.data?.message || "An error occurred.");
+    }
+  };
+
+  const handleAddToCart = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
+
+    try {
+      await API.post(`/api/cart/add`, {
+        variantId: currentVariant.id,
+        quantity: 1,
+      });
+      alert("Added to cart!");
+      fetchCartCount();
     } catch (err) {
       alert(err.response?.data?.message || "An error occurred.");
     }
@@ -167,7 +187,9 @@ function SareeDetail() {
           </div>
 
           <div className="saree-action-buttons">
-            <button className="add-to-cart">Add to Cart</button>
+            <button className="add-to-cart" onClick={handleAddToCart}>
+              Add to Cart
+            </button>
 
             <button className="add-to-wishlist" onClick={handleWishlistToggle}>
               {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}

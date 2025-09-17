@@ -14,7 +14,8 @@ import "../css/Navbar.css";
 import { Link } from "react-router-dom";
 import Login from "../pages/auth-pages/Login";
 import Register from "../pages/auth-pages/Register";
-import { useWishlist } from "../components/WishlistContext"; // IMPORT THE CUSTOM HOOK
+import { useWishlist } from "../context/WishlistContext";
+import { useCart } from "../context/CartContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,18 +23,19 @@ function Navbar() {
   const [modalType, setModalType] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Use the custom hook to get the context values and functions
   const { wishlistCount, fetchWishlistCount, setWishlistCount } = useWishlist();
+  const { cartCount, fetchCartCount, setCartCount } = useCart();
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsLoggedIn(true);
       fetchWishlistCount();
+      fetchCartCount();
     } else {
       setIsLoggedIn(false);
     }
-  }, [fetchWishlistCount]);
+  }, [fetchWishlistCount, fetchCartCount]);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
@@ -52,14 +54,16 @@ function Navbar() {
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     closeModal();
-    fetchWishlistCount(); // This will automatically update the count
+    fetchWishlistCount();
+    fetchCartCount();
     alert("Login Successful!");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    setWishlistCount(0); // This will update the count globally
+    setWishlistCount(0);
+    setCartCount(0);
     alert("You have been logged out.");
   };
 
@@ -109,7 +113,12 @@ function Navbar() {
           </Link>
 
           <div className="cart-icon">
-            <FaShoppingBag className="icon" />
+            <Link to="/cart">
+              <FaShoppingBag className="icon" />
+              {isLoggedIn && cartCount > 0 && (
+                <span className="cart-count">{cartCount}</span>
+              )}
+            </Link>
           </div>
         </div>
 
@@ -169,12 +178,7 @@ function Navbar() {
         <Link to="/tags" onClick={handleLinkClick}>
           Tags
         </Link>
-        {/* <Link to="/wishlist" onClick={handleLinkClick}>
-          <FaHeart /> Wishlist
-          {isLoggedIn && wishlistCount > 0 && (
-            <span className="wishlist-count">{wishlistCount}</span>
-          )}
-        </Link> */}
+        
       </div>
       {/* The Modal/Popup */}
       {isModalOpen && (
