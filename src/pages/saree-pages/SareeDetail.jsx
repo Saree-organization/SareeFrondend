@@ -226,3 +226,4 @@ function SareeDetail() {
 }
 
 export default SareeDetail;
+

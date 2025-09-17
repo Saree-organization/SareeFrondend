@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import API from "../../api/API";
 import logo from "../../assets/images/image-1.png";
 import "../../css/Register.css";
 
@@ -12,7 +11,6 @@ const Register = ({ setModalType }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  // useEffect to manage the countdown timer
   useEffect(() => {
     let timer;
     if (isOtpSent && resendTimer > 0) {
@@ -35,21 +33,19 @@ const Register = ({ setModalType }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp-register", {
+      await API.post("/api/auth/send-otp-register", {
         email: email,
       });
       setIsOtpSent(true);
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      // Check for specific error message from the backend
-      if (
-        err.response?.data?.message === "User with this email already exists."
-      ) {
+      // Use the more robust 409 status code check for email conflicts
+      if (err.response?.status === 409) {
         setError(
           "An account with this email already exists. Please log in instead."
         );
-        setModalType("login"); // Automatically switch to the login modal
+        setModalType("login");
       } else {
         setError(
           err.response?.data?.message || "Failed to send OTP. Please try again."
@@ -64,7 +60,7 @@ const Register = ({ setModalType }) => {
     setError("");
 
     try {
-      await axios.post("http://localhost:8080/api/auth/verify-otp", {
+      await API.post("/api/auth/verify-otp-register", {
         email: email,
         otp: otp,
       });
@@ -93,7 +89,7 @@ const Register = ({ setModalType }) => {
     setIsResendDisabled(true);
     setError("");
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp-register", {
+      await API.post("/api/auth/send-otp-register", {
         email: email,
       });
     } catch (err) {
@@ -111,11 +107,9 @@ const Register = ({ setModalType }) => {
         <h1>CHANDERI SILK ELEGANT</h1>
         <p>Get started with a simple and secure registration process.</p>
       </div>
-
       <div className="form-container">
         <h2>Create Your Account</h2>
         <p>Enter your email address to get started.</p>
-
         <form className="register-form" onSubmit={handleSendOtp}>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
@@ -131,14 +125,12 @@ const Register = ({ setModalType }) => {
               />
             </div>
           </div>
-
           {!isOtpSent && (
             <button type="submit" className="submit-btn">
               Continue
             </button>
           )}
         </form>
-
         {isOtpSent && (
           <>
             <p className="otp-sent-message">
@@ -176,15 +168,12 @@ const Register = ({ setModalType }) => {
             </div>
           </>
         )}
-
         {error && <p className="error-message">{error}</p>}
-
         <p className="privacy-note">
           By clicking "Continue," you agree to our{" "}
           <a href="/terms">Terms of Service</a> and{" "}
           <a href="/privacy">Privacy Policy</a>.
         </p>
-
         <p className="login-link">
           Already have an account?{" "}
           <span className="link-text" onClick={() => setModalType("login")}>

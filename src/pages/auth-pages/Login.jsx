@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
@@ -13,6 +13,8 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
+  // This useEffect is fine if its purpose is to redirect a logged-in user
+  // away from the login page, but the comments are contradictory.
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -43,17 +45,20 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp-login", {
+      await API.post("/api/auth/send-otp-login", {
         email: email,
       });
       setIsOtpSent(true);
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      // Check for specific error message from the backend
-      if (err.response?.data?.message === "User not found.") {
+      // Combined error handling for 'User not found'
+      if (
+        err.response?.data?.message === "User not found." ||
+        err.response?.status === 404
+      ) {
         setError("No account found with this email. Please register first.");
-        setModalType("register"); // Automatically switch to the register modal
+        setModalType("register");
       } else {
         setError(
           err.response?.data?.message || "Failed to send OTP. Please try again."
@@ -68,18 +73,16 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/verify-otp",
-        {
-          email: email,
-          otp: otp,
-        }
-      );
+      const response = await API.post("/api/auth/verify-otp-login", {
+        email: email,
+        otp: otp,
+      });
 
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      handleLoginSuccess();
+      // Only one set of calls is needed here
+      handleLoginSuccess(token);
       navigate("/");
     } catch (err) {
       setError(
@@ -102,7 +105,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
     setIsResendDisabled(true);
     setError("");
     try {
-      await axios.post("http://localhost:8080/api/auth/send-otp-login", {
+      await API.post("/api/auth/send-otp-login", {
         email: email,
       });
     } catch (err) {
@@ -124,7 +127,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
       <div className="form-container">
         <h2>Welcome Back!</h2>
         <p>Enter your email address to log in.</p>
-
         <form className="login-form" onSubmit={handleSendOtp}>
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
@@ -146,7 +148,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
             </button>
           )}
         </form>
-
         {isOtpSent && (
           <>
             <p className="otp-sent-message">
@@ -184,9 +185,7 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
             </div>
           </>
         )}
-
         {error && <p className="error-message">{error}</p>}
-
         <p className="register-link">
           Don't have an account?{" "}
           <span className="link-text" onClick={() => setModalType("register")}>

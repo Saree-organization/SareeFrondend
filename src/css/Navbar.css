@@ -41,8 +41,11 @@ header {
   background: var(--color-white);
   border-bottom: 1px solid var(--color-border);
   height: 64px;
-  margin-left: 30px;
+  margin-left: 29px;
   margin-right: 10px;
+}
+.nav-links{
+  
 }
 
 .navbar-left .icon {
@@ -123,6 +126,43 @@ header {
   transition: 0.3s;
 }
 
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spacing between the icons */
+}
+
+/* Style for icons */
+.icon {
+  font-size: 20px;
+  color: #000; /* Default color for icons */
+  transition: color 0.3s ease;
+}
+
+/* Set the color for the heart icon */
+.wishlist-icon .icon {
+  color: red; 
+}
+
+/* Optional: change color on hover */
+.wishlist-icon:hover .icon {
+  color: #c00000; /* A slightly darker red for hover effect */
+}
+
+/* The cart and other icons can be styled similarly or inherit from .icon */
+.cart-icon .icon {
+  /* You can add specific styles here if needed */
+}
+
+.user-icon-wrapper .icon {
+  /* You can add specific styles here if needed */
+}
+
+/* Hover effect for all icons in the desktop menu */
+.navbar-right .icon:hover {
+  color: #888;
+}
+
 .nav-links a:hover {
   color: var(--color-hover);
 }
@@ -135,6 +175,44 @@ header {
   display: none;
   cursor: pointer;
 }
+
+.wishlist-icon-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.wishlist-icon {
+  position: relative;
+}
+
+.wishlist-count {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  min-width: 18px; /* Ensures the circle is round for single-digit numbers */
+  text-align: center;
+  z-index: 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+Tools
 
 
 /* Modal/Popup Styles */
