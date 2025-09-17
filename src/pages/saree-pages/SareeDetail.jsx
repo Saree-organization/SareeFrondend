@@ -5,7 +5,11 @@ import "../../css/sareeDetail.css";
 import Reviews from "../../components/Reviews";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
+import RelatedSaree from "../../components/RelatedSaree";
+import SimilarSarees from "../../components/SimilarSarees";
 import { FaHeart } from "react-icons/fa";
+import { IoBagOutline } from "react-icons/io5";
+import { CiHeart } from "react-icons/ci";
 
 function SareeDetail() {
   const { id } = useParams();
@@ -22,6 +26,7 @@ function SareeDetail() {
 
   useEffect(() => {
     const fetchSareeDetailsAndWishlistStatus = async () => {
+      window.scrollTo(0, 0);
       try {
         const sareeRes = await API.get(`/sarees/${id}`);
         setSaree(sareeRes.data);
@@ -32,7 +37,7 @@ function SareeDetail() {
           setIsWishlisted(wishlistRes.data.isInWishlist);
         }
       } catch (err) {
-        setError("Failed to load saree details or wishlist status");
+        setError("Failed to load saree details");
       } finally {
         setLoading(false);
       }
@@ -125,20 +130,22 @@ function SareeDetail() {
             {saree.fabrics} - {saree.design}
           </h1>
 
-          <div className="price-info">
-            <span className="sale-price-after-dicount">
+          <div className="saree-price-info">
+            <span className="saree-sales-price-after-discount">
               Rs {currentVariant.salesPrice}
             </span>
-            <span className="discount">
+            <span className="saree-discount">
               {currentVariant.discountPercent}% OFF
             </span>
-            <span className="sale-price">
+            <span className="saree-sales-price">
               Rs{" "}
-              {currentVariant.salesPrice -
+              {(
+                currentVariant.salesPrice -
                 (currentVariant.salesPrice * currentVariant.discountPercent) /
-                  100}
+                  100
+              ).toFixed(2)}
             </span>
-            <span>Inclusive of all taxes</span>
+            <span className="tax-info"> (Inclusive of all taxes)</span>
           </div>
 
           <p>
@@ -146,6 +153,9 @@ function SareeDetail() {
           </p>
           <p>
             <strong>Category:</strong> {saree.category}
+          </p>
+          <p>
+            <strong>Fabrics:</strong> {saree.fabrics}
           </p>
           <p>
             <strong>Border:</strong> {saree.border}
@@ -182,16 +192,18 @@ function SareeDetail() {
           </div>
 
           <div className="saree-action-buttons">
-            <button className="add-to-cart" onClick={handleAddToCart}>
-              Add to Cart
+            <button className="add-btn add-to-cart" onClick={handleAddToCart}>
+              <IoBagOutline /> Add to Cart
             </button>
-            <button className="add-to-wishlist" onClick={handleWishlistToggle}>
-              <FaHeart
-                style={{
-                  marginRight: "8px",
-                  color: isWishlisted ? "red" : "black",
-                }}
-              />
+            <button
+              className="add-btn add-to-wishlist"
+              onClick={handleWishlistToggle}
+            >
+              {isWishlisted ? (
+                <FaHeart style={{ color: "red" }} />
+              ) : (
+                <CiHeart />
+              )}
               {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
             </button>
           </div>
@@ -201,8 +213,17 @@ function SareeDetail() {
       <div className="saree-reviews">
         <Reviews sareeId={id} />
       </div>
+
+      <div className="related-sarees">
+        <RelatedSaree />
+      </div>
+
+      <div className="related-sarees">
+        <SimilarSarees />
+      </div>
     </>
   );
 }
 
 export default SareeDetail;
+

@@ -51,7 +51,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-family: Arial, sans-serif;
 }
 
 .saree-info h1 {
@@ -69,6 +68,38 @@
 
 .saree-info p strong {
   color: #222;
+}
+
+
+/* Saree price into  */
+.saree-price-info {
+  display: flex;
+  padding: 3px;
+  font-size: 1.3rem;
+  gap: 0.5rem;
+
+}
+
+.saree-sales-price {
+  text-decoration: line-through;
+}
+
+.saree-discount {
+  padding: 2px 5px;
+  background: rgb(139, 0, 0);
+  border-radius: 10px;
+  color: white;
+}
+
+.saree-sales-price-after-discount {
+  color: rgb(7, 108, 7);
+  font-weight: 600;
+}
+
+.saree-sales-price-after-discount .tax-info {
+  font-size: 1rem;
+  color: rgb(182, 182, 182);
+  font-weight: 100;
 }
 
 /* Variant Card */
@@ -133,26 +164,35 @@
 }
 
 
+.add-btn {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 15rem;
+  margin: auto;
+  font-size: 1.2rem;
+  word-spacing: 4px;
+}
 
 .add-to-cart {
   background-color: rgb(182 158 94);
-  transition: all 0.2s ease;
   border: 1px solid rgb(182 158 94);
 }
 
 .add-to-wishlist {
-  transition: all 0.2s ease;
   border: 1px solid rgb(182 158 94);
   color: rgb(152, 131, 73);
   background: white;
 }
 
 .add-to-cart:hover {
-  border: 1px solid rgb(0, 0, 0);
-  
+  color: rgb(182 158 94);
+  background-color: rgb(255, 255, 255);
 }
 
 .add-to-wishlist:hover {
-  border: 1px solid rgb(0, 0, 0);
-
+  background-color: rgb(182 158 94);
+  color: rgb(255, 255, 255);
 }

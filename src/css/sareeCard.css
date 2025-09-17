@@ -9,6 +9,7 @@
   flex-direction: column;
   width: 300px;
   min-height: fit-content;
+  text-align: center;
 }
 
 /* main image */
@@ -30,36 +31,23 @@
 
 .price-info {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
 }
-
-/* original price with strike through */
-.cost-price {
-  font-size: 0.9rem;
-  color: #888;
+.sales-price{
   text-decoration: line-through;
 }
-
 /* discount badge */
 .discount {
-  font-size: 0.8rem;
-  color: #fff;
-  background-color: #750403;
-  /* red badge */
-  padding: 2px 6px;
-  border-radius: 4px;
+background-color: rgb(139, 0, 0);
+color: white;
 }
 
-/* sale price */
-.sale-price {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #107617;
-
+.sales-price-after-discount {
+color: green;
 }
+
+
 
 /* variants row */
 .variants {
@@ -70,26 +58,10 @@
 }
 
 
-.variant-image {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.variant-image:hover {
-  transform: scale(1.05);
-  border-color: #aaa;
-}
-
 .review {
-  font-size: 1.2rem;
-  color: #555;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-size: 1.2rem;
+  justify-content: center;
 }
 
 .stars {
@@ -98,4 +70,20 @@
 
 .review-count {
   color: #777;
+}
+.saree-card .review {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.saree-card .stars {
+
+  color: #313131; /* golden star color */
+}
+
+.saree-card .review-count {
+  font-size: 0.85rem;
+  color: #666;
 }

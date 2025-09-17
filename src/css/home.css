@@ -33,21 +33,10 @@
 .more-btn {
   display: block;
   margin: 20px auto 0;
-  padding: 10px 24px;
-  background: var(--color-dark-red);
-  color: var(--color-white);
-  font-size: 1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .more-btn:hover {
-  background: var(--color-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px var(--shadow-light);
+
 }
 /* Heading  */
 
