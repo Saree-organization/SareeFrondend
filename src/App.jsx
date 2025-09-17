@@ -1,9 +1,8 @@
-// File: App.js
-
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CartProvider } from "./context/CartContext";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -11,7 +10,6 @@ import UserLayout from "./layouts/UserLayout";
 // Components
 import ProtectedRoute from "./components/ProtectedRoute";
 import Wishlist from "./components/Wishlist";
-// Import the new Cart component
 import Cart from "./pages/cart-page/Cart";
 
 // Pages
@@ -28,7 +26,6 @@ import FAQ from "./pages/footer-pages/FAQ";
 import PrivacyPolicy from "./pages/footer-pages/PrivacyPolicy";
 import ReturnedAndExchangePolicy from "./pages/footer-pages/ReturnedAndExchangePolicy";
 import TermsOfService from "./pages/footer-pages/TermsOfService";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
   return (
@@ -38,19 +35,15 @@ const App = () => {
           <CartProvider>
             <Routes>
               <Route path="/" element={<UserLayout />}>
+                {/* Public Routes */}
                 <Route index element={<Home />} />
                 <Route path="home" element={<Home />} />
-                {/* Public Routes */}
                 <Route path="register" element={<Register />} />
                 <Route path="login" element={<Login />} />
                 <Route path="/all-saree" element={<AllSaree />} />
                 <Route path="/sarees/:id" element={<SareeDetail />} />
                 <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/cart" element={<Cart />} /> {/* New Cart Route */}
-                {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
-                  <Route path="sarees/add" element={<AddSaree />} />
-                </Route>
+                <Route path="/cart" element={<Cart />} />
                 {/* Footer Page Routes */}
                 <Route path="about-us" element={<AboutUs />} />
                 <Route path="shop" element={<AllSaree />} />
@@ -69,6 +62,10 @@ const App = () => {
                   path="terms-of-service-policy"
                   element={<TermsOfService />}
                 />
+                {/* Protected Routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="sarees/add" element={<AddSaree />} />
+                </Route>
               </Route>
             </Routes>
           </CartProvider>

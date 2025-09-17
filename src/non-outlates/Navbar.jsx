@@ -1,5 +1,3 @@
-// File: Navbar.js
-
 import React, { useState, useEffect } from "react";
 import {
   FaSearch,
@@ -23,19 +21,37 @@ function Navbar() {
   const [modalType, setModalType] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Use the contexts to get and set counts
   const { wishlistCount, fetchWishlistCount, setWishlistCount } = useWishlist();
   const { cartCount, fetchCartCount, setCartCount } = useCart();
 
+  // Unified useEffect to handle auth status and fetch counts
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      setIsLoggedIn(true);
-      fetchWishlistCount();
-      fetchCartCount();
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [fetchWishlistCount, fetchCartCount]);
+    const checkAuthStatusAndFetchCounts = () => {
+      const token = localStorage.getItem("authToken");
+      if (token && token !== "undefined") {
+        setIsLoggedIn(true);
+        fetchWishlistCount();
+        fetchCartCount();
+      } else {
+        setIsLoggedIn(false);
+        setWishlistCount(0); // Clear counts on logout
+        setCartCount(0); // Clear counts on logout
+      }
+    };
+
+    // Initial check on component mount
+    checkAuthStatusAndFetchCounts();
+
+    // Event listeners for real-time updates
+    window.addEventListener("storage", checkAuthStatusAndFetchCounts);
+    window.addEventListener("authChange", checkAuthStatusAndFetchCounts);
+
+    return () => {
+      window.removeEventListener("storage", checkAuthStatusAndFetchCounts);
+      window.removeEventListener("authChange", checkAuthStatusAndFetchCounts);
+    };
+  }, [fetchWishlistCount, fetchCartCount, setWishlistCount, setCartCount]);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
@@ -51,20 +67,23 @@ function Navbar() {
     setModalType("");
   };
 
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    closeModal();
-    fetchWishlistCount();
-    fetchCartCount();
-    alert("Login Successful!");
+  const handleLoginSuccess = (token) => {
+    if (token) {
+      localStorage.setItem("authToken", token);
+      closeModal();
+      // Dispatch custom event to trigger Navbar update
+      window.dispatchEvent(new Event("authChange"));
+      alert("Login Successful! 🎉");
+    } else {
+      alert("Login failed. No token received.");
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    setIsLoggedIn(false);
-    setWishlistCount(0);
-    setCartCount(0);
-    alert("You have been logged out.");
+    // Dispatch custom event to trigger Navbar update
+    window.dispatchEvent(new Event("authChange"));
+    alert("You have been logged out. 👋");
   };
 
   return (
@@ -82,18 +101,16 @@ function Navbar() {
         <div className="navbar-left">
           <FaSearch className="icon" />
         </div>
-
         <div className="navbar-center">
           <Link to="/">
             <img src={logo} alt="Logo" className="logo" />
           </Link>
         </div>
-
         <div className="navbar-right desktop-menu">
           {isLoggedIn ? (
             <div className="user-icon-wrapper" onClick={handleLogout}>
               <FaUser className="icon" />
-              <div className="logout-text">logout</div>
+              <div className="logout-text">Logout</div>
             </div>
           ) : (
             <div
@@ -103,25 +120,21 @@ function Navbar() {
               <FaUser className="icon" />
             </div>
           )}
-
-          {/* New Wishlist icon with count */}
+          {/* Wishlist icon with count */}
           <Link to="/wishlist" className="wishlist-icon">
             <FaHeart className="icon" />
             {isLoggedIn && wishlistCount > 0 && (
               <span className="wishlist-count">{wishlistCount}</span>
             )}
           </Link>
-
-          <div className="cart-icon">
-            <Link to="/cart">
-              <FaShoppingBag className="icon" />
-              {isLoggedIn && cartCount > 0 && (
-                <span className="cart-count">{cartCount}</span>
-              )}
-            </Link>
-          </div>
+          {/* Cart icon with count */}
+          <Link to="/cart" className="cart-icon">
+            <FaShoppingBag className="icon" />
+            {isLoggedIn && cartCount > 0 && (
+              <span className="cart-count">{cartCount}</span>
+            )}
+          </Link>
         </div>
-
         <div className="mobile-menu-icon" onClick={toggleMenu}>
           {menuOpen ? (
             <FaTimes className="icon" />
@@ -150,7 +163,6 @@ function Navbar() {
             <FaUser /> Login / Register
           </div>
         )}
-
         <Link to="/" onClick={handleLinkClick}>
           Home
         </Link>
@@ -178,14 +190,10 @@ function Navbar() {
         <Link to="/tags" onClick={handleLinkClick}>
           Tags
         </Link>
-        
       </div>
-      {/* The Modal/Popup */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={closeModal}>
-          {" "}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            {" "}
             <button className="modal-close-btn" onClick={closeModal}>
               &times;
             </button>

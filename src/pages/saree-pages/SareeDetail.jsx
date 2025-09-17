@@ -1,12 +1,11 @@
-// File: SareeDetail.js
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/sareeDetail.css";
 import Reviews from "../../components/Reviews";
-import { useWishlist } from "../../context/WishlistContext"; // Updated path
-import { useCart } from "../../context/CartContext"; // IMPORT CART CONTEXT
+import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
+import { FaHeart } from "react-icons/fa";
 
 function SareeDetail() {
   const { id } = useParams();
@@ -134,40 +133,36 @@ function SareeDetail() {
               {currentVariant.discountPercent}% OFF
             </span>
             <span className="sale-price">
-              Rs
+              Rs{" "}
               {currentVariant.salesPrice -
-                currentVariant.salesPrice * (10 / 100)}
-            </span>{" "}
+                (currentVariant.salesPrice * currentVariant.discountPercent) /
+                  100}
+            </span>
             <span>Inclusive of all taxes</span>
           </div>
 
           <p>
             <strong>Name:</strong> {currentVariant.name}
           </p>
-
           <p>
             <strong>Category:</strong> {saree.category}
           </p>
-
           <p>
             <strong>Border:</strong> {saree.border}
           </p>
-
           <p>
             <strong>Description:</strong> {saree.description}
           </p>
-
           <p>
             <strong>Length:</strong> {saree.length} m
           </p>
-
           <p>
             <strong>Weight:</strong> {saree.weight} kg
           </p>
-
           <p>
             <strong>Color:</strong> {currentVariant.color}
           </p>
+
           <h3>Colors</h3>
           <div className="variant-options">
             {saree.variants.map((v, i) => (
@@ -190,8 +185,13 @@ function SareeDetail() {
             <button className="add-to-cart" onClick={handleAddToCart}>
               Add to Cart
             </button>
-
             <button className="add-to-wishlist" onClick={handleWishlistToggle}>
+              <FaHeart
+                style={{
+                  marginRight: "8px",
+                  color: isWishlisted ? "red" : "black",
+                }}
+              />
               {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
             </button>
           </div>
