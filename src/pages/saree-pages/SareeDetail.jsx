@@ -142,18 +142,18 @@ function SareeDetail() {
           </h1>
 
           <div className="saree-price-info">
-            <span className="saree-sales-price-after-discount">
+            <span className="saree-sales-price">
               Rs {currentVariant.salesPrice}
             </span>
             <span className="saree-discount">
               {currentVariant.discountPercent}% OFF
             </span>
-            <span className="saree-sales-price">
+            <span className="saree-sales-price-after-discount">
               Rs{" "}
               {(
                 currentVariant.salesPrice -
                 (currentVariant.salesPrice * currentVariant.discountPercent) /
-                100
+                  100
               ).toFixed(2)}
             </span>
             <span className="tax-info"> (Inclusive of all taxes)</span>
@@ -192,8 +192,9 @@ function SareeDetail() {
             {saree.variants.map((v, i) => (
               <button
                 key={i}
-                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""
-                  }`}
+                className={`variant-btn ${
+                  i === selectedVariantIndex ? "active" : ""
+                }`}
                 onClick={() => {
                   setSelectedVariantIndex(i);
                   setSelectedMediaIndex(0);
@@ -227,13 +228,9 @@ function SareeDetail() {
         <Reviews sareeId={id} />
       </div>
 
-      <div className="related-sarees">
-        {/* <RelatedSaree /> */}
-      </div>
+      <div className="related-sarees">{/* <RelatedSaree /> */}</div>
 
-      <div className="related-sarees">
-        {/* <SimilarSarees /> */}
-      </div>
+      <div className="related-sarees">{/* <SimilarSarees /> */}</div>
     </>
   );
 }
