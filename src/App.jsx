@@ -42,6 +42,7 @@ const App = () => {
                 <Route path="login" element={<Login />} />
                 <Route path="/all-saree" element={<AllSaree />} />
                 <Route path="/sarees/:id" element={<SareeDetail />} />
+                <Route path="/sarees/:id/:variantId" element={<SareeDetail />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/cart" element={<Cart />} />
                 {/* Footer Page Routes */}
