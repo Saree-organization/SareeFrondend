@@ -6,67 +6,45 @@ import "../../css/allSaree.css";
 function AllSaree() {
   const [filters, setFilters] = useState({
     fabrics: "",
-    design: "",
-    weight: "",
     category: "",
-    name: "",
     color: "",
     minPrice: "",
     maxPrice: "",
-    discountPercent: ""
   });
 
   const [sarees, setSarees] = useState([]);
 
   // load all sarees at start
   useEffect(() => {
+    loadAllSarees();
+  }, []);
+
+  const loadAllSarees = () => {
     API.get("/sarees/allSarees")
       .then((res) => setSarees(res.data))
       .catch((err) => console.error(err));
-  }, []);
+  };
 
-  // whenever filters change, call filter APIs
-  useEffect(() => {
-    if (
-      !filters.fabrics &&
-      !filters.design &&
-      !filters.weight &&
-      !filters.category &&
-      !filters.name &&
-      !filters.color &&
-      !filters.minPrice &&
-      !filters.maxPrice &&
-      !filters.discountPercent
-    ) return;
-
-    // saree filters
-    if (filters.fabrics || filters.design || filters.weight || filters.category) {
-      API.get("/sarees/filter", {
-        params: {
-          fabrics: filters.fabrics || null,
-          design: filters.design || null,
-          weight: filters.weight || null,
-          category: filters.category || null
-        }
-      })
-        .then((res) => setSarees(res.data))
-        .catch((err) => console.error(err));
+  // run filters only when button clicked
+  const applyFilters = () => {
+    // if no filter selected → load all
+    if (!filters.fabrics && !filters.category && !filters.color && !filters.minPrice && !filters.maxPrice ) {
+      loadAllSarees();
+      return;
     }
-    // variant filters
-    if (filters.name || filters.color || filters.minPrice || filters.maxPrice || filters.discountPercent) {
-      API.get("/sarees/variants/filter", {
-        params: {
-          name: filters.name || null,
-          color: filters.color || null,
-          minPrice: filters.minPrice || null,
-          maxPrice: filters.maxPrice || null,
-          discountPercent: filters.discountPercent || null
-        }
-      })
+
+    API.get("/sarees/filter", {
+      params: {
+        fabrics: filters.fabrics || null,
+        category: filters.category || null,
+        color: filters.color || null,
+        minPrice: filters.minPrice || null,
+        maxPrice: filters.maxPrice || null,
+      },
+    })
       .then((res) => setSarees(res.data))
       .catch((err) => console.error(err));
-    }
-  }, [filters]);
+  };
   console.log(sarees)
 
   return (
@@ -81,7 +59,12 @@ function AllSaree() {
           <option value="Cotton">Cotton</option>
         </select>
 
-
+        <input
+          type="text"
+          placeholder="Category"
+          value={filters.category}
+          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+        />
 
         <input
           type="text"
@@ -94,27 +77,27 @@ function AllSaree() {
           type="number"
           placeholder="Min Price"
           value={filters.minPrice}
-          onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
+          onChange={(e) =>
+            setFilters({ ...filters, minPrice: e.target.value })
+          }
         />
 
         <input
           type="number"
           placeholder="Max Price"
           value={filters.maxPrice}
-          onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
+          onChange={(e) =>
+            setFilters({ ...filters, maxPrice: e.target.value })
+          }
         />
 
-        <input
-          type="text"
-          placeholder="Category"
-          value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-        />
+        {/* new filter button */}
+        <button onClick={applyFilters}>Apply Filters</button>
       </div>
 
       <div className="saree-container">
         {sarees.length > 0 ? (
-          sarees.map((s) => <SareeCard key={s.id} saree={s} />)
+          sarees.map((s) => <SareeCard key={s.id} saree={s} variantId={s.variants.id} />)
         ) : (
           <p>No sarees found.</p>
         )}

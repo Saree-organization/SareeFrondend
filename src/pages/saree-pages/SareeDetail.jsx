@@ -19,7 +19,7 @@ function SareeDetail() {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  console.log(variantId)
+
   const { fetchWishlistCount } = useWishlist();
   const { fetchCartCount } = useCart();
 
@@ -66,7 +66,7 @@ function SareeDetail() {
     ...(currentVariant.images || []),
     currentVariant.video,
   ].filter(Boolean);
-  console.log(currentVariant)
+
 
   const handleWishlistToggle = async () => {
     const token = localStorage.getItem("authToken");
@@ -162,7 +162,7 @@ function SareeDetail() {
             <strong>Category:</strong> {saree.category}
           </p>
           <p>
-            <strong>Fabrics:</strong> {saree.fabrics}
+            <strong>Fabric:</strong> {saree.fabrics}
           </p>
           <p>
             <strong>Border:</strong> {saree.border}
