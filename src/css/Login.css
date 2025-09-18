@@ -1,30 +1,47 @@
-/* Import the main CSS file */
-@import url('./main.css');
+/* File: src/css/Login.css */
 
-/* Main container for the login page */
+/* Main container to center the entire login box */
+.loge-page{
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
 .login-container {
   display: flex;
-  width: 90%;
-  max-width: 1100px;
-  min-height: 480px;
-  margin: 5vh auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: var(--color-white);
+  justify-content: center; /* Horizontally center the login box */
+  align-items: center; /* Vertically center the login box */
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-/* Re-using styles from Register page for consistency */
-.left-panel {
+/* The login box that holds both the brand and form */
+.login-box {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  height: 550px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Left side branding div */
+.brand-content {
   flex: 1;
-  background-color: var(--color-dark-red);
-  color: var(--color-white);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 40px;
+  background-color: #890c1b;
+  color: white;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 .brand-content .logo {
@@ -33,149 +50,170 @@
   margin-bottom: 20px;
 }
 
-.left-panel h1 {
-  font-size: var(--font-size-h1);
-  margin: 0;
-  font-family: inherit;
+.brand-content h1 {
+  font-size: 2rem;
+  color: white;
 }
 
-.left-panel p {
-  font-size: var(--font-size-p);
+.brand-content p {
+  color: #e6e6e6;
   margin-top: 10px;
   max-width: 80%;
-  font-family: inherit;
 }
 
-.right-panel {
+/* Right side form container */
+.form-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 40px;
-}
-
-.form-container {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+  min-height: 100%;
+  box-sizing: border-box;
 }
 
 .form-container h2 {
-  font-size: var(--font-size-h2);
-  color: var(--color-text-primary);
+  color: #333;
   margin-bottom: 10px;
-  font-family: inherit;
+  font-size: 1.8rem;
 }
 
-.form-container p {
-  color: var(--color-text-primary);
-  margin-bottom: 25px;
-  font-family: inherit;
+.form-container > p {
+  color: #666;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  max-width: 350px;
 }
 
 .form-group {
+  margin-bottom: 20px;
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  color: var(--color-text-primary);
+  font-size: 0.9rem;
   font-weight: bold;
+  color: #555;
+  margin-bottom: 8px;
 }
 
-.phone-input-group input {
+.form-group input {
   width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
   padding: 12px;
-  font-size: var(--font-size-label);
-  font-family: inherit;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
 }
 
-.phone-input-group input:focus {
+.form-group input:focus {
   outline: none;
-  border-color: var(--color-dark-red);
-  box-shadow: 0 0 0 2px rgba(139, 0, 0, 0.2);
+  border-color: #890c1b;
 }
 
 .submit-btn {
-  background-color: var(--color-dark-red);
-  color: var(--color-white);
-  border: none;
+  width: 100%;
   padding: 12px;
-  font-size: var(--font-size-btn);
-  border-radius: 5px;
+  background-color: #890c1b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
-  font-family: inherit;
+  transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
-  background-color: var(--color-hover);
+  background-color: #6a0b14;
+}
+
+.otp-sent-message {
+  color: #28a745;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.change-email-btn {
+  background: none;
+  border: none;
+  color: #890c1b;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 0.9rem;
+}
+
+.resend-otp-container {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
+
+.resend-btn {
+  background: none;
+  border: none;
+  color: #890c1b;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-left: 5px;
+}
+
+.resend-btn:hover:not(:disabled) {
+  color: #6a0b14;
+}
+
+.resend-btn:disabled {
+  color: #aaa;
+  cursor: not-allowed;
 }
 
 .error-message {
-  color: #d93025;
-  font-size: var(--font-size-error);
+  color: #dc3545;
+  margin-top: 20px;
+  font-size: 0.9rem;
   text-align: center;
-  margin-top: -10px;
-  margin-bottom: 10px;
 }
 
 .register-link {
-  font-size: var(--font-size-note);
-  color: var(--color-text-primary);
   margin-top: 20px;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
 }
 
-.register-link a {
-  color: var(--color-dark-red);
-  text-decoration: none;
+.register-link .link-text {
+  color: #890c1b;
+  cursor: pointer;
   font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-.register-link a:hover {
-  text-decoration: underline;
+.register-link .link-text:hover {
+  color: #6a0b14;
 }
 
-/* Responsive Design */
-@media (max-width: 992px) {
-  .login-container {
-    flex-direction: column;
-    width: 90%;
-    min-height: auto;
-    height: auto;
-    margin: 5vh auto;
-  }
-
-  .left-panel, .right-panel {
-    flex: 1 1 100%;
-    padding: 30px;
-  }
-}
-
+/* --- Responsive Design --- */
 @media (max-width: 768px) {
-  .left-panel {
+  .login-box {
+    flex-direction: column;
+    height: auto;
+    max-width: 400px;
+  }
+  
+  .brand-content {
     display: none;
-  }
-
-  .login-container {
-    width: 100%;
-    box-shadow: none;
-    border-radius: 0;
-    margin: 0;
-    min-height: 100vh;
-    justify-content: center;
-  }
-
-  .right-panel {
-    padding: 20px;
   }
 }

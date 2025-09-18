@@ -13,8 +13,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  // This useEffect is fine if its purpose is to redirect a logged-in user
-  // away from the login page, but the comments are contradictory.
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -52,7 +50,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      // Combined error handling for 'User not found'
       if (
         err.response?.data?.message === "User not found." ||
         err.response?.status === 404
@@ -81,7 +78,6 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      // Only one set of calls is needed here
       handleLoginSuccess(token);
       navigate("/");
     } catch (err) {
@@ -117,81 +113,91 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
   };
 
   return (
-    <div className="login-container">
-      <div className="brand-content">
-        <img src={logo} alt="Website Logo" className="logo" />
-        <h1>CHANDERI SILK ELEGANT</h1>
-        <p>Welcome back! Please log in to continue.</p>
-      </div>
-
-      <div className="form-container">
-        <h2>Welcome Back!</h2>
-        <p>Enter your email address to log in.</p>
-        <form className="login-form" onSubmit={handleSendOtp}>
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <div className="email-input-group">
-              <input
-                type="email"
-                id="email"
-                placeholder="youremail@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isOtpSent}
-              />
-            </div>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-box">
+          <div className="brand-content">
+            <img src={logo} alt="Website Logo" className="logo" />
+            <h1>CHANDERI SILK ELEGANT</h1>
+            <p>Welcome back! Please log in to continue.</p>
           </div>
-          {!isOtpSent && (
-            <button type="submit" className="submit-btn">
-              Send OTP
-            </button>
-          )}
-        </form>
-        {isOtpSent && (
-          <>
-            <p className="otp-sent-message">
-              An OTP has been sent to {email}.
-              <button onClick={handleChangeEmail} className="change-email-btn">
-                Change Email
-              </button>
-            </p>
-            <form className="login-form" onSubmit={handleVerifyOtp}>
+
+          <div className="form-container">
+            <h2>Welcome Back!</h2>
+            <p>Enter your email address to log in.</p>
+            <form className="login-form" onSubmit={handleSendOtp}>
               <div className="form-group">
-                <label htmlFor="otp">Enter OTP</label>
-                <input
-                  type="text"
-                  id="otp"
-                  placeholder="Enter 6-digit OTP"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  maxLength="6"
-                  required
-                />
+                <label htmlFor="email">Email Address</label>
+                <div className="email-input-group">
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="youremail@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={isOtpSent}
+                  />
+                </div>
               </div>
-              <button type="submit" className="submit-btn">
-                Verify & Login
-              </button>
+              {!isOtpSent && (
+                <button type="submit" className="submit-btn">
+                  Send OTP
+                </button>
+              )}
             </form>
-            <div className="resend-otp-container">
-              <p>Didn't receive the OTP?</p>
-              <button
-                onClick={handleResendOtp}
-                className="resend-btn"
-                disabled={isResendDisabled}
+            {isOtpSent && (
+              <>
+                <p className="otp-sent-message">
+                  An OTP has been sent to {email}.
+                  <button
+                    onClick={handleChangeEmail}
+                    className="change-email-btn"
+                  >
+                    Change Email
+                  </button>
+                </p>
+                <form className="login-form" onSubmit={handleVerifyOtp}>
+                  <div className="form-group">
+                    <label htmlFor="otp">Enter OTP</label>
+                    <input
+                      type="text"
+                      id="otp"
+                      placeholder="Enter 6-digit OTP"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      maxLength="6"
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="submit-btn">
+                    Verify & Login
+                  </button>
+                </form>
+                <div className="resend-otp-container">
+                  <p>Didn't receive the OTP?</p>
+                  <button
+                    onClick={handleResendOtp}
+                    className="resend-btn"
+                    disabled={isResendDisabled}
+                  >
+                    Resend OTP {isResendDisabled && `in ${resendTimer}s`}
+                  </button>
+                </div>
+              </>
+            )}
+            {error && <p className="error-message">{error}</p>}
+            <p className="register-link">
+              Don't have an account?{" "}
+              <span
+                className="link-text"
+                onClick={() => setModalType("register")}
               >
-                Resend OTP {isResendDisabled && `in ${resendTimer}s`}
-              </button>
-            </div>
-          </>
-        )}
-        {error && <p className="error-message">{error}</p>}
-        <p className="register-link">
-          Don't have an account?{" "}
-          <span className="link-text" onClick={() => setModalType("register")}>
-            Register here
-          </span>
-        </p>
+                Register here
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

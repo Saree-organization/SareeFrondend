@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Add this back for navigation
+import { Link } from "react-router-dom";
 import API from "../api/API";
-import "../css/wishlist.css";
+import "../css/Wishlist.css";
 import { FaSpinner } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
 
 function Wishlist() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { fetchCartCount } = useCart();
 
-  // This function fetches the wishlist items
   const fetchWishlist = async () => {
-    setLoading(true); // Always set loading to true before fetching
+    setLoading(true);
     const authToken = localStorage.getItem("authToken");
 
     if (!authToken) {
@@ -21,9 +22,7 @@ function Wishlist() {
     }
 
     try {
-      // The API interceptor should handle the token, so you don't need
-      // to pass it explicitly in the headers here, unless it's a new token
-      const response = await API.get("/api/wishlist"); // Correct endpoint from HEAD
+      const response = await API.get("/api/wishlist");
       setWishlistItems(response.data);
       setLoading(false);
     } catch (err) {
@@ -37,7 +36,6 @@ function Wishlist() {
     }
   };
 
-  // This function handles the removal of an item
   const handleRemoveFromWishlist = async (sareeId) => {
     try {
       await API.delete(`/api/wishlist/remove/${sareeId}`);
@@ -47,6 +45,23 @@ function Wishlist() {
       alert("Item removed from wishlist!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to remove item.");
+    }
+  };
+
+  const handleMoveToCart = async (item) => {
+    try {
+      // You may need to adjust the payload based on your backend's API
+      await API.post("/api/cart/add", {
+        variantId: item.saree.variants[0].id,
+        quantity: 1, // Default to a quantity of 1 when moving from wishlist
+      });
+
+      // If successful, remove the item from the wishlist
+      await handleRemoveFromWishlist(item.saree.id);
+      fetchCartCount(); // Update the cart count in the header
+      alert("Item has been moved to your cart!");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to move item to cart.");
     }
   };
 
@@ -82,6 +97,9 @@ function Wishlist() {
       <div className="wishlist-container empty-wishlist">
         <h1>Your Wishlist is Empty</h1>
         <p>Start adding items you love to your wishlist!</p>
+        <Link to="/all-saree" className="continue-shopping-btn">
+          Continue Shopping
+        </Link>
       </div>
     );
   }
@@ -89,32 +107,55 @@ function Wishlist() {
   return (
     <div className="wishlist-container">
       <h1>My Wishlist</h1>
-      <div className="wishlist-items-grid">
-        {wishlistItems.map((item) => (
-          <div key={item.id} className="wishlist-item">
-            <Link to={`/saree/${item.saree.id}`}>
-              <img
-                src={item.saree.variants[0]?.images[0]} // Corrected to use the HEAD version's image source logic
-                alt={item.saree.design}
-                className="item-image"
-              />
-            </Link>
-            <div className="item-details">
-              <h3>
-                <Link to={`/saree/${item.saree.id}`}>{item.saree.design}</Link>
-              </h3>
-              <p>
-                <strong>Price:</strong> ₹{item.saree.variants[0]?.salesPrice}
-              </p>
-            </div>
-            <button
-              className="remove-btn"
-              onClick={() => handleRemoveFromWishlist(item.saree.id)}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
+      <div className="wishlist-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {wishlistItems.map((item) => (
+              <tr key={item.id}>
+                <td data-label="Product">
+                  <div className="product-info">
+                    <Link to={`/sarees/${item.saree.id}`}>
+                      <img
+                        src={item.saree.variants[0]?.images[0]}
+                        alt={item.saree.design}
+                        className="item-image"
+                      />
+                    </Link>
+                    <h3>
+                      <Link to={`/sarees/${item.saree.id}`}>
+                        {item.saree.design}
+                      </Link>
+                    </h3>
+                  </div>
+                </td>
+                <td data-label="Price">
+                  ₹{item.saree.variants[0]?.salesPrice}
+                </td>
+                <td data-label="Actions" className="action-buttons">
+                  <button
+                    className="move-to-cart-btn"
+                    onClick={() => handleMoveToCart(item)}
+                  >
+                    Move to Cart
+                  </button>
+                  <button
+                    className="remove-btn"
+                    onClick={() => handleRemoveFromWishlist(item.saree.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

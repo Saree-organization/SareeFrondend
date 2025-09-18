@@ -6,7 +6,9 @@ import {
   FaHeart,
   FaBars,
   FaTimes,
+  FaShoppingCart,
 } from "react-icons/fa";
+
 import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
 import { Link } from "react-router-dom";
@@ -129,7 +131,7 @@ function Navbar() {
           </Link>
           {/* Cart icon with count */}
           <Link to="/cart" className="cart-icon">
-            <FaShoppingBag className="icon" />
+            <FaShoppingCart className="icon" />
             {isLoggedIn && cartCount > 0 && (
               <span className="cart-count">{cartCount}</span>
             )}
