@@ -1,5 +1,3 @@
-// File: src/pages/cart-page/Cart.js
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../../api/API";
@@ -24,11 +22,9 @@ function Cart() {
 
         const response = await API.get("/api/cart");
 
-        // Check if the response data is an array before setting the state
         if (Array.isArray(response.data)) {
           setCartItems(response.data);
         } else {
-          // If the data isn't an array, handle the error gracefully
           console.error("API response is not an array:", response.data);
           setCartItems([]);
           setError("Failed to fetch cart data. Please try again.");
@@ -44,6 +40,27 @@ function Cart() {
     fetchCart();
   }, [fetchCartCount]);
 
+  const handleQuantityChange = (cartItemId, newQuantity) => {
+    if (newQuantity < 1) newQuantity = 1; // Prevent quantity from going below 1
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === cartItemId ? { ...item, quantity: newQuantity } : item
+      )
+    );
+  };
+
+  const handleUpdateQuantity = async (cartItemId, newQuantity) => {
+    try {
+      await API.patch(`/api/cart/update-quantity/${cartItemId}`, {
+        quantity: newQuantity,
+      });
+      fetchCartCount();
+      alert("Quantity updated successfully!");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update quantity.");
+    }
+  };
+
   const handleRemoveItem = async (cartItemId) => {
     try {
       await API.delete(`/api/cart/remove/${cartItemId}`);
@@ -55,7 +72,7 @@ function Cart() {
     }
   };
 
-  const calculateTotal = () => {
+  const calculateCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.variant.salesPrice * item.quantity,
       0
@@ -77,32 +94,98 @@ function Cart() {
   if (cartItems.length === 0)
     return (
       <div className="cart-page">
-        <p>Your cart is empty!</p>
+        <p>
+          Your cart is empty! <Link to="/">Start shopping</Link>.
+        </p>
       </div>
     );
 
   return (
     <div className="cart-page">
       <h2>My Shopping Cart 🛍️</h2>
-      <div className="cart-list">
-        {cartItems.map((item) => (
-          <div key={item.id} className="cart-item">
-            <img src={item.variant?.images?.[0]} alt={item.variant?.name} />
-            <div className="item-details">
-              <h4>{item.variant?.name}</h4>
-              <p>Color: {item.variant?.color}</p>
-              <p>Price: Rs. {item.variant?.salesPrice}</p>
-              <p>Quantity: {item.quantity}</p>
-            </div>
-            <div className="item-actions">
-              <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
-            </div>
+      <div className="cart-container">
+        <div className="cart-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Color</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cartItems.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <div className="product-info">
+                      <img
+                        src={item.variant?.images?.[0]}
+                        alt={item.variant?.name}
+                        className="product-image"
+                      />
+                      <span>{item.variant?.name}</span>
+                    </div>
+                  </td>
+                  <td>{item.variant?.color}</td>
+                  <td>Rs. {item.variant?.salesPrice}</td>
+                  <td className="quantity-controls">
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity - 1)
+                      }
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(item.id, parseInt(e.target.value))
+                      }
+                      min="1"
+                    />
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(item.id, item.quantity + 1)
+                      }
+                    >
+                      +
+                    </button>
+                    
+                  </td>
+                  <td>Rs. {item.variant?.salesPrice * item.quantity}</td>
+                  <td>
+                    <button
+                      onClick={() => handleRemoveItem(item.id)}
+                      className="remove-btn"
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="cart-summary">
+          <h3>Order Summary</h3>
+          <div className="summary-item">
+            <span>Subtotal:</span>
+            <span>Rs. {calculateCartTotal()}</span>
           </div>
-        ))}
-      </div>
-      <div className="cart-summary">
-        <h3>Total: Rs. {calculateTotal()}</h3>
-        <button className="checkout-btn">Checkout</button>
+          <div className="summary-item">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          <div className="summary-total">
+            <span>Total:</span>
+            <span>Rs. {calculateCartTotal()}</span>
+          </div>
+          <button className="checkout-btn">Proceed to Checkout</button>
+        </div>
       </div>
     </div>
   );
