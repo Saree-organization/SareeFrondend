@@ -12,15 +12,14 @@ import { IoBagOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 
 function SareeDetail() {
-  const { id } = useParams();
+  const { id,variantId } = useParams();
   const [saree, setSaree] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
-
-  // Use the custom hooks to get the context functions
+  console.log(variantId)
   const { fetchWishlistCount } = useWishlist();
   const { fetchCartCount } = useCart();
 
@@ -29,7 +28,18 @@ function SareeDetail() {
       window.scrollTo(0, 0);
       try {
         const sareeRes = await API.get(`/sarees/${id}`);
-        setSaree(sareeRes.data);
+        const sareeData = sareeRes.data;
+        setSaree(sareeData);
+
+        
+        if (variantId) {
+          const index = sareeData.variants.findIndex(
+            (v) => v.id === Number(variantId)
+          );
+          if (index !== -1) {
+            setSelectedVariantIndex(index);
+          }
+        }
 
         const token = localStorage.getItem("authToken");
         if (token) {
@@ -37,6 +47,7 @@ function SareeDetail() {
           setIsWishlisted(wishlistRes.data.isInWishlist);
         }
       } catch (err) {
+        console.log(err);
         setError("Failed to load saree details");
       } finally {
         setLoading(false);
@@ -44,7 +55,7 @@ function SareeDetail() {
     };
 
     fetchSareeDetailsAndWishlistStatus();
-  }, [id]);
+  }, [id, variantId]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -142,7 +153,7 @@ function SareeDetail() {
               {(
                 currentVariant.salesPrice -
                 (currentVariant.salesPrice * currentVariant.discountPercent) /
-                  100
+                100
               ).toFixed(2)}
             </span>
             <span className="tax-info"> (Inclusive of all taxes)</span>
@@ -172,15 +183,17 @@ function SareeDetail() {
           <p>
             <strong>Color:</strong> {currentVariant.color}
           </p>
+          <p>
+            <strong>Design:</strong> {saree.design}
+          </p>
 
           <h3>Colors</h3>
           <div className="variant-options">
             {saree.variants.map((v, i) => (
               <button
                 key={i}
-                className={`variant-btn ${
-                  i === selectedVariantIndex ? "active" : ""
-                }`}
+                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""
+                  }`}
                 onClick={() => {
                   setSelectedVariantIndex(i);
                   setSelectedMediaIndex(0);
@@ -215,15 +228,14 @@ function SareeDetail() {
       </div>
 
       <div className="related-sarees">
-        <RelatedSaree />
+        {/* <RelatedSaree /> */}
       </div>
 
       <div className="related-sarees">
-        <SimilarSarees />
+        {/* <SimilarSarees /> */}
       </div>
     </>
   );
 }
 
 export default SareeDetail;
-
