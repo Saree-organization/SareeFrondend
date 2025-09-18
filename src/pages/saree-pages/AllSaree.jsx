@@ -52,7 +52,6 @@ function AllSaree() {
         .then((res) => setSarees(res.data))
         .catch((err) => console.error(err));
     }
-
     // variant filters
     if (filters.name || filters.color || filters.minPrice || filters.maxPrice || filters.discountPercent) {
       API.get("/sarees/variants/filter", {
@@ -64,10 +63,11 @@ function AllSaree() {
           discountPercent: filters.discountPercent || null
         }
       })
-        .then((res) => setSarees(res.data))
-        .catch((err) => console.error(err));
+      .then((res) => setSarees(res.data))
+      .catch((err) => console.error(err));
     }
   }, [filters]);
+  console.log(sarees)
 
   return (
     <div>
@@ -81,19 +81,7 @@ function AllSaree() {
           <option value="Cotton">Cotton</option>
         </select>
 
-        <input
-          type="text"
-          placeholder="Design"
-          value={filters.design}
-          onChange={(e) => setFilters({ ...filters, design: e.target.value })}
-        />
 
-        <input
-          type="text"
-          placeholder="Name"
-          value={filters.name}
-          onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-        />
 
         <input
           type="text"
@@ -114,20 +102,6 @@ function AllSaree() {
           placeholder="Max Price"
           value={filters.maxPrice}
           onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-        />
-
-        <input
-          type="number"
-          placeholder="Discount %"
-          value={filters.discountPercent}
-          onChange={(e) => setFilters({ ...filters, discountPercent: e.target.value })}
-        />
-
-        <input
-          type="number"
-          placeholder="Weight"
-          value={filters.weight}
-          onChange={(e) => setFilters({ ...filters, weight: e.target.value })}
         />
 
         <input

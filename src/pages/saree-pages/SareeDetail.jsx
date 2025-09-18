@@ -66,6 +66,7 @@ function SareeDetail() {
     ...(currentVariant.images || []),
     currentVariant.video,
   ].filter(Boolean);
+  console.log(currentVariant)
 
   const handleWishlistToggle = async () => {
     const token = localStorage.getItem("authToken");
@@ -142,19 +143,14 @@ function SareeDetail() {
           </h1>
 
           <div className="saree-price-info">
-            <span className="saree-sales-price-after-discount">
+            <span className="saree-sales-price">
               Rs {currentVariant.salesPrice}
             </span>
             <span className="saree-discount">
               {currentVariant.discountPercent}% OFF
             </span>
-            <span className="saree-sales-price">
-              Rs{" "}
-              {(
-                currentVariant.salesPrice -
-                (currentVariant.salesPrice * currentVariant.discountPercent) /
-                100
-              ).toFixed(2)}
+            <span className="saree-sales-price-after-discount">
+              Rs{" "}{(currentVariant.priceAfterDiscount)}
             </span>
             <span className="tax-info"> (Inclusive of all taxes)</span>
           </div>

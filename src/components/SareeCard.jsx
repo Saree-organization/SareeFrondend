@@ -54,8 +54,7 @@ function SareeCard({ saree, variantId }) {   // <– accept variantId also
         </span>
         <span className="sales-price-after-discount">
           Rs{" "}
-          {currentVariant?.salesPrice -
-            currentVariant?.salesPrice * (10 / 100)}
+          {currentVariant?.priceAfterDiscount}
         </span>
       </div>
 
