@@ -26,7 +26,7 @@ import FAQ from "./pages/footer-pages/FAQ";
 import PrivacyPolicy from "./pages/footer-pages/PrivacyPolicy";
 import ReturnedAndExchangePolicy from "./pages/footer-pages/ReturnedAndExchangePolicy";
 import TermsOfService from "./pages/footer-pages/TermsOfService";
-
+import TrackOrder from "../src/components/TrackOrder";
 const App = () => {
   return (
     <div className="App">
@@ -42,7 +42,10 @@ const App = () => {
                 <Route path="login" element={<Login />} />
                 <Route path="/all-saree" element={<AllSaree />} />
                 <Route path="/sarees/:id" element={<SareeDetail />} />
-                <Route path="/sarees/:id/:variantId" element={<SareeDetail />} />
+                <Route
+                  path="/sarees/:id/:variantId"
+                  element={<SareeDetail />}
+                />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/cart" element={<Cart />} />
                 {/* Footer Page Routes */}
@@ -50,6 +53,8 @@ const App = () => {
                 <Route path="shop" element={<AllSaree />} />
                 <Route path="contact" element={<Contact />} />
                 <Route path="faq" element={<FAQ />} />
+                <Route path="/track-order" element={<TrackOrder />} />
+
                 <Route
                   path="delivery-shipping-policy"
                   element={<DeliveryPolicy />}
@@ -65,7 +70,7 @@ const App = () => {
                 />
                 {/* Protected Routes */}
                 {/* <Route element={<ProtectedRoute />}> */}
-                  <Route path="sarees/add" element={<AddSaree />} />
+                <Route path="sarees/add" element={<AddSaree />} />
                 {/* </Route> */}
               </Route>
             </Routes>

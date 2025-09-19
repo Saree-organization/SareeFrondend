@@ -183,7 +183,7 @@ function Navbar() {
         <Link to="/contact" onClick={handleLinkClick}>
           Contact us
         </Link>
-        <Link to="/track" onClick={handleLinkClick}>
+        <Link to="/track-order" onClick={handleLinkClick}>
           Track order
         </Link>
         <Link to="/reviews" onClick={handleLinkClick}>
