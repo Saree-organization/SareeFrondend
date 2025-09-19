@@ -27,8 +27,13 @@ function AllSaree() {
 
   // run filters only when button clicked
   const applyFilters = () => {
-    // if no filter selected → load all
-    if (!filters.fabrics && !filters.category && !filters.color && !filters.minPrice && !filters.maxPrice ) {
+    if (
+      !filters.fabrics &&
+      !filters.category &&
+      !filters.color &&
+      !filters.minPrice &&
+      !filters.maxPrice
+    ) {
       loadAllSarees();
       return;
     }
@@ -45,11 +50,11 @@ function AllSaree() {
       .then((res) => setSarees(res.data))
       .catch((err) => console.error(err));
   };
-  console.log(sarees)
 
   return (
     <div>
       <div className="filter-container">
+        {/* fabrics */}
         <select
           value={filters.fabrics}
           onChange={(e) => setFilters({ ...filters, fabrics: e.target.value })}
@@ -57,47 +62,60 @@ function AllSaree() {
           <option value="">All Fabrics</option>
           <option value="Silk">Silk</option>
           <option value="Cotton">Cotton</option>
+          <option value="Linen">Linen</option>
         </select>
 
-        <input
-          type="text"
-          placeholder="Category"
+        {/* category */}
+        <select
           value={filters.category}
           onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-        />
+        >
+          <option value="">All Categories</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Party">Party</option>
+          <option value="Casual">Casual</option>
+        </select>
 
-        <input
-          type="text"
-          placeholder="Color"
+        {/* color */}
+        <select
           value={filters.color}
           onChange={(e) => setFilters({ ...filters, color: e.target.value })}
-        />
+        >
+          <option value="">All Colors</option>
+          <option value="Red">Red</option>
+          <option value="Green">Green</option>
+          <option value="Blue">Blue</option>
+          <option value="Yellow">Yellow</option>
+        </select>
 
-        <input
-          type="number"
-          placeholder="Min Price"
+        {/* min price */}
+        <select
           value={filters.minPrice}
-          onChange={(e) =>
-            setFilters({ ...filters, minPrice: e.target.value })
-          }
-        />
+          onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
+        >
+          <option value="">Min Price</option>
+          <option value="500">500</option>
+          <option value="1000">1000</option>
+          <option value="2000">2000</option>
+        </select>
 
-        <input
-          type="number"
-          placeholder="Max Price"
+        {/* max price */}
+        <select
           value={filters.maxPrice}
-          onChange={(e) =>
-            setFilters({ ...filters, maxPrice: e.target.value })
-          }
-        />
+          onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
+        >
+          <option value="">Max Price</option>
+          <option value="5000">5000</option>
+          <option value="10000">10000</option>
+          <option value="20000">20000</option>
+        </select>
 
-        {/* new filter button */}
         <button onClick={applyFilters}>Apply Filters</button>
       </div>
 
       <div className="saree-container">
         {sarees.length > 0 ? (
-          sarees.map((s) => <SareeCard key={s.id} saree={s} variantId={s.variants.id} />)
+          sarees.map((s) => <SareeCard key={s.id} saree={s} />)
         ) : (
           <p>No sarees found.</p>
         )}
