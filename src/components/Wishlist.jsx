@@ -136,7 +136,7 @@ function Wishlist() {
                   </div>
                 </td>
                 <td data-label="Price">
-                  ₹{item.saree.variants[0]?.salesPrice}
+                  ₹{item.saree.variants[0]?.priceAfterDiscount}
                 </td>
                 <td data-label="Actions" className="action-buttons">
                   <button
