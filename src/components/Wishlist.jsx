@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/API";
-import "../css/Wishlist.css";
+import "../css/wishlist.css";
 import { FaSpinner } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 
