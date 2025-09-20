@@ -27,6 +27,9 @@ import PrivacyPolicy from "./pages/footer-pages/PrivacyPolicy";
 import ReturnedAndExchangePolicy from "./pages/footer-pages/ReturnedAndExchangePolicy";
 import TermsOfService from "./pages/footer-pages/TermsOfService";
 import TrackOrder from "../src/components/TrackOrder";
+import KatanSilk from "./pages/saree-pages/KatanSilk";
+import TissueSilk from "./pages/saree-pages/TissueSilk";
+import CelebritySaree from "./pages/saree-pages/CelebritySaree";  
 const App = () => {
   return (
     <div className="App">
@@ -54,6 +57,9 @@ const App = () => {
                 <Route path="contact" element={<Contact />} />
                 <Route path="faq" element={<FAQ />} />
                 <Route path="/track-order" element={<TrackOrder />} />
+                <Route path="/katan-silk" element={<KatanSilk />} />
+                <Route path="/tissue-silk" element={<TissueSilk />} />
+                <Route path="/celebrity" element={<CelebritySaree />} />
 
                 <Route
                   path="delivery-shipping-policy"
@@ -71,6 +77,7 @@ const App = () => {
                 {/* Protected Routes */}
                 {/* <Route element={<ProtectedRoute />}> */}
                 <Route path="sarees/add" element={<AddSaree />} />
+
                 {/* </Route> */}
               </Route>
             </Routes>
