@@ -15,7 +15,7 @@ function TrackOrder() {
         const token = localStorage.getItem("authToken");
 
         // Debugging: check if token is being retrieved
-        console.log("Auth token:", token);
+        // console.log("Auth token:", token);
 
         if (!token) {
           setError("Please log in to view your orders.");
