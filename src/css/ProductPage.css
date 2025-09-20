@@ -1,0 +1,18 @@
+.product-page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.page-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+}

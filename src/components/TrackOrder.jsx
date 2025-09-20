@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/API";
-import "../css/TrackOrder.css";
 import { Link, useNavigate } from "react-router-dom";
+// You'll need to import Bootstrap's CSS in your main App.js or index.js
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import "../css/TrackOrder.css"; // Keep this for any custom styles
 
 function TrackOrder() {
   const [orders, setOrders] = useState([]);
@@ -13,9 +15,6 @@ function TrackOrder() {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("authToken");
-
-        // Debugging: check if token is being retrieved
-        // console.log("Auth token:", token);
 
         if (!token) {
           setError("Please log in to view your orders.");
@@ -30,7 +29,12 @@ function TrackOrder() {
         });
 
         if (Array.isArray(response.data)) {
-          setOrders(response.data);
+          // Add a default "Pending" status if the API doesn't provide one
+          const updatedOrders = response.data.map((order) => ({
+            ...order,
+            status: order.status || "Pending",
+          }));
+          setOrders(updatedOrders);
         } else {
           setError("Failed to fetch order data.");
           setOrders([]);
@@ -39,11 +43,8 @@ function TrackOrder() {
         console.error("API call failed:", err);
 
         if (err.response && err.response.status === 401) {
-          // Token might be invalid or expired
           setError("Session expired. Please log in again.");
           localStorage.removeItem("authToken");
-
-          // Optional: redirect to login
           setTimeout(() => {
             navigate("/login");
           }, 2000);
@@ -60,7 +61,7 @@ function TrackOrder() {
 
   if (loading) {
     return (
-      <div className="track-order-page">
+      <div className="container mt-5 text-center">
         <p>Loading your orders...</p>
       </div>
     );
@@ -68,47 +69,105 @@ function TrackOrder() {
 
   if (error) {
     return (
-      <div className="track-order-page">
-        <p className="error-message">{error}</p>
+      <div className="container mt-5 text-center">
+        <p className="alert alert-danger">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="track-order-page">
-      <h2>My Orders</h2>
+    <div className="container mt-5 track-order-page">
+      <h2 className="mb-4 text-center">My Orders</h2>
       {orders.length === 0 ? (
-        <p>
-          You have not placed any orders yet. <Link to="/">Start shopping</Link>
-          .
-        </p>
+        <div className="text-center">
+          <p className="alert alert-info">
+            You have not placed any orders yet.{" "}
+            <Link to="/">Start shopping</Link>.
+          </p>
+        </div>
       ) : (
         <div className="orders-list">
           {orders.map((order) => (
-            <div key={order.id} className="order-card">
-              <div className="order-header">
-                <h3>Order ID: {order.razorpayOrderId || "N/A"}</h3>
-                <span className={`order-status ${order.status?.toLowerCase()}`}>
-                  {order.status}
-                </span>
+            <div key={order.razorpayOrderId} className="card mb-4">
+              <div className="card-header bg-light">
+                <div className="d-flex justify-content-between align-items-center">
+                  <h5 className="mb-0">
+                    Order ID: {order.razorpayOrderId || "N/A"}
+                  </h5>
+                  <span
+                    className={`badge bg-${
+                      order.status === "Success"
+                        ? "success"
+                        : order.status === "Pending"
+                        ? "warning"
+                        : "danger"
+                    } fs-6`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+                <p className="card-text text-muted mb-0">
+                  Total Amount: Rs. {order.totalAmount}
+                </p>
+                <p className="card-text text-muted">
+                  Date: {new Date(order.createdAt).toLocaleDateString()}
+                </p>
               </div>
-              <p>Total Amount: Rs. {order.totalAmount}</p>
-              <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-
-              <div className="order-items">
-                <h4>Items:</h4>
-                {order.items && order.items.length > 0 ? (
-                  <ul>
-                    {order.items.map((item) => (
-                      <li key={item.id}>
-                        {item.variant?.name || "Unnamed Item"} - Qty:{" "}
-                        {item.quantity} - Price: Rs. {item.price}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No items found for this order.</p>
-                )}
+              <div className="card-body p-0">
+                <div className="table-responsive">
+                  <table className="table table-striped table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col" style={{ width: "10%" }}>
+                          #
+                        </th>
+                        <th scope="col" style={{ width: "15%" }}>
+                          Image
+                        </th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col" className="text-center">
+                          Quantity
+                        </th>
+                        <th scope="col" className="text-end">
+                          Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {order.items && order.items.length > 0 ? (
+                        order.items.map((item, index) => (
+                          <tr key={index}>
+                            <th scope="row">{index + 1}</th>
+                            <td>
+                              <img
+                                src={
+                                  item.imageUrl ||
+                                  "https://via.placeholder.com/50"
+                                } // Corrected to use imageUrl
+                                alt={item.productName || "Product"} // Corrected to use productName
+                                className="img-thumbnail"
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </td>
+                            <td>{item.productName || "Unnamed Item"}</td>
+                            <td className="text-center">{item.quantity}</td>
+                            <td className="text-end">Rs. {(item.quantity*item.price)}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="text-center text-muted">
+                            No items found for this order.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           ))}

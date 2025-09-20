@@ -88,6 +88,7 @@ function Cart() {
       }
 
      const token = localStorage.getItem("authToken");
+     console.log("Auth Token:", token); // Debugging line
 
      const { data } = await API.post(
        "/api/payment/create-order",
