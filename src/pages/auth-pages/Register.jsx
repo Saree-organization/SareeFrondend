@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import API from "../../api/API";
 import logo from "../../assets/images/image-1.png";
 import "../../css/Register.css";
+import { Link, useNavigate } from "react-router-dom";
 
-const Register = ({ setModalType }) => {
+// The `setModalType` prop is removed
+const Register = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -40,12 +43,12 @@ const Register = ({ setModalType }) => {
       setResendTimer(60);
       setIsResendDisabled(true);
     } catch (err) {
-      // Use the more robust 409 status code check for email conflicts
       if (err.response?.status === 409) {
         setError(
           "An account with this email already exists. Please log in instead."
         );
-        setModalType("login");
+        // Redirect to login page instead of setting modal type
+        navigate("/login");
       } else {
         setError(
           err.response?.data?.message || "Failed to send OTP. Please try again."
@@ -54,29 +57,25 @@ const Register = ({ setModalType }) => {
       console.error("API Error:", err);
     }
   };
-const handleVerifyOtp = async (e) => {
-  e.preventDefault();
-  setError("");
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  try {
-    await API.post(
-      "/api/auth/verify-otp-register",
-      { email: email, otp: otp },
-      { headers: {} } // Removing Authorization header
-    );
-    alert("Registration Successful! Please log in.");
-    if (setModalType) {
-      setModalType("login");
+    try {
+      await API.post("/api/auth/verify-otp-register", {
+        email: email,
+        otp: otp,
+      });
+      alert("Registration Successful! Please log in.");
+      // Navigate to login page after successful registration
+      navigate("/login");
+    } catch (err) {
+      console.error("Error during OTP verification:", err.response || err);
+      setError(
+        err.response?.data?.message || "An error occurred. Please try again."
+      );
     }
-  } catch (err) {
-    // Log the response details for debugging
-    console.error("Error during OTP verification:", err.response || err);
-    setError(
-      err.response?.data?.message || "An error occurred. Please try again."
-    );
-  }
-};
-
+  };
 
   const handleChangeEmail = () => {
     setIsOtpSent(false);
@@ -178,9 +177,9 @@ const handleVerifyOtp = async (e) => {
         </p>
         <p className="login-link">
           Already have an account?{" "}
-          <span className="link-text" onClick={() => setModalType("login")}>
+          <Link to="/login" className="link-text">
             Log in
-          </span>
+          </Link>
         </p>
       </div>
     </div>

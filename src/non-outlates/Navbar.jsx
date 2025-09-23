@@ -12,15 +12,11 @@ import {
 import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
 import { Link } from "react-router-dom";
-import Login from "../pages/auth-pages/Login";
-import Register from "../pages/auth-pages/Register";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Use the contexts to get and set counts
@@ -48,14 +44,11 @@ function Navbar() {
     // Event listeners for real-time updates
     window.addEventListener("storage", checkAuthStatusAndFetchCounts);
     window.addEventListener("authChange", checkAuthStatusAndFetchCounts);
-
-    // **YEH NAYE CHANGES HAIN: Listen for wishlist updates**
     window.addEventListener("wishlistUpdate", checkAuthStatusAndFetchCounts);
 
     return () => {
       window.removeEventListener("storage", checkAuthStatusAndFetchCounts);
       window.removeEventListener("authChange", checkAuthStatusAndFetchCounts);
-      // **Clean up the new event listener**
       window.removeEventListener(
         "wishlistUpdate",
         checkAuthStatusAndFetchCounts
@@ -65,29 +58,6 @@ function Navbar() {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
-
-  const openModal = (type) => {
-    setIsModalOpen(true);
-    setModalType(type);
-    setMenuOpen(false);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalType("");
-  };
-
-  const handleLoginSuccess = (token) => {
-    if (token) {
-      localStorage.setItem("authToken", token);
-      closeModal();
-      // Dispatch custom event to trigger Navbar update
-      window.dispatchEvent(new Event("authChange"));
-      alert("Login Successful! 🎉");
-    } else {
-      alert("Login failed. No token received.");
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -123,12 +93,9 @@ function Navbar() {
               <div className="logout-text">Logout</div>
             </div>
           ) : (
-            <div
-              className="user-icon-wrapper"
-              onClick={() => openModal("login")}
-            >
+            <Link to="/login" className="user-icon-wrapper">
               <FaUser className="icon" />
-            </div>
+            </Link>
           )}
           {/* Wishlist icon with count */}
           <Link to="/wishlist" className="wishlist-icon">
@@ -163,15 +130,9 @@ function Navbar() {
             <FaUser /> Logout
           </div>
         ) : (
-          <div
-            className="mobile-auth-link"
-            onClick={(e) => {
-              e.stopPropagation();
-              openModal("login");
-            }}
-          >
+          <Link to="/login" className="mobile-auth-link">
             <FaUser /> Login / Register
-          </div>
+          </Link>
         )}
         <Link to="/" onClick={handleLinkClick}>
           Home
@@ -201,23 +162,6 @@ function Navbar() {
           Tags
         </Link>
       </div>
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={closeModal}>
-              &times;
-            </button>
-            {modalType === "login" ? (
-              <Login
-                setModalType={setModalType}
-                handleLoginSuccess={handleLoginSuccess}
-              />
-            ) : (
-              <Register setModalType={setModalType} />
-            )}
-          </div>
-        </div>
-      )}
     </header>
   );
 }
