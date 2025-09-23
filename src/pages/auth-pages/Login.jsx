@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
-const Login = ({ setModalType, handleLoginSuccess }) => {
+// Only `handleLoginSuccess` is needed now.
+const Login = ({ handleLoginSuccess }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -54,8 +55,9 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
         err.response?.data?.message === "User not found." ||
         err.response?.status === 404
       ) {
+        // Redirect to register page instead of setting modal type
         setError("No account found with this email. Please register first.");
-        setModalType("register");
+        navigate("/register");
       } else {
         setError(
           err.response?.data?.message || "Failed to send OTP. Please try again."
@@ -189,12 +191,9 @@ const Login = ({ setModalType, handleLoginSuccess }) => {
             {error && <p className="error-message">{error}</p>}
             <p className="register-link">
               Don't have an account?{" "}
-              <span
-                className="link-text"
-                onClick={() => setModalType("register")}
-              >
+              <Link to="/register" className="link-text">
                 Register here
-              </span>
+              </Link>
             </p>
           </div>
         </div>
