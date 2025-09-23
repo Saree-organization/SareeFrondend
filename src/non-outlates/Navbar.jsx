@@ -49,9 +49,17 @@ function Navbar() {
     window.addEventListener("storage", checkAuthStatusAndFetchCounts);
     window.addEventListener("authChange", checkAuthStatusAndFetchCounts);
 
+    // **YEH NAYE CHANGES HAIN: Listen for wishlist updates**
+    window.addEventListener("wishlistUpdate", checkAuthStatusAndFetchCounts);
+
     return () => {
       window.removeEventListener("storage", checkAuthStatusAndFetchCounts);
       window.removeEventListener("authChange", checkAuthStatusAndFetchCounts);
+      // **Clean up the new event listener**
+      window.removeEventListener(
+        "wishlistUpdate",
+        checkAuthStatusAndFetchCounts
+      );
     };
   }, [fetchWishlistCount, fetchCartCount, setWishlistCount, setCartCount]);
 

@@ -39,9 +39,8 @@ function Wishlist() {
   const handleRemoveFromWishlist = async (sareeId) => {
     try {
       await API.delete(`/api/wishlist/remove/${sareeId}`);
-      setWishlistItems(
-        wishlistItems.filter((item) => item.saree.id !== sareeId)
-      );
+      // **YEH NAYA CHANGE HAI**
+      window.dispatchEvent(new Event("wishlistUpdate"));
       alert("Item removed from wishlist!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to remove item.");
@@ -64,6 +63,7 @@ function Wishlist() {
       alert(err.response?.data?.message || "Failed to move item to cart.");
     }
   };
+  // ... (rest of the file)
 
   useEffect(() => {
     fetchWishlist();
@@ -72,12 +72,21 @@ function Wishlist() {
       fetchWishlist();
     };
 
+    // **YEH NAYA CHANGE HAI**
+    const handleWishlistUpdate = () => {
+      fetchWishlist();
+    };
+
     window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("wishlistUpdate", handleWishlistUpdate);
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("wishlistUpdate", handleWishlistUpdate);
     };
   }, []);
+
+  // ... (rest of the file)
 
   if (loading) {
     return (

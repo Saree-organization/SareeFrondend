@@ -15,6 +15,7 @@ function TrackOrder() {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("authToken");
+        console.log(token);
 
         if (!token) {
           setError("Please log in to view your orders.");
