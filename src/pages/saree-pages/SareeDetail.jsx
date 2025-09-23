@@ -12,7 +12,7 @@ import { IoBagOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 
 function SareeDetail() {
-  const { id,variantId } = useParams();
+  const { id, variantId } = useParams();
   const [saree, setSaree] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -31,7 +31,6 @@ function SareeDetail() {
         const sareeData = sareeRes.data;
         setSaree(sareeData);
 
-        
         if (variantId) {
           const index = sareeData.variants.findIndex(
             (v) => v.id === Number(variantId)
@@ -67,6 +66,7 @@ function SareeDetail() {
     currentVariant.video,
   ].filter(Boolean);
 
+  // ... (rest of the file)
 
   const handleWishlistToggle = async () => {
     const token = localStorage.getItem("authToken");
@@ -85,12 +85,19 @@ function SareeDetail() {
         setIsWishlisted(true);
         alert("Added to wishlist!");
       }
+
+      // **YEH NAYA KOD HAI**
+      // Dispatch the custom event to notify other components to update
+      window.dispatchEvent(new Event("wishlistUpdate"));
+
+      // You can keep or remove this line, but the event dispatch is more robust
       fetchWishlistCount();
     } catch (err) {
       alert(err.response?.data?.message || "An error occurred.");
     }
   };
 
+  
   const handleAddToCart = async () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -150,7 +157,7 @@ function SareeDetail() {
               {currentVariant.discountPercent}% OFF
             </span>
             <span className="saree-sales-price-after-discount">
-              Rs{" "}{(currentVariant.priceAfterDiscount)}
+              Rs {currentVariant.priceAfterDiscount}
             </span>
             <span className="tax-info"> (Inclusive of all taxes)</span>
           </div>
@@ -188,8 +195,9 @@ function SareeDetail() {
             {saree.variants.map((v, i) => (
               <button
                 key={i}
-                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""
-                  }`}
+                className={`variant-btn ${
+                  i === selectedVariantIndex ? "active" : ""
+                }`}
                 onClick={() => {
                   setSelectedVariantIndex(i);
                   setSelectedMediaIndex(0);
@@ -223,13 +231,9 @@ function SareeDetail() {
         <Reviews sareeId={id} />
       </div>
 
-      <div className="related-sarees">
-        {/* <RelatedSaree /> */}
-      </div>
+      <div className="related-sarees">{/* <RelatedSaree /> */}</div>
 
-      <div className="related-sarees">
-        {/* <SimilarSarees /> */}
-      </div>
+      <div className="related-sarees">{/* <SimilarSarees /> */}</div>
     </>
   );
 }
