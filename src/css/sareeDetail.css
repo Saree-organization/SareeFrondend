@@ -196,3 +196,51 @@
   background-color: rgb(182 158 94);
   color: rgb(255, 255, 255);
 }
+
+
+
+/*  FOR ADMIN VIEW ONLY */
+
+
+/* Input and textarea styling for admin edit */
+.saree-info input[type="text"],
+.saree-info input[type="number"],
+.saree-info textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.saree-info input:focus,
+.saree-info textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.saree-info textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Button styling */
+.add-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+}
