@@ -1,0 +1,13 @@
+
+.admin-layout {
+  background-color: rebeccapurple;
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f6f7fb;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 20px;
+}

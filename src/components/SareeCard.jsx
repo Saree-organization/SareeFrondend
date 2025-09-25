@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import API from "../api/API"
 import "../css/sareeCard.css";
 
-function SareeCard({ saree, variantId }) {   // <– accept variantId also
+function SareeCard({ saree, variantId, callBy }) {   // <– accept variantId also
   const navigate = useNavigate();
   // find which variant to show
   const currentVariant = saree?.variants?.find(v => v.id === variantId) 
@@ -14,6 +14,13 @@ function SareeCard({ saree, variantId }) {   // <– accept variantId also
 
   const [mainImage, setMainImage] = useState(defaultImage);
   const [avgRating, setAvgRating] = useState({});
+
+  // Assume callBy is a variable you have
+const navTo =  callBy == null
+  ? `/sarees/${saree.id}/${currentVariant?.id}`
+  : `/admin/sarees/${saree.id}/${currentVariant?.id}`;
+
+
 
   useEffect(() => {
     API.get(`/sarees/avgRating/${saree.id}`)
@@ -29,7 +36,7 @@ function SareeCard({ saree, variantId }) {   // <– accept variantId also
     <div
       className="saree-card"
       onClick={() =>
-        navigate(`/sarees/${saree.id}/${currentVariant?.id}`)
+        navigate(navTo)
       }
     >
       {/* main image with hover effect */}
