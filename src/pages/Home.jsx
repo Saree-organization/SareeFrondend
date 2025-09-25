@@ -3,7 +3,7 @@ import Slide from "../components/Slide";
 import "../css/home.css";
 
 // import all data
-import { newArrivals, collections, offers, highestSales, testimonials, video } from "../data/homeData";
+import { newArrivals, collections, offers, highestSales, video } from "../data/homeData";
 
 function Home() {
   return (
@@ -91,22 +91,7 @@ function Home() {
           <button className="more-btn">View All...</button>
         </div>
 
-        {/* TESTIMONIALS */}
-        <div className="sec sec-5">
-          <h2 className="heading">CUSTOMER TESTIMONIALS</h2>
-          <div className="images">
-            {testimonials.map((item, i) => (
-              <div key={i}>
-                <img src={item.img} alt="" />
-                <div className="about-img">
-                  <p>{item.text}</p>
-                  <div className="customer-name">{item.name}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="more-btn">View All...</button>
-        </div>
+     
 
       </div>
     </>
