@@ -28,7 +28,7 @@ function TrackOrder() {
             Authorization: `Bearer ${token}`,
           },
         });
-
+            console.log(orders);
         if (Array.isArray(response.data)) {
           // Add a default "Pending" status if the API doesn't provide one
           const updatedOrders = response.data.map((order) => ({
@@ -97,14 +97,25 @@ function TrackOrder() {
                   </h5>
                   <span
                     className={`badge bg-${
-                      order.status === "Success"
+                      order.paymentStatus === "Success"
                         ? "success"
-                        : order.status === "Pending"
+                        : order.paymentStatus === "Pending"
                         ? "warning"
                         : "danger"
                     } fs-6`}
                   >
-                    {order.status}
+                    {order.paymentStatus}
+                  </span>
+                  <span
+                    className={`badge bg-${
+                      order.orderStatus === "Success"
+                        ? "success"
+                        : order.orderStatus === "Pending"
+                        ? "warning"
+                        : "danger"
+                    } fs-6`}
+                  >
+                    {order.orderStatus}
                   </span>
                 </div>
                 <p className="card-text text-muted mb-0">
@@ -156,7 +167,9 @@ function TrackOrder() {
                             </td>
                             <td>{item.productName || "Unnamed Item"}</td>
                             <td className="text-center">{item.quantity}</td>
-                            <td className="text-end">Rs. {(item.quantity*item.price)}</td>
+                            <td className="text-end">
+                              Rs. {item.quantity * item.price}
+                            </td>
                           </tr>
                         ))
                       ) : (
