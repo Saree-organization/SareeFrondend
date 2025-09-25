@@ -5,7 +5,7 @@ import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
 // Only `handleLoginSuccess` is needed now.
-const Login = ({ handleLoginSuccess }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -17,10 +17,9 @@ const Login = ({ handleLoginSuccess }) => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      handleLoginSuccess();
       navigate("/");
     }
-  }, [navigate, handleLoginSuccess]);
+  }, [navigate]);
 
   useEffect(() => {
     let timer;
@@ -80,7 +79,6 @@ const Login = ({ handleLoginSuccess }) => {
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      handleLoginSuccess(token);
       navigate("/");
     } catch (err) {
       setError(
