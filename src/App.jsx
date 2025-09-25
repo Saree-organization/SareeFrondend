@@ -77,10 +77,7 @@ const App = () => {
                 <Route path="celebrity" element={<CelebritySaree />} />
                 <Route path="delivery-shipping-policy" element={<DeliveryPolicy />} />
                 <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                <Route
-                  path="return-exchange-cancellation-policy"
-                  element={<ReturnedAndExchangePolicy />}
-                />
+                <Route path="return-exchange-cancellation-policy" element={<ReturnedAndExchangePolicy />}/>
                 <Route path="terms-of-service-policy" element={<TermsOfService />} />
               </Route>
             </Routes>
