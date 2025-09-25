@@ -17,8 +17,10 @@ const Login = ({ handleLoginSuccess }) => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      handleLoginSuccess();
-      navigate("/");
+      if (token && typeof handleLoginSuccess === "function") {
+        handleLoginSuccess();
+        navigate("/");
+      }
     }
   }, [navigate, handleLoginSuccess]);
 
@@ -80,8 +82,10 @@ const Login = ({ handleLoginSuccess }) => {
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      handleLoginSuccess(token);
+    if (token && typeof handleLoginSuccess === "function") {
+      handleLoginSuccess();
       navigate("/");
+    }
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."
