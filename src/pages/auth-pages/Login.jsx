@@ -4,7 +4,7 @@ import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
-// Only `handleLoginSuccess` is needed now.
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -14,11 +14,14 @@ const Login = () => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
+  // useEffect for initial token check modified
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
+
       navigate("/");
     }
+
   }, [navigate]);
 
   useEffect(() => {
@@ -78,6 +81,7 @@ const Login = () => {
 
       const { token } = response.data;
       localStorage.setItem("authToken", token);
+
 
       navigate("/");
     } catch (err) {

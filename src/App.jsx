@@ -46,7 +46,9 @@ import AdminSareesDetails from "./pages/admin-pages/AdminSareesDetails";
 
 
 const App = () => {
+
   const role = "amin"
+
 
   return (
     <BrowserRouter>

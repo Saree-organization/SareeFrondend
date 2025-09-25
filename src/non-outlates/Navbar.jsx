@@ -11,11 +11,14 @@ import {
 
 import logo from "../assets/images/image-1.png";
 import "../css/Navbar.css";
-import { Link } from "react-router-dom";
+// 1. Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
 
 function Navbar() {
+  // 2. Initialize navigate
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -25,6 +28,7 @@ function Navbar() {
 
   // Unified useEffect to handle auth status and fetch counts
   useEffect(() => {
+    // ... (Your existing useEffect logic is correct)
     const checkAuthStatusAndFetchCounts = () => {
       const token = localStorage.getItem("authToken");
       if (token && token !== "undefined") {
@@ -64,9 +68,13 @@ function Navbar() {
     // Dispatch custom event to trigger Navbar update
     window.dispatchEvent(new Event("authChange"));
     alert("You have been logged out. 👋");
+
+    // 3. ADD THIS LINE: Navigate to the login page
+    navigate("/login");
   };
 
   return (
+    // ... (Rest of the JSX remains the same)
     <header>
       {/* Top Bar */}
       <div className="top-bar">
