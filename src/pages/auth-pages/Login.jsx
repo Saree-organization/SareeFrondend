@@ -4,8 +4,8 @@ import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
-// Only `handleLoginSuccess` is needed now.
-const Login = ({ handleLoginSuccess }) => {
+// The prop handleLoginSuccess has been removed from the component signature.
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -14,13 +14,15 @@ const Login = ({ handleLoginSuccess }) => {
   const [resendTimer, setResendTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
+  // useEffect for initial token check modified
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      handleLoginSuccess();
+      // Removed the call to handleLoginSuccess()
       navigate("/");
     }
-  }, [navigate, handleLoginSuccess]);
+    // Removed handleLoginSuccess from the dependency array
+  }, [navigate]);
 
   useEffect(() => {
     let timer;
@@ -80,7 +82,7 @@ const Login = ({ handleLoginSuccess }) => {
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      handleLoginSuccess(token);
+      // Removed the call to handleLoginSuccess(token);
       navigate("/");
     } catch (err) {
       setError(
