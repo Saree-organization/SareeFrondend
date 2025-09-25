@@ -4,7 +4,7 @@ import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
 
-// The prop handleLoginSuccess has been removed from the component signature.
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -18,10 +18,10 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      // Removed the call to handleLoginSuccess()
+
       navigate("/");
     }
-    // Removed handleLoginSuccess from the dependency array
+
   }, [navigate]);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const Login = () => {
       const { token } = response.data;
       localStorage.setItem("authToken", token);
 
-      // Removed the call to handleLoginSuccess(token);
+
       navigate("/");
     } catch (err) {
       setError(
