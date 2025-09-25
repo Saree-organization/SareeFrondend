@@ -105,18 +105,19 @@ function Navbar() {
               <FaUser className="icon" />
             </Link>
           )}
-          {/* Wishlist icon with count */}
-          <Link to="/wishlist" className="wishlist-icon">
-            <FaHeart className="icon" />
-            {isLoggedIn && wishlistCount > 0 && (
-              <span className="wishlist-count">{wishlistCount}</span>
-            )}
-          </Link>
+
           {/* Cart icon with count */}
           <Link to="/cart" className="cart-icon">
             <FaShoppingCart className="icon" />
             {isLoggedIn && cartCount > 0 && (
               <span className="cart-count">{cartCount}</span>
+            )}
+          </Link>
+          {/* Wishlist icon with count */}
+          <Link to="/wishlist" className="wishlist-icon">
+            <FaHeart className="icon" />
+            {isLoggedIn && wishlistCount > 0 && (
+              <span className="wishlist-count">{wishlistCount}</span>
             )}
           </Link>
         </div>
@@ -162,12 +163,6 @@ function Navbar() {
         </Link>
         <Link to="/track-order" onClick={handleLinkClick}>
           Track order
-        </Link>
-        <Link to="/reviews" onClick={handleLinkClick}>
-          Reviews
-        </Link>
-        <Link to="/tags" onClick={handleLinkClick}>
-          Tags
         </Link>
       </div>
     </header>
