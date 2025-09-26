@@ -49,17 +49,6 @@ function Cart() {
     );
   };
 
-  const handleUpdateQuantity = async (cartItemId, newQuantity) => {
-    try {
-      await API.patch(`/api/cart/update-quantity/${cartItemId}`, {
-        quantity: newQuantity,
-      });
-      fetchCartCount();
-      alert("Quantity updated successfully!");
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to update quantity.");
-    }
-  };
 
   const handleRemoveItem = async (cartItemId) => {
     try {
@@ -91,8 +80,7 @@ function Cart() {
      console.log("Auth Token:", token); // Debugging line
 
      const { data } = await API.post(
-       "/api/payment/create-order",
-       {
+       "/api/payment/create-order",{
          amount: parseFloat(orderTotal), // also helps with issue #2
        },
        {
