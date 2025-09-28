@@ -54,7 +54,7 @@ const App = () => {
   return (
     <BrowserRouter>
       {/* User Routes */}
-      {role !== "admin" && (
+      {role !== "amin" && (
         <WishlistProvider>
           <CartProvider>
             <Routes>

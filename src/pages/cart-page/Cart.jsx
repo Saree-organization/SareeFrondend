@@ -68,31 +68,20 @@ function Cart() {
       (total, item) => total + item.variant.priceAfterDiscount * item.quantity,
       0
     );
-  }; // *** UPDATED LOGIC ***
+  }; 
 
   const handleCheckout = () => {
     const orderTotal = calculateCartTotal();
     if (orderTotal <= 0) {
       alert("Your cart is empty or the total is 0.");
       return;
-    } // पेमेंट API कॉल को हटा दिया गया। // अब यह सीधे शिपिंग एड्रेस पेज पर navigate करेगा।
+    } 
     navigate("/checkout/address");
-  }; /* // *** END OF UPDATED LOGIC *** // Razorpay script loading logic को भी हटा दिया गया क्योंकि अब Cart page पर पेमेंट नहीं हो रहा है
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
+  }; 
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-  */
 
-  };
 
-  const handleCheckout = async () => {
+  const handleCheckouts = async () => {
     try {
       const orderTotal = calculateCartTotal();
       if (orderTotal <= 0) {
@@ -176,7 +165,6 @@ function Cart() {
     };
   }, []);
 
-
   if (loading)
     return (
       <div className="cart-page">
@@ -198,7 +186,7 @@ function Cart() {
         
       </div>
     );
-
+  
   return (
   
     <div className="cart-page">
@@ -323,7 +311,10 @@ function Cart() {
       </div>
   
     </div>
-  );
-}
+    
+        
+)};
+
+
 
 export default Cart;
