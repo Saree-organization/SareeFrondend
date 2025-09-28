@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/API";
 import "../../css/adminDashboard.css";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 function AdminDashboard() {
   const [orders, setOrders] = useState([]);
 
-  // filter form state (what user is typing/selecting)
+  // filter form state
   const [filterStatus, setFilterStatus] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
@@ -32,7 +42,9 @@ function AdminDashboard() {
     let dateOk = true;
 
     if (appliedStatus) {
-      statusOk = o.status.toUpperCase() === appliedStatus.toUpperCase();
+      // using orderStatus instead of status
+      statusOk =
+        (o.orderStatus?.toUpperCase() || "") === appliedStatus.toUpperCase();
     }
     if (appliedDate) {
       const orderDate = new Date(o.createdAt).toISOString().split("T")[0];
@@ -44,24 +56,34 @@ function AdminDashboard() {
 
   // summary counts from filtered orders
   const totalOrders = filteredOrders.length;
-  const totalRevenue = filteredOrders.reduce((sum, o) => sum + o.totalAmount, 0);
-  const pendingOrders = filteredOrders.filter(o => o.status.toUpperCase() === "PENDING").length;
-  const successOrders = filteredOrders.filter(o => o.status.toUpperCase() === "SUCCESS").length;
+  const totalRevenue = filteredOrders.reduce(
+    (sum, o) => sum + (o.totalAmount || 0),
+    0
+  );
+  const shippingOrders = filteredOrders.filter(
+    (o) => o.orderStatus?.toUpperCase() === "SHIPPING"
+  ).length;
+  const deliveredOrders = filteredOrders.filter(
+    (o) => o.orderStatus?.toUpperCase() === "DELIVERED"
+  ).length;
 
   // group revenue by date for bar chart
   const revenueByDate = filteredOrders.reduce((acc, o) => {
     const date = new Date(o.createdAt).toLocaleDateString();
-    acc[date] = (acc[date] || 0) + o.totalAmount;
+    acc[date] = (acc[date] || 0) + (o.totalAmount || 0);
     return acc;
   }, {});
-  const barData = Object.entries(revenueByDate).map(([date, revenue]) => ({ date, revenue }));
+  const barData = Object.entries(revenueByDate).map(([date, revenue]) => ({
+    date,
+    revenue,
+  }));
 
   // data for pie chart (order status)
   const pieData = [
-    { name: "Success", value: successOrders },
-    { name: "Pending", value: pendingOrders },
+    { name: "Shipping", value: shippingOrders },
+    { name: "Delivered", value: deliveredOrders },
   ];
-  const COLORS = ["#82ca9d", "#ffb347"];
+  const COLORS = ["#ffb347", "#82ca9d"];
 
   return (
     <div className="admin-dashboard">
@@ -69,10 +91,13 @@ function AdminDashboard() {
       <div className="filters">
         <label>
           Status:
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
             <option value="">All</option>
-            <option value="SUCCESS">Success</option>
-            <option value="PENDING">Pending</option>
+            <option value="SHIPPING">Shipping</option>
+            <option value="DELIVERED">Delivered</option>
           </select>
         </label>
         <label>
@@ -83,7 +108,9 @@ function AdminDashboard() {
             onChange={(e) => setFilterDate(e.target.value)}
           />
         </label>
-        <button className="filter-btn" onClick={handleFilterClick}>Filter</button>
+        <button className="filter-btn" onClick={handleFilterClick}>
+          Filter
+        </button>
       </div>
 
       {/* Summary Cards */}
@@ -97,12 +124,12 @@ function AdminDashboard() {
           <p>₹{totalRevenue}</p>
         </div>
         <div className="card">
-          <h3>Pending Orders</h3>
-          <p>{pendingOrders}</p>
+          <h3>Shipping Orders</h3>
+          <p>{shippingOrders}</p>
         </div>
         <div className="card">
-          <h3>Success Orders</h3>
-          <p>{successOrders}</p>
+          <h3>Delivered Orders</h3>
+          <p>{deliveredOrders}</p>
         </div>
       </div>
 
@@ -130,10 +157,15 @@ function AdminDashboard() {
               outerRadius={100}
               fill="#8884d8"
               dataKey="value"
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) =>
+                `${name} ${(percent * 100).toFixed(0)}%`
+              }
             >
               {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Pie>
             <Tooltip />

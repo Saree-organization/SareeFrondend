@@ -51,17 +51,6 @@ function Cart() {
     );
   };
 
-  const handleUpdateQuantity = async (cartItemId, newQuantity) => {
-    try {
-      await API.patch(`/api/cart/update-quantity/${cartItemId}`, {
-        quantity: newQuantity,
-      });
-      fetchCartCount();
-      alert("Quantity updated successfully!");
-    } catch (err) {
-      alert(err.response?.data?.message || "Failed to update quantity.");
-    }
-  };
 
   const handleRemoveItem = async (cartItemId) => {
     try {
@@ -100,6 +89,94 @@ function Cart() {
     };
   }, []);
   */
+
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const orderTotal = calculateCartTotal();
+      if (orderTotal <= 0) {
+        alert("Your cart is empty or the total is 0.");
+        return;
+      }
+
+     const token = localStorage.getItem("authToken");
+     console.log("Auth Token:", token); // Debugging line
+
+     const { data } = await API.post(
+       "/api/payment/create-order",{
+         amount: parseFloat(orderTotal), // also helps with issue #2
+       },
+       {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       }
+     );
+
+      const options = {
+        key: "rzp_test_RJ1F2vjHY8vjny",
+        amount: data.amount,
+        currency: "INR",
+        name: "Saree Shop",
+        description: "Payment for your order",
+        order_id: data.razorpayOrderId,
+        handler: async function (response) {
+          const paymentData = {
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+            totalAmount: orderTotal,
+          };
+
+          try {
+            const verificationResponse = await API.post(
+              "/api/payment/verify",
+              paymentData
+            );
+            alert(verificationResponse.data.message);
+            setCartItems([]);
+            fetchCartCount();
+          } catch (error) {
+            console.error("Payment verification failed:", error);
+            alert(
+              error.response?.data?.message || "Payment verification failed!"
+            );
+          }
+        },
+        prefill: {
+          name: "Customer Name",
+          email: "customer@example.com",
+          contact: "9999999999",
+        },
+        notes: {
+          address: "Your address here",
+        },
+        theme: {
+          color: "#A52A2A",
+        },
+      };
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+    } catch (err) {
+      console.error("Checkout failed:", err);
+      alert(err.response?.data?.message || "Failed to proceed to checkout.");
+    }
+  };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+
   if (loading)
     return (
       <div className="cart-page">

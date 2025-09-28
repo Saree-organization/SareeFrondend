@@ -40,7 +40,7 @@ function AdminUserProfile() {
         <p><strong>Order ID:</strong> {order.razorpayOrderId}</p>
         <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
         <p><strong>Total:</strong> ₹{order.totalAmount}</p>
-        <p><strong>Status:</strong> {order.status}</p>
+        <p><strong>Status:</strong> {order.orderStatus}</p>
         <ul>
           {order.items.map((item, i) => (
             <li key={i}>

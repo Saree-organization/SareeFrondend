@@ -1,56 +1,66 @@
-/* main table styling */
 .admin-orders {
   padding: 20px;
 }
 
-.admin-orders table {
+.filters {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.filter-btn {
+  padding: 5px 10px;
+}
+
+.orders-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
 }
 
-.admin-orders thead {
-  background-color: #f4f4f4;
-}
-
-.admin-orders th,
-.admin-orders td {
-  /* display: flex; */
+.orders-table th, .orders-table td {
   border: 1px solid #ddd;
   padding: 8px;
-  vertical-align: top;
   text-align: left;
 }
 
-
-.admin-orders tr:nth-child(even) {
-  background-color: #fafafa;
+.status-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.admin-orders tr:hover {
-  background-color: #f1f1f1;
+.status-text {
+  font-weight: bold;
 }
 
-/* product items list inside table */
-.admin-orders td ul {
+/* Optional: color code for statuses */
+.status-text.shipping { color: orange; }
+.status-text.out-for-delivery { color: blue; }
+.status-text.delivered { color: green; }
+.status-text.exchange { color: purple; }
+.status-text.exchanged { color: teal; }
+
+.items-list {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
 
-.admin-orders td ul li {
+.item {
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
-  font-size: 14px;
+  margin-bottom: 8px;
 }
 
-.admin-orders td ul li img {
+.item-img {
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 4px;
   margin-right: 8px;
-  border: 1px solid #ccc;
+  cursor: pointer;
 }
 
+.item-text {
+  font-size: 14px;
+}

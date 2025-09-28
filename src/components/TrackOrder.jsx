@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/API";
 import { Link, useNavigate } from "react-router-dom";
-// You'll need to import Bootstrap's CSS in your main App.js or index.js
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import "../css/TrackOrder.css"; // Keep this for any custom styles
+import "../css/TrackOrder.css";
 
 function TrackOrder() {
   const [orders, setOrders] = useState([]);
@@ -15,7 +13,6 @@ function TrackOrder() {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        console.log(token);
 
         if (!token) {
           setError("Please log in to view your orders.");
@@ -24,13 +21,10 @@ function TrackOrder() {
         }
 
         const response = await API.get("/api/payment/orders", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-            console.log(orders);
+
         if (Array.isArray(response.data)) {
-          // Add a default "Pending" status if the API doesn't provide one
           const updatedOrders = response.data.map((order) => ({
             ...order,
             status: order.status || "Pending",
@@ -42,13 +36,10 @@ function TrackOrder() {
         }
       } catch (err) {
         console.error("API call failed:", err);
-
         if (err.response && err.response.status === 401) {
           setError("Session expired. Please log in again.");
           localStorage.removeItem("authToken");
-          setTimeout(() => {
-            navigate("/login");
-          }, 2000);
+          setTimeout(() => navigate("/login"), 2000);
         } else {
           setError("Failed to fetch orders. Please try again.");
         }
@@ -59,6 +50,22 @@ function TrackOrder() {
 
     fetchOrders();
   }, [navigate]);
+
+  const requestExchange = async (orderId) => {
+    try {
+      await API.put(`/api/payment/orders/${orderId}/exchange`);
+      // Update local state to reflect exchange request
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.razorpayOrderId === orderId ? { ...o, orderStatus: "Exchange" } : o
+        )
+      );
+      alert("Exchange requested successfully!");
+    } catch (err) {
+      console.error("Failed to request exchange:", err);
+      alert("Failed to request exchange. Try again later.");
+    }
+  };
 
   if (loading) {
     return (
@@ -82,8 +89,7 @@ function TrackOrder() {
       {orders.length === 0 ? (
         <div className="text-center">
           <p className="alert alert-info">
-            You have not placed any orders yet.{" "}
-            <Link to="/">Start shopping</Link>.
+            You have not placed any orders yet. <Link to="/">Start shopping</Link>.
           </p>
         </div>
       ) : (
@@ -92,9 +98,7 @@ function TrackOrder() {
             <div key={order.razorpayOrderId} className="card mb-4">
               <div className="card-header bg-light">
                 <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="mb-0">
-                    Order ID: {order.razorpayOrderId || "N/A"}
-                  </h5>
+                  <h5 className="mb-0">Order ID: {order.razorpayOrderId || "N/A"}</h5>
                   <span
                     className={`badge bg-${
                       order.paymentStatus === "Success"
@@ -108,11 +112,13 @@ function TrackOrder() {
                   </span>
                   <span
                     className={`badge bg-${
-                      order.orderStatus === "Success"
+                      order.orderStatus === "Delivered"
                         ? "success"
+                        : order.orderStatus === "Exchange"
+                        ? "info"
                         : order.orderStatus === "Pending"
                         ? "warning"
-                        : "danger"
+                        : "secondary"
                     } fs-6`}
                   >
                     {order.orderStatus}
@@ -130,19 +136,11 @@ function TrackOrder() {
                   <table className="table table-striped table-hover mb-0">
                     <thead>
                       <tr>
-                        <th scope="col" style={{ width: "10%" }}>
-                          #
-                        </th>
-                        <th scope="col" style={{ width: "15%" }}>
-                          Image
-                        </th>
+                        <th scope="col">#</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Product Name</th>
-                        <th scope="col" className="text-center">
-                          Quantity
-                        </th>
-                        <th scope="col" className="text-end">
-                          Price
-                        </th>
+                        <th scope="col" className="text-center">Quantity</th>
+                        <th scope="col" className="text-end">Price</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -152,17 +150,10 @@ function TrackOrder() {
                             <th scope="row">{index + 1}</th>
                             <td>
                               <img
-                                src={
-                                  item.imageUrl ||
-                                  "https://via.placeholder.com/50"
-                                } // Corrected to use imageUrl
-                                alt={item.productName || "Product"} // Corrected to use productName
+                                src={item.imageUrl || "https://via.placeholder.com/50"}
+                                alt={item.productName || "Product"}
                                 className="img-thumbnail"
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  objectFit: "cover",
-                                }}
+                                style={{ width: "50px", height: "50px", objectFit: "cover" }}
                               />
                             </td>
                             <td>{item.productName || "Unnamed Item"}</td>
@@ -172,6 +163,7 @@ function TrackOrder() {
                             <td className="text-end">
                               Rs. {order.totalAmount}
                             </td>
+
                           </tr>
                         ))
                       ) : (
@@ -184,6 +176,18 @@ function TrackOrder() {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Exchange Button */}
+                {order.orderStatus === "Delivered" && (
+                  <div className="mt-2 text-end">
+                    <button
+                      className="btn btn-info btn-sm"
+                      onClick={() => requestExchange(order.razorpayOrderId)}
+                    >
+                      Request Exchange
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}

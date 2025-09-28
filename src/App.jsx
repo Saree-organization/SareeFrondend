@@ -48,7 +48,7 @@ import AdminSareesDetails from "./pages/admin-pages/AdminSareesDetails";
 
 const App = () => {
 
-  const role = "amin"
+  const role = "admin"
 
 
   return (
