@@ -157,8 +157,13 @@ function TrackOrder() {
                               />
                             </td>
                             <td>{item.productName || "Unnamed Item"}</td>
-                            <td className="text-center">{item.quantity}</td>
-                            <td className="text-end">Rs. {item.quantity * item.price}</td>
+                            <td className="text-center">
+                              {(order.totalAmount/item.price)}
+                            </td>
+                            <td className="text-end">
+                              Rs. {order.totalAmount}
+                            </td>
+
                           </tr>
                         ))
                       ) : (

@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Wishlist from "./components/Wishlist";
 import Cart from "./pages/cart-page/Cart";
 import TrackOrder from "./components/TrackOrder";
+import ShippingAddress from "../src/pages/user-pages/ShippingAddress";
 
 // User Pages
 import Home from "./pages/Home";
@@ -77,10 +78,20 @@ const App = () => {
                 <Route path="katan-silk" element={<KatanSilk />} />
                 <Route path="tissue-silk" element={<TissueSilk />} />
                 <Route path="celebrity" element={<CelebritySaree />} />
-                <Route path="delivery-shipping-policy" element={<DeliveryPolicy />} />
+                <Route
+                  path="delivery-shipping-policy"
+                  element={<DeliveryPolicy />}
+                />
                 <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="return-exchange-cancellation-policy" element={<ReturnedAndExchangePolicy />}/>
-                <Route path="terms-of-service-policy" element={<TermsOfService />} />
+                <Route
+                  path="return-exchange-cancellation-policy"
+                  element={<ReturnedAndExchangePolicy />}
+                />
+                <Route
+                  path="terms-of-service-policy"
+                  element={<TermsOfService />}
+                />
+                <Route path="/checkout/address" element={<ShippingAddress />} />
               </Route>
             </Routes>
           </CartProvider>
@@ -96,9 +107,12 @@ const App = () => {
             <Route path="sarees" element={<AdminSarees />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="orders" element={<AdminOrders />} />
-            <Route path="user-profile/:userId" element={<AdminUserProfile/>} />
+            <Route path="user-profile/:userId" element={<AdminUserProfile />} />
             <Route path="add-saree" element={<AddSaree />} />
-            <Route path="sarees/:id/:variantId" element={<AdminSareesDetails />} />
+            <Route
+              path="sarees/:id/:variantId"
+              element={<AdminSareesDetails />}
+            />
           </Route>
         </Routes>
       )}

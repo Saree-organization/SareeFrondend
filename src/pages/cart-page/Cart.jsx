@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // useNavigate को जोड़ा गया
 import API from "../../api/API";
 import "../../css/Cart.css";
 import { useCart } from "../../context/CartContext";
 
 function Cart() {
+  const navigate = useNavigate(); // useNavigate hook को initialize किया गया
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { fetchCartCount } = useCart();
 
   useEffect(() => {
+    // ... (पुराना fetchCart लॉजिक - कोई बदलाव नहीं)
     const fetchCart = async () => {
       try {
         const token = localStorage.getItem("authToken");
@@ -38,7 +40,7 @@ function Cart() {
     };
 
     fetchCart();
-  }, [fetchCartCount]);
+  }, [fetchCartCount]); // ... (handleQuantityChange, handleUpdateQuantity, handleRemoveItem, calculateCartTotal लॉजिक - कोई बदलाव नहीं)
 
   const handleQuantityChange = (cartItemId, newQuantity) => {
     if (newQuantity < 1) newQuantity = 1;
@@ -66,6 +68,28 @@ function Cart() {
       (total, item) => total + item.variant.priceAfterDiscount * item.quantity,
       0
     );
+  }; // *** UPDATED LOGIC ***
+
+  const handleCheckout = () => {
+    const orderTotal = calculateCartTotal();
+    if (orderTotal <= 0) {
+      alert("Your cart is empty or the total is 0.");
+      return;
+    } // पेमेंट API कॉल को हटा दिया गया। // अब यह सीधे शिपिंग एड्रेस पेज पर navigate करेगा।
+    navigate("/checkout/address");
+  }; /* // *** END OF UPDATED LOGIC *** // Razorpay script loading logic को भी हटा दिया गया क्योंकि अब Cart page पर पेमेंट नहीं हो रहा है
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+  */
+
   };
 
   const handleCheckout = async () => {
@@ -152,6 +176,7 @@ function Cart() {
     };
   }, []);
 
+
   if (loading)
     return (
       <div className="cart-page">
@@ -161,57 +186,72 @@ function Cart() {
   if (error)
     return (
       <div className="cart-page">
-        <p className="error-message">{error}</p>
+      <p className="error-message">{error}</p>
       </div>
     );
   if (cartItems.length === 0)
     return (
       <div className="cart-page">
         <p>
-          Your cart is empty! <Link to="/">Start shopping</Link>.
+         Your cart is empty! <Link to="/">Start shopping</Link>. 
         </p>
+        
       </div>
     );
 
   return (
+  
     <div className="cart-page">
-      <h2>My Shopping Cart 🛍️</h2>
+       <h2>My Shopping Cart 🛍️</h2>
       <div className="cart-container">
+        
         <div className="cart-table-container">
+          
           <table>
+            
             <thead>
+              
               <tr>
-                <th>Product</th>
-                <th>Color</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Actions</th>
+           <th>Product</th> <th>Color</th>
+                 <th>Price</th><th>Quantity</th>
+              <th>Total</th> <th>Actions</th>
+              
               </tr>
+            
             </thead>
+          
             <tbody>
+            
               {cartItems.map((item) => (
                 <tr key={item.id}>
+                
                   <td>
+                    
                     <div className="product-info">
+                    
                       <img
                         src={item.variant?.images?.[0]}
                         alt={item.variant?.name}
                         className="product-image"
                       />
-                      <span>{item.variant?.name}</span>
+                     <span>{item.variant?.name}</span>
+                      
                     </div>
+                  
                   </td>
-                  <td>{item.variant?.color}</td>
+                 <td>{item.variant?.color}</td>
                   <td>Rs. {item.variant?.priceAfterDiscount}</td>
+                  
                   <td className="quantity-controls">
+              
                     <button
                       onClick={() =>
                         handleQuantityChange(item.id, item.quantity - 1)
                       }
                     >
-                      -
+                  -
                     </button>
+                
                     <input
                       type="number"
                       value={item.quantity}
@@ -220,49 +260,68 @@ function Cart() {
                       }
                       min="1"
                     />
+                    
                     <button
                       onClick={() =>
                         handleQuantityChange(item.id, item.quantity + 1)
                       }
                     >
-                      +
+                      + 
                     </button>
+                    
                   </td>
+                  
                   <td>
-                    Rs. {item.variant?.priceAfterDiscount * item.quantity}
+                  
+                    {item.variant?.priceAfterDiscount * item.quantity}
+                
                   </td>
+                  
                   <td>
+                    
                     <button
                       onClick={() => handleRemoveItem(item.id)}
                       className="remove-btn"
                     >
-                      Remove
+                    Remove 
                     </button>
+                    
                   </td>
+                  
                 </tr>
               ))}
+            
             </tbody>
+            
           </table>
+        
         </div>
+        
         <div className="cart-summary">
-          <h3>Order Summary</h3>
+           <h3>Order Summary</h3>
           <div className="summary-item">
             <span>Subtotal:</span>
             <span>Rs. {calculateCartTotal()}</span>
           </div>
+          
           <div className="summary-item">
-            <span>Shipping:</span>
-            <span>Free</span>
+            <span>Shipping:</span> <span>Free</span>
+            
           </div>
+        
           <div className="summary-total">
-            <span>Total:</span>
+         <span>Total:</span>
             <span>Rs. {calculateCartTotal()}</span>
           </div>
+        
           <button className="checkout-btn" onClick={handleCheckout}>
-            Proceed to Checkout
+          Proceed to Checkout 
           </button>
+         
         </div>
+  
       </div>
+  
     </div>
   );
 }
