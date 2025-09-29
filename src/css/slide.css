@@ -1,9 +1,35 @@
-body{
-    margin-top: 80px !important;
+/* remove the big top margin unless you really need space under a fixed navbar */
+body {
+  margin-top: 0 !important;
 }
-.slide img{
-     
-    /* padding-top: 80px; */
-    height: 78vh;
-    width: 100vw;
+
+/* wrapper */
+.slide {
+  width: 100%;
+}
+
+/* make images scale automatically */
+.slide img {
+  width: 100%;
+  height: auto;                /* let height adjust automatically */
+  max-height: 80vh;            /* optional: don’t exceed viewport */
+  object-fit: cover;           /* fill nicely */
+}
+
+/* optional: tweak captions for small screens */
+.carousel-caption h3,
+.carousel-caption p {
+  background: rgba(0, 0, 0, 0.4); /* subtle background for readability */
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+/* on mobile shrink captions */
+@media (max-width: 768px) {
+  .carousel-caption h3 {
+    font-size: 1.2rem;
+  }
+  .carousel-caption p {
+    font-size: 0.9rem;
+  }
 }

@@ -43,6 +43,8 @@ import AdminOrders from "./pages/admin-pages/AdminOrders";
 import AdminSarees from "./pages/admin-pages/AdminSarees";
 import AdminUserProfile from "./pages/admin-pages/AdminUserProfile";
 import AdminSareesDetails from "./pages/admin-pages/AdminSareesDetails";
+import DiscountFilter from "./pages/saree-pages/DiscountFilter";
+import ColorFilter from "./pages/saree-pages/ColorFilter";
 
 
 
@@ -64,6 +66,9 @@ const App = () => {
                 <Route path="register" element={<Register />} />
                 <Route path="login" element={<Login />} />
                 <Route path="all-saree" element={<AllSaree />} />
+                <Route path="color/:color" element={<ColorFilter />} />
+                <Route path="discount/:discount" element={<DiscountFilter />} />
+
                 <Route path="sarees/:id" element={<SareeDetail />} />
                 <Route path="sarees/:id/:variantId" element={<SareeDetail />} />
                 <Route path="wishlist" element={<Wishlist />} />

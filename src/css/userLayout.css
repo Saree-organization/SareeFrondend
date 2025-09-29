@@ -1,3 +1,24 @@
-.container {
-    margin: 0 5rem;
+.main-content {
+  /* Push content below the fixed navbar */
+  padding-top: calc(10px + 54px + 20px); /* top-bar + navbar + bottom nav-links */
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .main-content {
+    padding-top: calc(20px + 54px + 10px); /* adjust if mobile menu height changes */
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .main-content {
+    padding-top: calc(10px + 14px + 20px); /* top-bar + navbar + mobile menu */
+  }
 }
