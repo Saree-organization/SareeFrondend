@@ -51,21 +51,24 @@ function TrackOrder() {
     fetchOrders();
   }, [navigate]);
 
-  const requestExchange = async (orderId) => {
-    try {
-      await API.put(`/api/payment/orders/${orderId}/exchange`);
-      // Update local state to reflect exchange request
-      setOrders((prev) =>
-        prev.map((o) =>
-          o.razorpayOrderId === orderId ? { ...o, orderStatus: "Exchange" } : o
-        )
-      );
-      alert("Exchange requested successfully!");
-    } catch (err) {
-      console.error("Failed to request exchange:", err);
+
+  const handleStatusChange = (orderId) => {
+    API.put(`admin/paymentChangeStatus/${orderId}/status`, { status: "Exchange" })
+      .then(() => {
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.razorpayOrderId === orderId ? { ...o, orderStatus: "Exchange" } : o
+          )
+        );
+        alert("Exchange requested successfully!");
+      })
+      .catch(err => {
+        console.error("Failed to request exchange:", err);
       alert("Failed to request exchange. Try again later.");
-    }
+      });
   };
+
+
 
   if (loading) {
     return (
@@ -100,26 +103,24 @@ function TrackOrder() {
                 <div className="d-flex justify-content-between align-items-center">
                   <h5 className="mb-0">Order ID: {order.razorpayOrderId || "N/A"}</h5>
                   <span
-                    className={`badge bg-${
-                      order.paymentStatus === "Success"
-                        ? "success"
-                        : order.paymentStatus === "Pending"
+                    className={`badge bg-${order.paymentStatus === "Success"
+                      ? "success"
+                      : order.paymentStatus === "Pending"
                         ? "warning"
                         : "danger"
-                    } fs-6`}
+                      } fs-6`}
                   >
                     {order.paymentStatus}
                   </span>
                   <span
-                    className={`badge bg-${
-                      order.orderStatus === "Delivered"
-                        ? "success"
-                        : order.orderStatus === "Exchange"
+                    className={`badge bg-${order.orderStatus === "Delivered"
+                      ? "success"
+                      : order.orderStatus === "Exchange"
                         ? "info"
                         : order.orderStatus === "Pending"
-                        ? "warning"
-                        : "secondary"
-                    } fs-6`}
+                          ? "warning"
+                          : "secondary"
+                      } fs-6`}
                   >
                     {order.orderStatus}
                   </span>
@@ -177,7 +178,7 @@ function TrackOrder() {
                   <div className="mt-2 text-end">
                     <button
                       className="btn btn-info btn-sm"
-                      onClick={() => requestExchange(order.razorpayOrderId)}
+                      onClick={() => handleStatusChange(order.razorpayOrderId)}
                     >
                       Request Exchange
                     </button>
