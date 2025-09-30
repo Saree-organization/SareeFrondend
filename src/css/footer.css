@@ -1,3 +1,5 @@
+/* footer.css */
+
 .footer {
   background-color: #8B0000;
   padding: 30px 20px;
@@ -7,12 +9,12 @@
 
 .footer-container {
   display: flex;
-  flex-wrap: wrap;     
+  flex-wrap: wrap; 	 	 
   justify-content: space-between;
   align-items: center; 
   max-width: 1200px;
   margin: 0 auto;
-  gap: 0;        
+  gap: 0; 	 	 	 	
 }
 
 .footer-section {
@@ -21,7 +23,7 @@
   padding: 0 15px;
   border-right: 1px solid rgba(255, 255, 255, 0.4);
   display: flex;
-  flex-direction: column;          /* content stacks inside */
+  flex-direction: column; 	 	 	 	 	/* content stacks inside */
   justify-content: flex-start;
 }
 
@@ -52,7 +54,7 @@
 .footer-section img {
   width: 120px;
   margin-bottom: 10px;
-  filter: drop-shadow(0px  1px rgb(0, 0, 0));
+  filter: drop-shadow(0px 1px rgb(0, 0, 0));
 }
 
 .footer-title {
@@ -88,8 +90,44 @@
 }
 
 .footer-section ul li a:hover {
-  color: #333; /* darker hover */
+  color: #f5f5f5; /* Light hover for better contrast on dark background */
 }
+
+/* --- New Developer Link Styling --- */
+
+.developer-link-container {
+  /* This div helps keep the link grouped */
+  margin-top: 5px;
+}
+
+.developer-link {
+  color: #fff;
+  text-decoration: none;
+  display: flex; /* Aligns icon and text */
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.developer-link:hover {
+  color: #f5f5f5;
+  text-decoration: underline; /* Add underline on hover */
+}
+
+.developer-icon {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 18px;
+  color: #fff; /* White icon */
+  transition: transform 0.2s ease;
+}
+
+.developer-link:hover .developer-icon {
+    transform: rotate(15deg); /* Small rotation effect on hover */
+    color: #f5f5f5;
+}
+
+/* --- Social Icons (Original Styling) --- */
 
 .social-icons {
   display: flex;

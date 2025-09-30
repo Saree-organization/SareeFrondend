@@ -1,0 +1,105 @@
+.developer-info-page {
+  padding: 20px;
+}
+
+.developer-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.developer-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.developer-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 100%;
+  max-width: 600px;
+  transition: transform 0.3s ease;
+}
+
+.developer-card:hover {
+  transform: translateY(-5px);
+}
+
+.developer-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.developer-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.developer-title {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.developer-contact {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.developer-contact a {
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.developer-contact a:hover {
+  color: #0077b5;
+}
+
+.developer-bio h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.developer-bio p {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .developer-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .developer-card {
+    width: 90%;
+  }
+
+  .developer-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .developer-name {
+    font-size: 1.3rem;
+  }
+
+  .developer-title {
+    font-size: 0.95rem;
+  }
+
+  .developer-bio p {
+    font-size: 0.9rem;
+  }
+}

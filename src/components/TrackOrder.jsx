@@ -27,7 +27,7 @@ function TrackOrder() {
         if (Array.isArray(response.data)) {
           const updatedOrders = response.data.map((order) => ({
             ...order,
-            status: order.status || "Pending",
+            orderStatus: order.orderStatus || "Processing",
           }));
           setOrders(updatedOrders);
         } else {
@@ -51,29 +51,39 @@ function TrackOrder() {
     fetchOrders();
   }, [navigate]);
 
-
   const handleStatusChange = (orderId) => {
-    API.put(`admin/paymentChangeStatus/${orderId}/status`, { status: "Exchange" })
+    API.put(`admin/paymentChangeStatus/${orderId}/status`, {
+      status: "Exchange",
+    })
       .then(() => {
         setOrders((prev) =>
           prev.map((o) =>
-            o.razorpayOrderId === orderId ? { ...o, orderStatus: "Exchange" } : o
+            o.razorpayOrderId === orderId
+              ? { ...o, orderStatus: "Exchange" }
+              : o
           )
         );
-        alert("Exchange requested successfully!");
+        alert(
+          "Exchange requested successfully! An admin will review your request."
+        );
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Failed to request exchange:", err);
-      alert("Failed to request exchange. Try again later.");
+        alert("Failed to request exchange. Try again later.");
       });
   };
 
-
-
   if (loading) {
     return (
-      <div className="container mt-5 text-center">
-        <p>Loading your orders...</p>
+      <div className="container mt-5 text-center loader-container">
+        <div
+          className="spinner-border text-primary"
+          role="status"
+          style={{ width: "3rem", height: "3rem" }}
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-3">Fetching your orders, please wait...</p>
       </div>
     );
   }
@@ -82,51 +92,69 @@ function TrackOrder() {
     return (
       <div className="container mt-5 text-center">
         <p className="alert alert-danger">{error}</p>
+        {error.includes("log in") && (
+          <Link to="/login" className="btn btn-primary mt-3">
+            Go to Login
+          </Link>
+        )}
       </div>
     );
   }
 
   return (
     <div className="container mt-5 track-order-page">
-      <h2 className="mb-4 text-center">My Orders</h2>
+      <h2 className="mb-4 text-center">My Orders 📦</h2>
       {orders.length === 0 ? (
         <div className="text-center">
           <p className="alert alert-info">
-            You have not placed any orders yet. <Link to="/">Start shopping</Link>.
+            You have not placed any successful orders yet.
+            <Link to="/" className="alert-link ms-2">
+              Start shopping
+            </Link>
+            .
           </p>
         </div>
       ) : (
         <div className="orders-list">
           {orders.map((order) => (
-            <div key={order.razorpayOrderId} className="card mb-4">
-              <div className="card-header bg-light">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h5 className="mb-0">Order ID: {order.razorpayOrderId || "N/A"}</h5>
-                  <span
-                    className={`badge bg-${order.paymentStatus === "Success"
-                      ? "success"
-                      : order.paymentStatus === "Pending"
-                        ? "warning"
-                        : "danger"
+            <div key={order.razorpayOrderId} className="card mb-4 shadow-sm">
+              <div className="card-header bg-light p-3">
+                <div className="d-flex flex-wrap justify-content-between align-items-center">
+                  <h5 className="mb-2 mb-sm-0 me-3">
+                    Order ID:{" "}
+                    <span className="fw-normal text-muted">
+                      {order.razorpayOrderId || "N/A"}
+                    </span>
+                  </h5>
+                  <div className="d-flex flex-wrap gap-2">
+                    <span
+                      className={`badge rounded-pill bg-${
+                        order.paymentStatus === "Success"
+                          ? "success"
+                          : "warning"
                       } fs-6`}
-                  >
-                    {order.paymentStatus}
-                  </span>
-                  <span
-                    className={`badge bg-${order.orderStatus === "Delivered"
-                      ? "success"
-                      : order.orderStatus === "Exchange"
-                        ? "info"
-                        : order.orderStatus === "Pending"
-                          ? "warning"
+                    >
+                      {order.paymentStatus}
+                    </span>
+                    <span
+                      className={`badge rounded-pill bg-${
+                        order.orderStatus === "Delivered"
+                          ? "success"
+                          : order.orderStatus === "Exchange"
+                          ? "info"
+                          : order.orderStatus === "Shipping" ||
+                            order.orderStatus === "Processing"
+                          ? "primary"
                           : "secondary"
                       } fs-6`}
-                  >
-                    {order.orderStatus}
-                  </span>
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </div>
                 </div>
-                <p className="card-text text-muted mb-0">
-                  Total Amount: Rs. {order.totalAmount}
+                <p className="card-text text-muted mb-0 mt-2">
+                  Total Amount:{" "}
+                  <span className="fw-bold">Rs. {order.totalAmount}</span>
                 </p>
                 <p className="card-text text-muted">
                   Date: {new Date(order.createdAt).toLocaleDateString()}
@@ -137,11 +165,29 @@ function TrackOrder() {
                   <table className="table table-striped table-hover mb-0">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col" className="text-center">Quantity</th>
-                        <th scope="col" className="text-end">Price</th>
+                        <th scope="col" style={{ width: "5%" }}>
+                          #
+                        </th>
+                        <th scope="col" style={{ width: "15%" }}>
+                          Image
+                        </th>
+                        <th scope="col" style={{ width: "40%" }}>
+                          Product Name
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-center"
+                          style={{ width: "20%" }}
+                        >
+                          Quantity
+                        </th>
+                        <th
+                          scope="col"
+                          className="text-end"
+                          style={{ width: "20%" }}
+                        >
+                          Price
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -151,25 +197,32 @@ function TrackOrder() {
                             <th scope="row">{index + 1}</th>
                             <td>
                               <img
-                                src={item.imageUrl || "https://via.placeholder.com/50"}
+                                src={
+                                  item.imageUrl ||
+                                  "https://via.placeholder.com/50"
+                                }
                                 alt={item.productName || "Product"}
                                 className="img-thumbnail"
-                                style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                                style={{
+                                  width: "50px",
+                                  height: "50px",
+                                  objectFit: "cover",
+                                }}
                               />
                             </td>
                             <td>{item.productName || "Unnamed Item"}</td>
-                            <td className="text-center">
-                              {(order.totalAmount/item.price)}
-                            </td>
+                            <td className="text-center">{item.quantity}</td>
                             <td className="text-end">
-                              Rs. {order.totalAmount}
+                              Rs. {item.price * item.quantity}
                             </td>
-
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="5" className="text-center text-muted">
+                          <td
+                            colSpan="5"
+                            className="text-center text-muted py-3"
+                          >
                             No items found for this order.
                           </td>
                         </tr>
@@ -177,15 +230,13 @@ function TrackOrder() {
                     </tbody>
                   </table>
                 </div>
-
-                {/* Exchange Button */}
                 {order.orderStatus === "Delivered" && (
-                  <div className="mt-2 text-end">
+                  <div className="p-3 text-end border-top">
                     <button
                       className="btn btn-info btn-sm"
                       onClick={() => handleStatusChange(order.razorpayOrderId)}
                     >
-                      Request Exchange
+                      Request Exchange 🔄
                     </button>
                   </div>
                 )}
