@@ -162,7 +162,7 @@ export default function Home() {
                   onMouseLeave={(e) => {e.currentTarget.src = item.images[0];}}
                 />
                 <div className="img-text">
-                  {item.discount} – {item.discountPercent}% OFF
+                  Save upto {item.discountPercent}% OFF
                 </div>
               </div>
             ))}

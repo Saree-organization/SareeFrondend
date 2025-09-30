@@ -80,8 +80,7 @@ body {
     rgb(255, 255, 255),
     rgba(255, 255, 255, 0.518)
   );
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+
 
   
   overflow: hidden;
@@ -116,12 +115,13 @@ body {
 
 .videos {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 15px;
+  
   padding-left: 5px;
   scroll-behavior: smooth;
+  scrollbar-width:thin;
 }
 
 .video-card {
