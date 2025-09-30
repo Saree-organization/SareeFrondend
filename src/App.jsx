@@ -14,7 +14,7 @@ import Wishlist from "./components/Wishlist";
 import Cart from "./pages/cart-page/Cart";
 import TrackOrder from "./components/TrackOrder";
 import ShippingAddress from "../src/pages/user-pages/ShippingAddress";
-
+import DeveloperInfo from "./pages/footer-pages/DeveloperInfo";
 // User Pages
 import Home from "./pages/Home";
 import Login from "./pages/auth-pages/Login";
@@ -48,13 +48,13 @@ import AdminSareesDetails from "./pages/admin-pages/AdminSareesDetails";
 
 const App = () => {
 
-  const role = "admi"
+  const role = "admin"
 
 
   return (
     <BrowserRouter>
       {/* User Routes */}
-      {role !== "amin" && (
+      {role !== "adin" && (
         <WishlistProvider>
           <CartProvider>
             <Routes>
@@ -78,6 +78,7 @@ const App = () => {
                 <Route path="katan-silk" element={<KatanSilk />} />
                 <Route path="tissue-silk" element={<TissueSilk />} />
                 <Route path="celebrity" element={<CelebritySaree />} />
+                <Route path="/developer" element={<DeveloperInfo />} />
                 <Route
                   path="delivery-shipping-policy"
                   element={<DeliveryPolicy />}

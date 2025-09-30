@@ -13,19 +13,20 @@ function AllSaree() {
   });
 
   const [sarees, setSarees] = useState([]);
+  const [loading, setLoading] = useState(false); // loader state
 
-  // load all sarees at start
   useEffect(() => {
     loadAllSarees();
   }, []);
 
   const loadAllSarees = () => {
+    setLoading(true);
     API.get("/sarees/allSarees")
       .then((res) => setSarees(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   };
 
-  // run filters only when button clicked
   const applyFilters = () => {
     if (
       !filters.fabrics &&
@@ -38,6 +39,7 @@ function AllSaree() {
       return;
     }
 
+    setLoading(true);
     API.get("/sarees/filter", {
       params: {
         fabrics: filters.fabrics || null,
@@ -48,13 +50,13 @@ function AllSaree() {
       },
     })
       .then((res) => setSarees(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   };
 
   return (
     <div>
       <div className="filter-container">
-        {/* fabrics */}
         <select
           value={filters.fabrics}
           onChange={(e) => setFilters({ ...filters, fabrics: e.target.value })}
@@ -65,7 +67,6 @@ function AllSaree() {
           <option value="Linen">Linen</option>
         </select>
 
-        {/* category */}
         <select
           value={filters.category}
           onChange={(e) => setFilters({ ...filters, category: e.target.value })}
@@ -76,7 +77,6 @@ function AllSaree() {
           <option value="Casual">Casual</option>
         </select>
 
-        {/* color */}
         <select
           value={filters.color}
           onChange={(e) => setFilters({ ...filters, color: e.target.value })}
@@ -88,7 +88,6 @@ function AllSaree() {
           <option value="Yellow">Yellow</option>
         </select>
 
-        {/* min price */}
         <select
           value={filters.minPrice}
           onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
@@ -99,7 +98,6 @@ function AllSaree() {
           <option value="2000">2000</option>
         </select>
 
-        {/* max price */}
         <select
           value={filters.maxPrice}
           onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
@@ -114,7 +112,18 @@ function AllSaree() {
       </div>
 
       <div className="saree-container">
-        {sarees.length > 0 ? (
+        {loading ? (
+          <div className="loader-container">
+            <div
+              className="spinner-border text-primary"
+              role="status"
+              style={{ width: "3rem", height: "3rem" }}
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3">Loading sarees...</p>
+          </div>
+        ) : sarees.length > 0 ? (
           sarees.map((s) => <SareeCard key={s.id} saree={s} />)
         ) : (
           <p>No sarees found.</p>

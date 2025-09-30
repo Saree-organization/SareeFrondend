@@ -114,3 +114,10 @@
 .track-order-page a:hover {
     text-decoration: underline;
 }
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
