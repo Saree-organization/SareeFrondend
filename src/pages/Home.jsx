@@ -22,9 +22,12 @@ function ImageCard({ item, navTo, isVariant = true }) {
       }
       style={{ cursor: "pointer" }}
     >
-      <img src={hovered && images[1] ? images[1] : images[0]} alt={item.description || item.name} />
+      <img
+        src={hovered && images[1] ? images[1] : images[0]}
+        alt={item.description || item.name}
+      />
       <div className="img-text">
-        {item.category || item.name || item.sareeDesign  || ""}
+        {item.category || item.name || item.sareeDesign || ""}
       </div>
     </div>
   );
@@ -41,23 +44,24 @@ export default function Home() {
   });
 
   const allSareeNav = () => navTo("all-saree");
-  const sareeVariantNav = (sareeId, variantId) => navTo(`sarees/${sareeId}/${variantId}`);
+  const sareeVariantNav = (sareeId, variantId) =>
+    navTo(`sarees/${sareeId}/${variantId}`);
 
   const fetchData = () => {
-    API.get("/sarees/latestSarees").then(res =>
-      setData(p => ({ ...p, newArrivals: res.data }))
+    API.get("/sarees/latestSarees").then((res) =>
+      setData((p) => ({ ...p, newArrivals: res.data }))
     );
-    API.get("/sarees/byVideo").then(res =>
-      setData(p => ({ ...p, video: res.data }))
+    API.get("/sarees/byVideo").then((res) =>
+      setData((p) => ({ ...p, video: res.data }))
     );
-    API.get("/sarees/byDescount").then(res =>
-      setData(p => ({ ...p, offers: res.data }))
+    API.get("/sarees/byDescount").then((res) =>
+      setData((p) => ({ ...p, offers: res.data }))
     );
-    API.get("/sarees/highestSales").then(res =>
-      setData(p => ({ ...p, highestSales: res.data }))
+    API.get("/sarees/highestSales").then((res) =>
+      setData((p) => ({ ...p, highestSales: res.data }))
     );
-    API.get("/sarees/byColor").then(res =>
-      setData(p => ({ ...p, color: res.data }))
+    API.get("/sarees/byColor").then((res) =>
+      setData((p) => ({ ...p, color: res.data }))
     );
   };
 
@@ -69,20 +73,30 @@ export default function Home() {
       <div className="home">
         {/* NEW ARRIVALS */}
         <section className="sec">
-          <h2 className="heading">New Arrivals - Sarees</h2>
+          <div className="section-header">
+            <h2 className="section-title">✨ New Arrivals</h2>
+            <p className="section-subtitle">
+              Discover our latest collection of sarees
+            </p>
+          </div>
           <div className="grid-images">
             {data.newArrivals.map((item) => (
               <ImageCard key={item.id} item={item} navTo={navTo} />
             ))}
           </div>
           <button className="more-btn" onClick={allSareeNav}>
-            View All...
+            View All
           </button>
         </section>
 
-        {/* VIDEO */}
+        {/* VIDEO SHOWCASE */}
         <section className="sec">
-          <h2 className="heading">Video Showcase</h2>
+          <div className="section-header">
+            <h2 className="section-title">🎥 Video Showcase</h2>
+            <p className="section-subtitle">
+              Experience sarees in motion before you shop
+            </p>
+          </div>
           <div className="videos">
             {data.video.map((item) => (
               <div key={item.id} className="video-card">
@@ -93,12 +107,8 @@ export default function Home() {
                   loop
                   className="video-player"
                   onClick={() => sareeVariantNav(item.sareeId, item.id)}
-
                 />
-                <div
-                  className="video-text"
-
-                >
+                <div className="video-text">
                   <div className="video-name">{item.name}</div>
                 </div>
               </div>
@@ -106,13 +116,19 @@ export default function Home() {
           </div>
         </section>
 
-
         {/* SHOP BY COLOR */}
         <section className="sec">
-          <h2 className="heading">Shop By Color</h2>
+          <div className="section-header">
+            <h2 className="section-title">🎨 Shop By Color</h2>
+            <p className="section-subtitle">
+              Find sarees in your favorite shades
+            </p>
+          </div>
           <div className="grid-images">
             {data.color.map((item, i) => {
-              const colorName = Array.isArray(item.color) ? item.color[0] : item.color;
+              const colorName = Array.isArray(item.color)
+                ? item.color[0]
+                : item.color;
 
               return (
                 <div
@@ -124,65 +140,84 @@ export default function Home() {
                   <img
                     src={item.images[0]}
                     alt={colorName}
-                    onMouseEnter={(e) => { if (item.images[1]) e.currentTarget.src = item.images[1]; }}
-                    onMouseLeave={(e) => { e.currentTarget.src = item.images[0]; }}
+                    onMouseEnter={(e) => {
+                      if (item.images[1]) e.currentTarget.src = item.images[1];
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.src = item.images[0];
+                    }}
                   />
-                  <div
-                    className="img-text"
-
-                  >
-                    {Array.isArray(item.color) ? item.color.join(", ") : item.color} collection
+                  <div className="img-text">
+                    {Array.isArray(item.color)
+                      ? item.color.join(", ")
+                      : item.color}{" "}
+                    collection
                   </div>
                 </div>
               );
             })}
           </div>
           <button className="more-btn" onClick={allSareeNav}>
-            View All...
+            View All
           </button>
         </section>
 
-
-
         {/* OFFERS */}
         <section className="sec">
-          <h2 className="heading">Exclusive Offers For You</h2>
+          <div className="section-header">
+            <h2 className="section-title">🔥 Exclusive Offers</h2>
+            <p className="section-subtitle">
+              Save big with our handpicked discounts
+            </p>
+          </div>
           <div className="grid-images">
             {data.offers.map((item) => (
               <div
                 className="img-card"
                 key={item.id}
                 onClick={() => navTo(`/discount/${item.discountPercent}`)}
-
               >
                 <img
                   src={item.images[0]}
                   alt=""
-                  onMouseEnter={(e) => {if (item.images[1]) e.currentTarget.src = item.images[1];}}
-                  onMouseLeave={(e) => {e.currentTarget.src = item.images[0];}}
+                  onMouseEnter={(e) => {
+                    if (item.images[1]) e.currentTarget.src = item.images[1];
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.src = item.images[0];
+                  }}
                 />
                 <div className="img-text">
-                  Save upto {item.discountPercent}% OFF
+                  Save up to {item.discountPercent}% OFF
                 </div>
               </div>
             ))}
           </div>
           <button className="more-btn" onClick={allSareeNav}>
-            View All...
+            View All
           </button>
         </section>
 
-
         {/* HIGHEST SALES */}
         <section className="sec">
-          <h2 className="heading">Highest Sales</h2>
+          <div className="section-header">
+            <h2 className="section-title">🏆 Best Sellers</h2>
+            <p className="section-subtitle">
+              See the sarees loved most by our customers
+            </p>
+          </div>
           <div className="grid-images">
             {data.highestSales.map((item) => (
-              <ImageCard key={item.id} item={item} navTo={navTo} isVariant={false} />
+              <ImageCard
+                key={item.id}
+                item={item}
+                navTo={navTo}
+                isVariant={false}
+              />
             ))}
           </div>
           <button className="more-btn" onClick={allSareeNav}>
-            View All...
+            View All
           </button>
         </section>
       </div>
