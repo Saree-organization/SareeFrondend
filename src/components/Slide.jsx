@@ -5,8 +5,6 @@ import Carousel from 'react-bootstrap/Carousel';
 import "../css/slide.css"
 function Slide() {
 
-
-
     return (
         <div className='slide'>
             <Carousel fade>
