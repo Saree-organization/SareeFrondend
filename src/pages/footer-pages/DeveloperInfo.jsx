@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaEnvelope, FaPhone } from "react-icons/fa";
 import "../../css/DeveloperInfo.css";
 
 const developers = [
@@ -12,6 +12,7 @@ const developers = [
       linkedin: "https://www.linkedin.com/in/nikhil-patel-528932264/",
       github: "https://github.com/nikhil0441",
       email: "mailto:nikhilpatel03022004@gmail.com",
+      phone: "tel:+919039373762",
     },
   },
   {
@@ -23,6 +24,7 @@ const developers = [
       linkedin: "https://www.linkedin.com/in/vishwasgour",
       github: "https://github.com/vishwasgour",
       email: "mailto:vishwas@example.com",
+      phone: "tel:+917440943813",
     },
   },
 ];
@@ -71,6 +73,13 @@ function DeveloperInfo() {
                     aria-label="Email"
                   >
                     <FaEnvelope size={28} />
+                  </a>
+                  <a
+                    href={dev.contact.phone}
+                    className="developer-link"
+                    aria-label="Phone"
+                  >
+                    <FaPhone size={28} />
                   </a>
                 </div>
               </div>
