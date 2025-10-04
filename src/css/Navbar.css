@@ -28,7 +28,6 @@ header {
   height: 30px;
 }
 .top-bar-center {
-  flex-grow: 1;
   text-align: center;
 }
 
@@ -44,8 +43,10 @@ header {
   margin-left: 29px;
   margin-right: 10px;
 }
-.nav-links{
-  
+.admin-navbar{
+  display: flex;
+  justify-content: center;
+   
 }
 
 .navbar-left .icon {
