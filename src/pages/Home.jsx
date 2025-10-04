@@ -54,7 +54,7 @@ export default function Home() {
     API.get("/sarees/byVideo").then((res) =>
       setData((p) => ({ ...p, video: res.data }))
     );
-    API.get("/sarees/byDescount").then((res) =>
+    API.get("/sarees/byDiscount").then((res) =>
       setData((p) => ({ ...p, offers: res.data }))
     );
     API.get("/sarees/highestSales").then((res) =>
@@ -172,15 +172,8 @@ export default function Home() {
           </div>
           <div className="grid-images">
             {data.offers.map((item) => (
-              <div
-                className="img-card"
-                key={item.id}
-                onClick={() => navTo(`/discount/${item.discountPercent}`)}
-              >
-                <img
-                  src={item.images[0]}
-                  alt=""
-                  onMouseEnter={(e) => {
+              <div className="img-card" key={item.id} onClick={() => navTo(`/discount/${item.discountPercent}`)} >
+                <img src={item.images[0]} alt="" onMouseEnter={(e) => {
                     if (item.images[1]) e.currentTarget.src = item.images[1];
                   }}
                   onMouseLeave={(e) => {
