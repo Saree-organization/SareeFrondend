@@ -53,13 +53,13 @@ function TrackOrder() {
 
   const handleStatusChange = (orderId) => {
     API.put(`admin/paymentChangeStatus/${orderId}/status`, {
-      status: "Exchange",
+      status: "Request For Exchange",
     })
       .then(() => {
         setOrders((prev) =>
           prev.map((o) =>
             o.razorpayOrderId === orderId
-              ? { ...o, orderStatus: "Exchange" }
+              ? { ...o, orderStatus: "Request For Exchange" }
               : o
           )
         );
@@ -75,7 +75,7 @@ function TrackOrder() {
 
   if (loading) {
     return (
-      <div className="container mt-5 text-center loader-container">
+      <div className="container  text-center loader-container">
         <div
           className="spinner-border text-primary"
           role="status"
@@ -90,7 +90,7 @@ function TrackOrder() {
 
   if (error) {
     return (
-      <div className="container mt-5 text-center">
+      <div className="container  text-center">
         <p className="alert alert-danger">{error}</p>
         {error.includes("log in") && (
           <Link to="/login" className="btn btn-primary mt-3">
@@ -102,7 +102,7 @@ function TrackOrder() {
   }
 
   return (
-    <div className="container mt-5 track-order-page">
+    <div className="container  track-order-page">
       <h2 className="mb-4 text-center">My Orders 📦</h2>
       {orders.length === 0 ? (
         <div className="text-center">
@@ -127,29 +127,13 @@ function TrackOrder() {
                     </span>
                   </h5>
                   <div className="d-flex flex-wrap gap-2">
-                    <span
-                      className={`badge rounded-pill bg-${
-                        order.paymentStatus === "Success"
-                          ? "success"
-                          : "warning"
-                      } fs-6`}
-                    >
-                      {order.paymentStatus}
-                    </span>
-                    <span
-                      className={`badge rounded-pill bg-${
-                        order.orderStatus === "Delivered"
-                          ? "success"
-                          : order.orderStatus === "Exchange"
-                          ? "info"
-                          : order.orderStatus === "Shipping" ||
-                            order.orderStatus === "Processing"
-                          ? "primary"
-                          : "secondary"
-                      } fs-6`}
-                    >
-                      {order.orderStatus}
-                    </span>
+              
+                 <span
+  className={`badge rounded-pill fs-6 status-text ${order.orderStatus.toLowerCase().replace(/\s+/g, "-")}`}
+>
+  {order.orderStatus}
+</span>
+
                   </div>
                 </div>
                 <p className="card-text text-muted mb-0 mt-2">
@@ -236,7 +220,7 @@ function TrackOrder() {
                       className="btn btn-info btn-sm"
                       onClick={() => handleStatusChange(order.razorpayOrderId)}
                     >
-                      Request Exchange 🔄
+                      Request For Exchange 🔄
                     </button>
                   </div>
                 )}
