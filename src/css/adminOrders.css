@@ -34,12 +34,20 @@
   font-weight: bold;
 }
 
-/* Optional: color code for statuses */
+/* Status text colors */
+/* Status text colors */
 .status-text.shipping { color: orange; }
 .status-text.out-for-delivery { color: blue; }
 .status-text.delivered { color: green; }
 .status-text.exchange { color: purple; }
 .status-text.exchanged { color: teal; }
+.status-text.request-for-exchange { color: #d48806; }  /* amber/brown */
+.status-text.approved-for-exchange { color: #1890ff; } /* nice blue */
+.status-text.rejected-for-exchange { color: #ff4d4f; } /* red */
+.status-text.cancalled { color: rgb(255, 0, 0); } /* cancelled */
+.status-text.pending { color: rgb(149, 151, 0); } /* cancelled */
+
+
 
 .items-list {
   list-style: none;

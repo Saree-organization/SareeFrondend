@@ -51,18 +51,22 @@ function AdminOrders() {
 
   if (orders.length === 0) return <div className="no-orders">No orders found.</div>;
 
-  const getNextStatuses = (status) => {
-    switch (status) {
-      case "Shipping":
-        return ["Out for Delivery"];
-      case "Out for Delivery":
-        return ["Delivered"];
-      case "Exchange":
-        return ["Exchanged"];
-      default:
-        return [];
-    }
-  };
+const getNextStatuses = (status) => {
+  switch (status) {
+    case "Shipping":
+      return ["Out for Delivery"];
+    case "Out for Delivery":
+      return ["Delivered"];
+    case "Request For Exchange":   
+      return ["Approved For Exchange", "Rejected For Exchange"];
+    case "Approved For Exchange":   
+      return ["Exchanged"];
+    case "Rejected For Exchange":   
+      return ["Approved For Exchange"]  
+    default:
+      return [];
+  }
+}
 
   return (
     <div className="admin-orders">
