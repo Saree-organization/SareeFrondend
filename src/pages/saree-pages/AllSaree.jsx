@@ -19,7 +19,7 @@ function AllSaree() {
   // Pagination
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 10;
+  const pageSize = 8;
 
   useEffect(() => {
     fetchSarees(0);

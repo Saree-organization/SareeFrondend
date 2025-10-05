@@ -18,7 +18,7 @@ import {
 
 const App = () => {
   const token = localStorage.getItem("authToken");
-  const role = "user"; // "user" or "admin"
+  const role = "admin"; // "user" or "admin"
 
   return (
     <BrowserRouter>

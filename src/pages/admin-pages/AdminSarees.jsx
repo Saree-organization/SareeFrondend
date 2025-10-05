@@ -16,7 +16,7 @@ function AdminSarees() {
   const [sarees, setSarees] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 10; // items per page
+  const pageSize = 8; // items per page
 
   // load sarees on start
   useEffect(() => {
