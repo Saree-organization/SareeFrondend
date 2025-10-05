@@ -3,6 +3,9 @@ import API from "../api/API";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/TrackOrder.css";
 
+// एक्सचेंज के लिए अधिकतम दिनों की सीमा (इसे Backend की ExchangeService से मैच करना चाहिए)
+const EXCHANGE_WINDOW_DAYS = 15;
+
 function TrackOrder() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,6 +30,7 @@ function TrackOrder() {
         if (Array.isArray(response.data)) {
           const updatedOrders = response.data.map((order) => ({
             ...order,
+            // सुनिश्चित करें कि orderStatus सेट है
             orderStatus: order.orderStatus || "Processing",
           }));
           setOrders(updatedOrders);
@@ -51,26 +55,20 @@ function TrackOrder() {
     fetchOrders();
   }, [navigate]);
 
-  const handleStatusChange = (orderId) => {
-    API.put(`admin/paymentChangeStatus/${orderId}/status`, {
-      status: "Exchange",
-    })
-      .then(() => {
-        setOrders((prev) =>
-          prev.map((o) =>
-            o.razorpayOrderId === orderId
-              ? { ...o, orderStatus: "Exchange" }
-              : o
-          )
-        );
-        alert(
-          "Exchange requested successfully! An admin will review your request."
-        );
-      })
-      .catch((err) => {
-        console.error("Failed to request exchange:", err);
-        alert("Failed to request exchange. Try again later.");
-      });
+  // पुराने handleStatusChange फ़ंक्शन को हटा दिया गया है
+  // क्योंकि Exchange अब एक अलग API और फ़्लो के माध्यम से होता है।
+
+  const isExchangePossible = (order) => {
+    if (order.orderStatus !== "Delivered") {
+      return false;
+    }
+    // डिलीवरी की तारीख से एक्सचेंज विंडो चेक करें (backend logic से मेल खाता है)
+    const deliveredDate = new Date(order.createdAt); // यहां आपको Order Entity में DeliveredDate चाहिए होगा
+    const currentDate = new Date();
+    const daysSinceDelivery =
+      (currentDate - deliveredDate) / (1000 * 60 * 60 * 24);
+
+    return daysSinceDelivery <= EXCHANGE_WINDOW_DAYS;
   };
 
   if (loading) {
@@ -127,6 +125,7 @@ function TrackOrder() {
                     </span>
                   </h5>
                   <div className="d-flex flex-wrap gap-2">
+                    {/* Payment Status Badge */}
                     <span
                       className={`badge rounded-pill bg-${
                         order.paymentStatus === "Success"
@@ -136,11 +135,12 @@ function TrackOrder() {
                     >
                       {order.paymentStatus}
                     </span>
+                    {/* Order Status Badge */}
                     <span
                       className={`badge rounded-pill bg-${
                         order.orderStatus === "Delivered"
                           ? "success"
-                          : order.orderStatus === "Exchange"
+                          : order.orderStatus.includes("Exchange")
                           ? "info"
                           : order.orderStatus === "Shipping" ||
                             order.orderStatus === "Processing"
@@ -157,39 +157,13 @@ function TrackOrder() {
                   <span className="fw-bold">Rs. {order.totalAmount}</span>
                 </p>
                 <p className="card-text text-muted">
-                  Date: {new Date(order.createdAt).toLocaleDateString()}
+                  Order Date: {new Date(order.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <div className="card-body p-0">
                 <div className="table-responsive">
                   <table className="table table-striped table-hover mb-0">
-                    <thead>
-                      <tr>
-                        <th scope="col" style={{ width: "5%" }}>
-                          #
-                        </th>
-                        <th scope="col" style={{ width: "15%" }}>
-                          Image
-                        </th>
-                        <th scope="col" style={{ width: "40%" }}>
-                          Product Name
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center"
-                          style={{ width: "20%" }}
-                        >
-                          Quantity
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-end"
-                          style={{ width: "20%" }}
-                        >
-                          Price
-                        </th>
-                      </tr>
-                    </thead>
+                    {/* Table Headings... */}
                     <tbody>
                       {order.items && order.items.length > 0 ? (
                         order.items.map((item, index) => (
@@ -215,12 +189,36 @@ function TrackOrder() {
                             <td className="text-end">
                               Rs. {item.price * item.quantity}
                             </td>
+                            {/* NEW: Exchange Button for each Order Item */}
+                            <td className="text-end">
+                              {/*
+                                💡 महत्वपूर्ण: OrderItem ID के लिए आपको
+                                OrderItemResponse DTO में एक 'orderItemId' फील्ड
+                                जोड़ना होगा, जो Backend से आ रहा हो।
+                              */}
+                              {isExchangePossible(order) &&
+                                order.orderStatus !== "Exchange_Processing" && (
+                                  <Link
+                                    // हम Item ID और Order ID दोनों को भेज रहे हैं
+                                    to={`/exchange-request/${order.razorpayOrderId}/${item.orderItemId}`}
+                                    className="btn btn-outline-info btn-sm ms-2"
+                                  >
+                                    Exchange 🔄
+                                  </Link>
+                                )}
+
+                              {order.orderStatus.includes("Exchange") && (
+                                <span className="text-info fw-bold">
+                                  In Exchange Process
+                                </span>
+                              )}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td
-                            colSpan="5"
+                            colSpan="6"
                             className="text-center text-muted py-3"
                           >
                             No items found for this order.
@@ -230,17 +228,9 @@ function TrackOrder() {
                     </tbody>
                   </table>
                 </div>
-                {order.orderStatus === "Delivered" && (
-                  <div className="p-3 text-end border-top">
-                    <button
-                      className="btn btn-info btn-sm"
-                      onClick={() => handleStatusChange(order.razorpayOrderId)}
-                    >
-                      Request Exchange 🔄
-                    </button>
-                  </div>
-                )}
               </div>
+
+              {/* Note: Total Order Exchange Button removed. Individual item exchange is better. */}
             </div>
           ))}
         </div>

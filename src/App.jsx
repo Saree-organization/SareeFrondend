@@ -25,6 +25,7 @@ import KatanSilk from "./pages/saree-pages/KatanSilk";
 import TissueSilk from "./pages/saree-pages/TissueSilk";
 import CelebritySaree from "./pages/saree-pages/CelebritySaree";
 
+
 // Footer Pages
 import AboutUs from "./pages/footer-pages/AboutUs";
 import Contact from "./pages/footer-pages/Contact";
@@ -33,6 +34,7 @@ import FAQ from "./pages/footer-pages/FAQ";
 import PrivacyPolicy from "./pages/footer-pages/PrivacyPolicy";
 import ReturnedAndExchangePolicy from "./pages/footer-pages/ReturnedAndExchangePolicy";
 import TermsOfService from "./pages/footer-pages/TermsOfService";
+import ExchangeForm from './components/ExchangeForm'; // यह मानकर कि यह फाइल बना ली है
 
 // Admin Pages
 import AddSaree from "./pages/admin-pages/AddSaree";
@@ -73,6 +75,10 @@ const App = () => {
                 <Route path="sarees/:id/:variantId" element={<SareeDetail />} />
                 <Route path="wishlist" element={<Wishlist />} />
                 <Route path="cart" element={<Cart />} />
+                <Route
+                  path="/exchange-request/:razorpayOrderId/:orderItemId"
+                  element={<ExchangeForm />}
+                />
 
                 {/* Footer Pages */}
                 <Route path="about-us" element={<AboutUs />} />
