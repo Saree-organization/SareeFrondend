@@ -5,50 +5,50 @@ import "../css/TrackOrder.css";
 
 function TrackOrder() {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
+  const fetchOrders = async (pageNumber = 0) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("authToken");
 
-        if (!token) {
-          setError("Please log in to view your orders.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await API.get("/api/payment/orders", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (Array.isArray(response.data)) {
-          const updatedOrders = response.data.map((order) => ({
-            ...order,
-            orderStatus: order.orderStatus || "Processing",
-          }));
-          setOrders(updatedOrders);
-        } else {
-          setError("Failed to fetch order data.");
-          setOrders([]);
-        }
-      } catch (err) {
-        console.error("API call failed:", err);
-        if (err.response && err.response.status === 401) {
-          setError("Session expired. Please log in again.");
-          localStorage.removeItem("authToken");
-          setTimeout(() => navigate("/login"), 2000);
-        } else {
-          setError("Failed to fetch orders. Please try again.");
-        }
-      } finally {
+      if (!token) {
+        setError("Please log in to view your orders.");
         setLoading(false);
+        return;
       }
-    };
 
-    fetchOrders();
+      const response = await API.get("/api/payment/orders", {
+        params: { page: pageNumber, size: 5 }, // 5 orders per page
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const { orders: newOrders, currentPage, totalPages } = response.data;
+
+      setOrders(newOrders);
+      setPage(currentPage);
+      setTotalPages(totalPages);
+
+    } catch (err) {
+      console.error("API call failed:", err);
+      if (err.response && err.response.status === 401) {
+        setError("Session expired. Please log in again.");
+        localStorage.removeItem("authToken");
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        setError("Failed to fetch orders. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders(0);
   }, [navigate]);
 
   const handleStatusChange = (orderId) => {
@@ -63,9 +63,7 @@ function TrackOrder() {
               : o
           )
         );
-        alert(
-          "Exchange requested successfully! An admin will review your request."
-        );
+        alert("Exchange requested successfully! Admin will review it.");
       })
       .catch((err) => {
         console.error("Failed to request exchange:", err);
@@ -73,24 +71,9 @@ function TrackOrder() {
       });
   };
 
-  if (loading) {
-    return (
-      <div className="container  text-center loader-container">
-        <div
-          className="spinner-border text-primary"
-          role="status"
-          style={{ width: "3rem", height: "3rem" }}
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
-        <p className="mt-3">Fetching your orders, please wait...</p>
-      </div>
-    );
-  }
-
   if (error) {
     return (
-      <div className="container  text-center">
+      <div className="container text-center">
         <p className="alert alert-danger">{error}</p>
         {error.includes("log in") && (
           <Link to="/login" className="btn btn-primary mt-3">
@@ -102,9 +85,17 @@ function TrackOrder() {
   }
 
   return (
-    <div className="container  track-order-page">
+    <div className="container track-order-page">
       <h2 className="mb-4 text-center">My Orders 📦</h2>
-      {orders.length === 0 ? (
+
+      {loading ? (
+        <div className="text-center my-4">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-3">Fetching orders...</p>
+        </div>
+      ) : orders.length === 0 ? (
         <div className="text-center">
           <p className="alert alert-info">
             You have not placed any successful orders yet.
@@ -115,7 +106,7 @@ function TrackOrder() {
           </p>
         </div>
       ) : (
-        <div className="orders-list">
+        <>
           {orders.map((order) => (
             <div key={order.razorpayOrderId} className="card mb-4 shadow-sm">
               <div className="card-header bg-light p-3">
@@ -126,19 +117,16 @@ function TrackOrder() {
                       {order.razorpayOrderId || "N/A"}
                     </span>
                   </h5>
-                  <div className="d-flex flex-wrap gap-2">
-              
-                 <span
-  className={`badge rounded-pill fs-6 status-text ${order.orderStatus.toLowerCase().replace(/\s+/g, "-")}`}
->
-  {order.orderStatus}
-</span>
-
-                  </div>
+                  <span
+                    className={`badge rounded-pill fs-6 status-text ${order.orderStatus
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {order.orderStatus}
+                  </span>
                 </div>
                 <p className="card-text text-muted mb-0 mt-2">
-                  Total Amount:{" "}
-                  <span className="fw-bold">Rs. {order.totalAmount}</span>
+                  Total Amount: <span className="fw-bold">Rs. {order.totalAmount}</span>
                 </p>
                 <p className="card-text text-muted">
                   Date: {new Date(order.createdAt).toLocaleDateString()}
@@ -149,29 +137,11 @@ function TrackOrder() {
                   <table className="table table-striped table-hover mb-0">
                     <thead>
                       <tr>
-                        <th scope="col" style={{ width: "5%" }}>
-                          #
-                        </th>
-                        <th scope="col" style={{ width: "15%" }}>
-                          Image
-                        </th>
-                        <th scope="col" style={{ width: "40%" }}>
-                          Product Name
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-center"
-                          style={{ width: "20%" }}
-                        >
-                          Quantity
-                        </th>
-                        <th
-                          scope="col"
-                          className="text-end"
-                          style={{ width: "20%" }}
-                        >
-                          Price
-                        </th>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th className="text-center">Quantity</th>
+                        <th className="text-end">Price</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -181,32 +151,20 @@ function TrackOrder() {
                             <th scope="row">{index + 1}</th>
                             <td>
                               <img
-                                src={
-                                  item.imageUrl ||
-                                  "https://via.placeholder.com/50"
-                                }
+                                src={item.imageUrl || "https://via.placeholder.com/50"}
                                 alt={item.productName || "Product"}
                                 className="img-thumbnail"
-                                style={{
-                                  width: "50px",
-                                  height: "50px",
-                                  objectFit: "cover",
-                                }}
+                                style={{ width: "50px", height: "50px", objectFit: "cover" }}
                               />
                             </td>
                             <td>{item.productName || "Unnamed Item"}</td>
                             <td className="text-center">{item.quantity}</td>
-                            <td className="text-end">
-                              Rs. {item.price * item.quantity}
-                            </td>
+                            <td className="text-end">Rs. {item.price * item.quantity}</td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td
-                            colSpan="5"
-                            className="text-center text-muted py-3"
-                          >
+                          <td colSpan="5" className="text-center text-muted py-3">
                             No items found for this order.
                           </td>
                         </tr>
@@ -227,7 +185,20 @@ function TrackOrder() {
               </div>
             </div>
           ))}
-        </div>
+
+          {/* Pagination Buttons */}
+          <div className="pagination-container">
+        <button disabled={page === 0} onClick={() => fetchOrders(page - 1)}>
+          Prev
+        </button>
+        <span>
+          Page {page + 1} of {totalPages}
+        </span>
+        <button disabled={page + 1 === totalPages} onClick={() => fetchOrders(page + 1)}>
+          Next
+        </button>
+      </div>
+        </>
       )}
     </div>
   );
