@@ -20,55 +20,48 @@ function AdminDashboard() {
   const [filterStatus, setFilterStatus] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
-  // applied filters
-  const [appliedStatus, setAppliedStatus] = useState("");
-  const [appliedDate, setAppliedDate] = useState("");
+  // colors for pie chart
+  const COLORS = ["#ffb347", "#82ca9d"];
 
-  useEffect(() => {
-    API.get(`/api/payment/admin-orders`)
-      .then((res) => setOrders(res.data))
+  // fetch orders (with optional filters)
+  const fetchOrders = (status, date) => {
+    let url = `/api/payment/admin-all-orders?`;
+    if (status) url += `status=${status}&`;
+    if (date) url += `date=${date}&`;
+
+    API.get(url)
+      .then((res) => {
+        console.log(res.data.orders);
+        setOrders(res.data.orders);
+      })
       .catch((err) => console.error("Error fetching orders:", err));
-  }, []);
-
-  // apply filters only when button clicked
-  const handleFilterClick = () => {
-    setAppliedStatus(filterStatus);
-    setAppliedDate(filterDate);
   };
 
-  // filtered orders
-  const filteredOrders = orders.filter((o) => {
-    let statusOk = true;
-    let dateOk = true;
+  // load all orders initially
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
-    if (appliedStatus) {
-      // using orderStatus instead of status
-      statusOk =
-        (o.orderStatus?.toUpperCase() || "") === appliedStatus.toUpperCase();
-    }
-    if (appliedDate) {
-      const orderDate = new Date(o.createdAt).toISOString().split("T")[0];
-      dateOk = orderDate === appliedDate;
-    }
+  // apply filters when button clicked
+  const handleFilterClick = () => {
+    fetchOrders(filterStatus, filterDate);
+  };
 
-    return statusOk && dateOk;
-  });
-
-  // summary counts from filtered orders
-  const totalOrders = filteredOrders.length;
-  const totalRevenue = filteredOrders.reduce(
+  // summary counts
+  const totalOrders = orders.length;
+  const totalRevenue = orders.reduce(
     (sum, o) => sum + (o.totalAmount || 0),
     0
   );
-  const shippingOrders = filteredOrders.filter(
+  const shippingOrders = orders.filter(
     (o) => o.orderStatus?.toUpperCase() === "SHIPPING"
   ).length;
-  const deliveredOrders = filteredOrders.filter(
+  const deliveredOrders = orders.filter(
     (o) => o.orderStatus?.toUpperCase() === "DELIVERED"
   ).length;
 
   // group revenue by date for bar chart
-  const revenueByDate = filteredOrders.reduce((acc, o) => {
+  const revenueByDate = orders.reduce((acc, o) => {
     const date = new Date(o.createdAt).toLocaleDateString();
     acc[date] = (acc[date] || 0) + (o.totalAmount || 0);
     return acc;
@@ -83,7 +76,6 @@ function AdminDashboard() {
     { name: "Shipping", value: shippingOrders },
     { name: "Delivered", value: deliveredOrders },
   ];
-  const COLORS = ["#ffb347", "#82ca9d"];
 
   return (
     <div className="admin-dashboard">
