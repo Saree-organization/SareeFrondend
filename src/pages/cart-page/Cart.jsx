@@ -10,6 +10,7 @@ function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [updatingItemIds, setUpdatingItemIds] = useState([]);
   const { fetchCartCount } = useCart();
 
   const fetchCart = async () => {
@@ -21,7 +22,9 @@ function Cart() {
         return;
       }
 
-      const response = await API.get("/api/cart");
+      const response = await API.get("/api/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (Array.isArray(response.data)) {
         setCartItems(response.data);
@@ -42,26 +45,19 @@ function Cart() {
     fetchCart();
   }, [fetchCartCount]);
 
-  // ⭐ नया Async फ़ंक्शन: स्टॉक चेक और क्वांटिटी अपडेट के लिए
+  // ✅ Updated quantity handler with button disable & rollback
   const handleUpdateQuantity = async (cartItemId, newQuantity) => {
     if (newQuantity < 0) return;
+    if (updatingItemIds.includes(cartItemId)) return;
 
-    // यदि Quantity 0 हो रही है, तो आइटम हटाने की पुष्टि करें
-    if (newQuantity === 0) {
-      const confirmRemove = window.confirm(
-        "Do you want to remove this item from the cart?"
-      );
-      if (!confirmRemove) return;
-    }
-
-    // UI को Optimistically अपडेट करें (ताकि यूजर को तुरंत बदलाव दिखे)
-    // यदि API फेल होता है, तो हम रोलबैक करेंगे।
-    const originalCartItems = cartItems;
-    setCartItems(
-      cartItems.map((item) =>
+    const originalCartItems = [...cartItems];
+    setCartItems((prev) =>
+      prev.map((item) =>
         item.id === cartItemId ? { ...item, quantity: newQuantity } : item
       )
     );
+
+    setUpdatingItemIds((prev) => [...prev, cartItemId]);
 
     try {
       const token = localStorage.getItem("authToken");
@@ -71,20 +67,17 @@ function Cart() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // यदि आइटम सफलतापूर्वक हटा दिया गया है (newQuantity 0 होने पर)
+      // If item removed (quantity 0)
       if (!response.data.updatedItem && newQuantity === 0) {
-        setCartItems(
-          originalCartItems.filter((item) => item.id !== cartItemId)
-        );
+        setCartItems((prev) => prev.filter((item) => item.id !== cartItemId));
         fetchCartCount();
         alert("Item removed from cart!");
         return;
       }
 
-      // यदि क्वांटिटी सफलतापूर्वक अपडेट हुई है, तो UI को API डेटा से फाइनल करें
       const updatedData = response.data.updatedItem;
-      setCartItems((prevItems) =>
-        prevItems.map((item) =>
+      setCartItems((prev) =>
+        prev.map((item) =>
           item.id === updatedData.id
             ? { ...item, quantity: updatedData.quantity }
             : item
@@ -96,19 +89,21 @@ function Cart() {
       alert(
         err.response?.data?.message || "Failed to update quantity. Check stock."
       );
-
-      // API विफल होने पर UI को रोलबैक करें या पूरा कार्ट दोबारा fetch करें
+      // Rollback on error
       setCartItems(originalCartItems);
-      fetchCartCount(); // यदि स्टॉक बदला है तो काउंट अपडेट करें
+      fetchCartCount();
+    } finally {
+      setUpdatingItemIds((prev) => prev.filter((id) => id !== cartItemId));
     }
   };
 
-  // पुरानी handleQuantityChange को हटा दिया गया है
-
   const handleRemoveItem = async (cartItemId) => {
     try {
-      await API.delete(`/api/cart/remove/${cartItemId}`);
-      setCartItems(cartItems.filter((item) => item.id !== cartItemId));
+      const token = localStorage.getItem("authToken");
+      await API.delete(`/api/cart/remove/${cartItemId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setCartItems((prev) => prev.filter((item) => item.id !== cartItemId));
       fetchCartCount();
       alert("Item removed from cart!");
     } catch (err) {
@@ -118,7 +113,8 @@ function Cart() {
 
   const calculateCartTotal = () => {
     return cartItems.reduce(
-      (total, item) => total + item.variant.priceAfterDiscount * item.quantity,
+      (total, item) =>
+        total + (item.variant?.priceAfterDiscount || 0) * item.quantity,
       0
     );
   };
@@ -132,7 +128,6 @@ function Cart() {
     navigate("/checkout/address");
   };
 
-  // handleCheckouts (Razorpay) लॉजिक में कोई बदलाव नहीं
   const handleCheckouts = async () => {
     try {
       const orderTotal = calculateCartTotal();
@@ -142,18 +137,10 @@ function Cart() {
       }
 
       const token = localStorage.getItem("authToken");
-      console.log("Auth Token:", token); // Debugging line
-
       const { data } = await API.post(
         "/api/payment/create-order",
-        {
-          amount: parseFloat(orderTotal), // also helps with issue #2
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { amount: parseFloat(orderTotal) },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       const options = {
@@ -191,12 +178,8 @@ function Cart() {
           email: "customer@example.com",
           contact: "9999999999",
         },
-        notes: {
-          address: "Your address here",
-        },
-        theme: {
-          color: "#A52A2A",
-        },
+        notes: { address: "Your address here" },
+        theme: { color: "#A52A2A" },
       };
 
       const rzp1 = new window.Razorpay(options);
@@ -212,24 +195,24 @@ function Cart() {
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    return () => document.body.removeChild(script);
   }, []);
 
   if (loading)
     return (
       <div className="cart-page">
+        <div className="loader"></div>
         <p>Loading your cart...</p>
       </div>
     );
+
   if (error)
     return (
       <div className="cart-page">
         <p className="error-message">{error}</p>
       </div>
     );
+
   if (cartItems.length === 0)
     return (
       <div className="cart-page">
@@ -273,8 +256,8 @@ function Cart() {
 
                   <td className="quantity-controls">
                     <button
+                      disabled={updatingItemIds.includes(item.id)}
                       onClick={() =>
-                        // ⭐ handleUpdateQuantity का उपयोग करें
                         handleUpdateQuantity(item.id, item.quantity - 1)
                       }
                     >
@@ -285,18 +268,18 @@ function Cart() {
                       type="number"
                       value={item.quantity}
                       onChange={(e) =>
-                        // ⭐ handleUpdateQuantity का उपयोग करें
                         handleUpdateQuantity(
                           item.id,
                           parseInt(e.target.value) || 1
                         )
                       }
                       min="1"
+                      disabled={updatingItemIds.includes(item.id)}
                     />
 
                     <button
+                      disabled={updatingItemIds.includes(item.id)}
                       onClick={() =>
-                        // ⭐ handleUpdateQuantity का उपयोग करें
                         handleUpdateQuantity(item.id, item.quantity + 1)
                       }
                     >
@@ -304,7 +287,9 @@ function Cart() {
                     </button>
                   </td>
 
-                  <td>{item.variant?.priceAfterDiscount * item.quantity}</td>
+                  <td>
+                    Rs. {item.variant?.priceAfterDiscount * item.quantity}
+                  </td>
 
                   <td>
                     <button

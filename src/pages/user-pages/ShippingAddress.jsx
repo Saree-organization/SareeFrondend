@@ -9,8 +9,8 @@ function ShippingAddress() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [addresses, setAddresses] = useState([]); // selectedAddressId is initialized to null
-  const [selectedAddressId, setSelectedAddressId] = useState(null); // New Address Form State
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
 
   const [newAddress, setNewAddress] = useState({
     fullName: "",
@@ -20,8 +20,10 @@ function ShippingAddress() {
     pincode: "",
     phone: "",
   });
-  const [showNewAddressForm, setShowNewAddressForm] = useState(false); // ********************************** // 1. Fetching user addresses and cart items (useEffect) // **********************************
+  const [showNewAddressForm, setShowNewAddressForm] = useState(false);
+  const [isSaving, setIsSaving] = useState(false); // To prevent double submission
 
+  // -------------------------- Fetch Cart & Addresses --------------------------
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,32 +32,34 @@ function ShippingAddress() {
           setError("Please log in to manage addresses and view your order.");
           setLoading(false);
           return;
-        } // --- Fetch Cart Items ---
+        }
 
-        const cartResponse = await API.get("/api/cart");
-        if (Array.isArray(cartResponse.data)) {
-          setCartItems(cartResponse.data);
-        } else {
-          setCartItems([]);
-          console.error(
-            "API cart response is not an array:",
-            cartResponse.data
-          );
-        } // --- Fetch Addresses ---
+        // Fetch Cart Items
+        const cartResponse = await API.get("/api/cart", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (Array.isArray(cartResponse.data)) setCartItems(cartResponse.data);
+        else setCartItems([]);
 
-        const addressResponse = await API.get("/api/user/addresses");
-
+        // Fetch Addresses
+        const addressResponse = await API.get("/api/user/addresses", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         if (
           Array.isArray(addressResponse.data) &&
           addressResponse.data.length > 0
         ) {
           setAddresses(addressResponse.data);
-          setSelectedAddressId(String(addressResponse.data[0].id));
+          // 💡 Initial selection: Find the last selected address or the first one
+          const defaultAddress =
+            addressResponse.data.find((addr) => addr.isSelected) ||
+            addressResponse.data[0];
+          setSelectedAddressId(String(defaultAddress.id));
           setShowNewAddressForm(false);
         } else {
           setAddresses([]);
           setSelectedAddressId(null);
-          setShowNewAddressForm(true);
+          setShowNewAddressForm(true); // Show form if no addresses exist
         }
       } catch (err) {
         console.error("Failed to fetch data:", err);
@@ -65,21 +69,19 @@ function ShippingAddress() {
       }
     };
 
-    fetchData(); // Razorpay script loading logic
+    fetchData();
 
+    // Load Razorpay script
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
 
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []); // ********************************** // Cart calculation and address saving // **********************************
-
+  // -------------------------- Cart Total --------------------------
   const calculateCartTotal = () => {
     if (!Array.isArray(cartItems)) return 0;
-
     return cartItems.reduce(
       (total, item) =>
         item.variant?.priceAfterDiscount && item.quantity
@@ -93,8 +95,30 @@ function ShippingAddress() {
     console.log("Cart count refresh called (dummy function).");
   };
 
+  // -------------------------- Select Address --------------------------
+  const handleSelectAddress = async (addressId) => {
+    setSelectedAddressId(addressId);
+    const token = localStorage.getItem("authToken");
+    if (!token) return;
+
+    try {
+      // 💡 Mark as selected in DB
+      await API.put(
+        `/api/user/addresses/select/${addressId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("Selected address saved in database!");
+    } catch (err) {
+      console.error("Failed to save selected address:", err);
+    }
+  };
+
+  // -------------------------- Save New Address --------------------------
   const handleSaveNewAddress = async (e) => {
     e.preventDefault();
+    if (isSaving) return;
+
     if (
       !newAddress.fullName ||
       !newAddress.street ||
@@ -107,9 +131,20 @@ function ShippingAddress() {
       return;
     }
 
+    setIsSaving(true);
     try {
-      const response = await API.post("/api/user/addresses", newAddress);
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        alert("Authentication error. Please log in again.");
+        return;
+      }
+
+      const response = await API.post("/api/user/addresses", newAddress, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const savedAddress = response.data;
+
+      // 1. Update local state
       setAddresses([...addresses, savedAddress]);
       setSelectedAddressId(String(savedAddress.id));
       setShowNewAddressForm(false);
@@ -121,43 +156,53 @@ function ShippingAddress() {
         pincode: "",
         phone: "",
       });
-      alert("New address saved and selected successfully!");
+
+      // 2. Select the new address in the backend
+      // This is crucial for the /api/payment/create-order to pick it up later
+      await API.put(
+        `/api/user/addresses/select/${savedAddress.id}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      alert(
+        "New address saved and selected successfully! You can now proceed to payment."
+      );
     } catch (err) {
       console.error("Failed to save new address:", err);
       alert(
         err.response?.data?.message ||
           "Failed to save address. Please try again."
       );
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  // --- NEW CANCELLATION LOGIC ---
-
-  /**
-   * Informs the backend to update the status of the pre-created order to 'Cancelled'.
-   * This runs when the user closes the Razorpay payment popup.
-   */
+  // -------------------------- Payment Cancellation --------------------------
   const handlePaymentDismissal = async (orderId) => {
     try {
-      // Call the backend endpoint to mark the order as Cancelled
-      await API.post("/api/payment/cancel-order", {
-        razorpayOrderId: orderId,
-      });
+      await API.post("/api/payment/cancel-order", { razorpayOrderId: orderId });
       console.log(`Order ${orderId} marked as Cancelled on server.`);
     } catch (err) {
       console.error("Failed to mark order as cancelled on server:", err);
-      // We usually don't alert the user here unless the failure is critical.
     }
-  }; // ********************************** // 2. Proceed to Payment (UPDATED) // **********************************
+  };
 
+  // -------------------------- Proceed to Payment --------------------------
   const handleProceedToPayment = async () => {
     const orderTotal = calculateCartTotal();
 
-    if (!selectedAddressId) {
+    // 💡 FIX: Use the most current selected address ID.
+    // Since the state update is asynchronous, we rely on the component having re-rendered
+    // OR we can fetch the currently selected address from the list if needed,
+    // but the simplest fix is to trust the button click happens after state update.
+    const addressToUse = selectedAddressId;
+
+    if (!addressToUse) {
       alert("Please select a shipping address to proceed.");
       return;
     }
-
     if (orderTotal <= 0) {
       alert("Your cart is empty or the total is 0.");
       navigate("/cart");
@@ -165,19 +210,16 @@ function ShippingAddress() {
     }
 
     try {
-      const token = localStorage.getItem("authToken"); // Step 1: Create Order in Backend (Status: 'Created')
+      const token = localStorage.getItem("authToken");
 
+      // 💡 The key is passing the correct addressToUse here (which is selectedAddressId after state update)
       const { data } = await API.post(
         "/api/payment/create-order",
         {
           amount: parseFloat(orderTotal),
-          shippingAddressId: selectedAddressId,
+          shippingAddressId: addressToUse,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       const options = {
@@ -186,19 +228,16 @@ function ShippingAddress() {
         currency: "INR",
         name: "Saree Shop",
         description: "Payment for your order",
-        order_id: data.razorpayOrderId, // Success Handler
-
+        order_id: data.razorpayOrderId,
         handler: async function (response) {
           const paymentData = {
             razorpayPaymentId: response.razorpay_payment_id,
             razorpayOrderId: response.razorpay_order_id,
             razorpaySignature: response.razorpay_signature,
             totalAmount: orderTotal,
-            shippingAddressId: selectedAddressId,
+            shippingAddressId: addressToUse, // Use the correct ID here as well
           };
-
           try {
-            // Step 3: Verify Payment and update status to 'Success'
             const verificationResponse = await API.post(
               "/api/payment/verify",
               paymentData
@@ -214,28 +253,21 @@ function ShippingAddress() {
             );
           }
         },
-
-        // ⭐ FIX: Handle user cancellation/dismissal
         modal: {
           ondismiss: function () {
-            console.log("Razorpay window closed by user. Cancelling order...");
-            // Step 4: Call backend to change order status to 'Cancelled'
             handlePaymentDismissal(data.razorpayOrderId);
             alert(
               "Payment was cancelled. Your order has been automatically cancelled."
             );
           },
         },
-
         prefill: {
           name: "Customer Name",
           email: "customer@example.com",
           contact: "9999999999",
         },
-        theme: {
-          color: "#A52A2A",
-        },
-      }; // Step 2: Open Razorpay Popup
+        theme: { color: "#A52A2A" },
+      };
 
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
@@ -243,49 +275,41 @@ function ShippingAddress() {
       console.error("Checkout failed:", err);
       alert(err.response?.data?.message || "Failed to proceed to payment.");
     }
-  }; // ********************************** // 3. Render logic (No change needed here) // **********************************
+  };
 
+  // -------------------------- Render Logic --------------------------
   if (loading)
     return (
       <div className="checkout-page">
-                <p>Loading address options...</p>     {" "}
+        <div className="loader-container">
+          <div className="loader"></div>
+          <p>Loading address options...</p>
+        </div>
       </div>
     );
   if (error)
     return (
       <div className="checkout-page">
-                <p className="error-message">{error}</p>     {" "}
+        <p className="error-message">{error}</p>
       </div>
     );
 
-  if (cartItems.length === 0 && !loading) {
+  if (cartItems.length === 0)
     return (
       <div className="checkout-page">
-               {" "}
         <p className="error-message">
-                    Your cart is empty. Please add items to proceed.        {" "}
+          Your cart is empty. Please add items to proceed.
         </p>
-             {" "}
       </div>
     );
-  }
 
   return (
     <div className="checkout-page">
-            <h2>Shipping Address & Payment</h2>     {" "}
+      <h2>Shipping Address & Payment</h2>
       <div className="checkout-content">
-               {" "}
         <div className="address-section">
-                    <h3>1. Select Delivery Address</h3>         {" "}
+          <h3>1. Select Delivery Address</h3>
           <div className="saved-addresses-list">
-                       {" "}
-            {addresses.length === 0 && !showNewAddressForm ? (
-              <p className="info-message">
-                                कृपया आगे बढ़ने के लिए एक नया शिपिंग एड्रेस
-                जोड़ें।              {" "}
-              </p>
-            ) : null}
-                        {/* Saved Addresses List */}           {" "}
             {addresses.map((addr) => (
               <div
                 key={addr.id}
@@ -294,49 +318,38 @@ function ShippingAddress() {
                     ? "selected"
                     : ""
                 }`}
-                onClick={() => setSelectedAddressId(String(addr.id))}
+                onClick={() => handleSelectAddress(String(addr.id))}
               >
-                               {" "}
                 <input
                   type="radio"
                   name="shippingAddress"
                   checked={String(selectedAddressId) === String(addr.id)}
                   readOnly
                 />
-                               {" "}
                 <label>
-                                    <strong>{addr.fullName}</strong>           
-                       {" "}
+                  <strong>{addr.fullName}</strong>
                   <p>
-                                        {addr.street}, {addr.city}, {addr.state}{" "}
-                    - {addr.pincode}                 {" "}
+                    {addr.street}, {addr.city}, {addr.state} - {addr.pincode}
                   </p>
-                                    <p>Phone: {addr.phone}</p>               {" "}
+                  <p>Phone: {addr.phone}</p>
                 </label>
-                             {" "}
               </div>
             ))}
-                        {/* Add New Address Button */}           {" "}
-            {addresses.length > 0 && (
-              <button
-                className="add-new-btn"
-                onClick={() => setShowNewAddressForm(!showNewAddressForm)}
-              >
-                               {" "}
-                {showNewAddressForm
-                  ? "Cancel New Address"
-                  : "+ Add a New Address"}
-                             {" "}
-              </button>
-            )}
-                     {" "}
+
+            <button
+              className="add-new-btn"
+              onClick={() => setShowNewAddressForm(!showNewAddressForm)}
+              disabled={isSaving}
+            >
+              {showNewAddressForm
+                ? "Cancel New Address"
+                : "+ Add a New Address"}
+            </button>
           </div>
-                    {/* New Address Form */}         {" "}
+
           {(showNewAddressForm || addresses.length === 0) && (
             <form className="new-address-form" onSubmit={handleSaveNewAddress}>
-                           {" "}
               {addresses.length > 0 && <h4>Enter New Address Details</h4>}
-                           {" "}
               <input
                 type="text"
                 placeholder="Full Name"
@@ -346,7 +359,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Street Address, Area"
@@ -356,7 +368,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="City"
@@ -366,7 +377,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="State"
@@ -376,7 +386,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Pincode"
@@ -386,7 +395,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Phone Number"
@@ -396,55 +404,44 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
-              <button type="submit" className="save-address-btn">
-                                Save Address & Select              {" "}
+              <button
+                type="submit"
+                className="save-address-btn"
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving..." : "Save Address & Select"}
               </button>
-                         {" "}
             </form>
           )}
-                 {" "}
         </div>
-               {" "}
+
         <div className="order-summary-and-payment">
-                    <h3>2. Order Summary</h3>         {" "}
+          <h3>2. Order Summary</h3>
           <div className="cart-summary">
-                       {" "}
             <div className="summary-item">
-                            <span>Subtotal:</span>             {" "}
-              <span>Rs. {calculateCartTotal()}</span>           {" "}
+              <span>Subtotal:</span> <span>Rs. {calculateCartTotal()}</span>
             </div>
-                       {" "}
             <div className="summary-item">
-                            <span>Shipping:</span>             {" "}
-              <span>Free</span>           {" "}
+              <span>Shipping:</span> <span>Free</span>
             </div>
-                       {" "}
             <div className="summary-total">
-                            <span>Total:</span>             {" "}
-              <span>Rs. {calculateCartTotal()}</span>           {" "}
+              <span>Total:</span> <span>Rs. {calculateCartTotal()}</span>
             </div>
-                       {" "}
             <button
               className="checkout-btn"
-              onClick={handleProceedToPayment} // The button is enabled if selectedAddressId is NOT null/undefined AND cart total > 0
-              disabled={!selectedAddressId || calculateCartTotal() <= 0}
+              onClick={handleProceedToPayment}
+              disabled={
+                !selectedAddressId || calculateCartTotal() <= 0 || isSaving
+              }
             >
-                            Proceed to Payment (Rs. {calculateCartTotal()})    
-                     {" "}
+              Proceed to Payment (Rs. {calculateCartTotal()})
             </button>
-                     {" "}
           </div>
-                   {" "}
           <p className="payment-note">
-                        By clicking 'Proceed to Payment', you agree to our
-            terms.          {" "}
+            By clicking 'Proceed to Payment', you agree to our terms.
           </p>
-                 {" "}
         </div>
-             {" "}
       </div>
-         {" "}
     </div>
   );
 }
