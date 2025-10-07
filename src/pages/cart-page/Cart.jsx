@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../api/API";
@@ -42,11 +41,8 @@ function Cart() {
     fetchCart();
   }, [fetchCartCount]);
 
-  // ⭐ नया Async फ़ंक्शन: स्टॉक चेक और क्वांटिटी अपडेट के लिए
   const handleUpdateQuantity = async (cartItemId, newQuantity) => {
     if (newQuantity < 0) return;
-
-    // यदि Quantity 0 हो रही है, तो आइटम हटाने की पुष्टि करें
     if (newQuantity === 0) {
       const confirmRemove = window.confirm(
         "Do you want to remove this item from the cart?"
@@ -54,8 +50,7 @@ function Cart() {
       if (!confirmRemove) return;
     }
 
-    // UI को Optimistically अपडेट करें (ताकि यूजर को तुरंत बदलाव दिखे)
-    // यदि API फेल होता है, तो हम रोलबैक करेंगे।
+
     const originalCartItems = cartItems;
     setCartItems(
       cartItems.map((item) =>
@@ -64,14 +59,11 @@ function Cart() {
     );
 
     try {
-      const token = localStorage.getItem("authToken");
       const response = await API.put(
         `/api/cart/update-quantity/${cartItemId}`,
-        { quantity: newQuantity },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { quantity: newQuantity }
       );
 
-      // यदि आइटम सफलतापूर्वक हटा दिया गया है (newQuantity 0 होने पर)
       if (!response.data.updatedItem && newQuantity === 0) {
         setCartItems(
           originalCartItems.filter((item) => item.id !== cartItemId)
@@ -81,7 +73,6 @@ function Cart() {
         return;
       }
 
-      // यदि क्वांटिटी सफलतापूर्वक अपडेट हुई है, तो UI को API डेटा से फाइनल करें
       const updatedData = response.data.updatedItem;
       setCartItems((prevItems) =>
         prevItems.map((item) =>
@@ -97,13 +88,11 @@ function Cart() {
         err.response?.data?.message || "Failed to update quantity. Check stock."
       );
 
-      // API विफल होने पर UI को रोलबैक करें या पूरा कार्ट दोबारा fetch करें
       setCartItems(originalCartItems);
-      fetchCartCount(); // यदि स्टॉक बदला है तो काउंट अपडेट करें
+      fetchCartCount(); 
     }
   };
 
-  // पुरानी handleQuantityChange को हटा दिया गया है
 
   const handleRemoveItem = async (cartItemId) => {
     try {
@@ -130,81 +119,6 @@ function Cart() {
       return;
     }
     navigate("/checkout/address");
-  };
-
-  // handleCheckouts (Razorpay) लॉजिक में कोई बदलाव नहीं
-  const handleCheckouts = async () => {
-    try {
-      const orderTotal = calculateCartTotal();
-      if (orderTotal <= 0) {
-        alert("Your cart is empty or the total is 0.");
-        return;
-      }
-
-      const token = localStorage.getItem("authToken");
-      console.log("Auth Token:", token); // Debugging line
-
-      const { data } = await API.post(
-        "/api/payment/create-order",
-        {
-          amount: parseFloat(orderTotal), // also helps with issue #2
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const options = {
-        key: "rzp_test_RJ1F2vjHY8vjny",
-        amount: data.amount,
-        currency: "INR",
-        name: "Saree Shop",
-        description: "Payment for your order",
-        order_id: data.razorpayOrderId,
-        handler: async function (response) {
-          const paymentData = {
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
-            totalAmount: orderTotal,
-          };
-
-          try {
-            const verificationResponse = await API.post(
-              "/api/payment/verify",
-              paymentData
-            );
-            alert(verificationResponse.data.message);
-            setCartItems([]);
-            fetchCartCount();
-          } catch (error) {
-            console.error("Payment verification failed:", error);
-            alert(
-              error.response?.data?.message || "Payment verification failed!"
-            );
-          }
-        },
-        prefill: {
-          name: "Customer Name",
-          email: "customer@example.com",
-          contact: "9999999999",
-        },
-        notes: {
-          address: "Your address here",
-        },
-        theme: {
-          color: "#A52A2A",
-        },
-      };
-
-      const rzp1 = new window.Razorpay(options);
-      rzp1.open();
-    } catch (err) {
-      console.error("Checkout failed:", err);
-      alert(err.response?.data?.message || "Failed to proceed to checkout.");
-    }
   };
 
   useEffect(() => {
