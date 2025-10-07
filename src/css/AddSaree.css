@@ -66,3 +66,61 @@
 .btn.secondary:hover {
   background: #2c8d46;
 }
+
+.color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 5px 0 10px 0;
+}
+
+.color-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.color-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: 0.2s;
+}
+
+.color-box:hover {
+  transform: scale(1.1);
+  border-color: #4a90e2;
+}
+
+.color-box.selected {
+  border: 2px solid #4a90e2;
+}
+
+.color-name {
+  font-size: 10px;
+  margin-top: 3px;
+  text-align: center;
+  width: 40px;
+  word-wrap: break-word;
+}
+
+
+.variant-color-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-select {
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.color-box-preview {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}

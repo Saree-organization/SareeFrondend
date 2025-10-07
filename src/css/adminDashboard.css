@@ -1,6 +1,8 @@
-body{
-  padding: 0px ;
+body {
+  padding: 0;
+  margin: 0;
 }
+
 /* Container */
 .admin-dashboard {
   padding: 20px;
@@ -11,29 +13,45 @@ body{
 
 /* Filters */
 .filters {
-
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 20px;
   background: #fff;
-  padding: 10px 15px;
+  padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
 .filters label {
   display: flex;
   flex-direction: column;
   font-size: 14px;
   color: #333;
 }
+
 .filters select,
 .filters input[type="date"] {
   padding: 6px 8px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.filter-btn {
+  background-color: #0077b6;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.filter-btn:hover {
+  background-color: #005f8c;
 }
 
 /* Summary Cards */
@@ -43,6 +61,7 @@ body{
   gap: 15px;
   margin-bottom: 30px;
 }
+
 .summary-cards .card {
   background-color: #fff;
   padding: 15px;
@@ -51,15 +70,18 @@ body{
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 .summary-cards .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
 .summary-cards .card h3 {
   font-size: 16px;
   color: #555;
   margin-bottom: 8px;
 }
+
 .summary-cards .card p {
   font-size: 20px;
   font-weight: bold;
@@ -73,15 +95,67 @@ body{
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 20px;
 }
+
 .chart {
   background-color: #fff;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow-x: auto; /* allows chart to scroll if small screen */
 }
+
 .chart h4 {
   margin-bottom: 10px;
   font-size: 15px;
   color: #444;
   text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters label {
+    width: 100%;
+  }
+
+  .filters select,
+  .filters input[type="date"],
+  .filter-btn {
+    width: 100%;
+  }
+
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    overflow-x: auto;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    padding: 10px;
+  }
+
+  .chart h4 {
+    font-size: 14px;
+  }
+
+  .filter-btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
 }

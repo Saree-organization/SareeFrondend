@@ -1,0 +1,62 @@
+.color-dropdown {
+  position: relative;
+  width: 200px;
+  cursor: pointer;
+}
+
+.color-selected {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.color-options {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 10;
+  border-radius: 6px;
+  padding: 5px 0;
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  gap: 8px;
+}
+
+.color-option:hover {
+  background: #f0f0f0;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.color-search {
+  width: 90%;
+  margin: 5px auto;
+  display: block;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.no-result {
+  text-align: center;
+  padding: 5px;
+  color: #888;
+  font-size: 14px;
+}

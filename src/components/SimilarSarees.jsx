@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import API from '../api/API';
 import SareeCard from './SareeCard';
 import "../css/relatedSaree.css"
+import ColorDropdown from "../components/ColorDropdown.jsx"
 
 function SimilarSarees() {
     const [sarees, setSarees] = useState([]);

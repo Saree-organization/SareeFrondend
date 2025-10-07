@@ -114,7 +114,7 @@ function AdminOrders() {
         <tbody>
           {orders.map(order => (
             <tr key={order.razorpayOrderId}>
-              <td>{order.userId}</td>
+              <td >{order.userId}</td>
               <td>{order.razorpayOrderId}</td>
               <td>{new Date(order.createdAt).toLocaleString()}</td>
               <td>₹{order.totalAmount}</td>
