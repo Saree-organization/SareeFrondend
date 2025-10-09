@@ -10,6 +10,7 @@ function ShippingAddress() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [addresses, setAddresses] = useState([]);
+  // selectedAddressId will hold the string ID of the selected address
   const [selectedAddressId, setSelectedAddressId] = useState(null);
 
   const [newAddress, setNewAddress] = useState({
@@ -21,7 +22,7 @@ function ShippingAddress() {
     phone: "",
   });
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
-  const [isSaving, setIsSaving] = useState(false); // To prevent double submission
+  const [isSaving, setIsSaving] = useState(false);
 
   // -------------------------- Fetch Cart & Addresses --------------------------
   useEffect(() => {
@@ -45,21 +46,30 @@ function ShippingAddress() {
         const addressResponse = await API.get("/api/user/addresses", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         if (
           Array.isArray(addressResponse.data) &&
           addressResponse.data.length > 0
         ) {
           setAddresses(addressResponse.data);
-          // 💡 Initial selection: Find the last selected address or the first one
-          const defaultAddress =
-            addressResponse.data.find((addr) => addr.isSelected) ||
-            addressResponse.data[0];
-          setSelectedAddressId(String(defaultAddress.id));
+
+          // 🎯 FIX: Force the selection of the first available address.
+          // This ensures selectedAddressId is NOT null on load.
+          const defaultAddress = addressResponse.data[0];
+          const defaultAddressId = String(defaultAddress.id);
+
+          console.log(
+            "DEBUG: Addresses found. Defaulting to ID:",
+            defaultAddressId
+          );
+
+          setSelectedAddressId(defaultAddressId);
           setShowNewAddressForm(false);
         } else {
+          // No addresses found, ensure state is null/empty
           setAddresses([]);
           setSelectedAddressId(null);
-          setShowNewAddressForm(true); // Show form if no addresses exist
+          setShowNewAddressForm(true);
         }
       } catch (err) {
         console.error("Failed to fetch data:", err);
@@ -102,13 +112,13 @@ function ShippingAddress() {
     if (!token) return;
 
     try {
-      // 💡 Mark as selected in DB
+      // Mark as selected in DB (assuming backend handles the 'isSelected' logic)
       await API.put(
         `/api/user/addresses/select/${addressId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Selected address saved in database!");
+      console.log("Selected address ID saved in database and state!");
     } catch (err) {
       console.error("Failed to save selected address:", err);
     }
@@ -146,7 +156,8 @@ function ShippingAddress() {
 
       // 1. Update local state
       setAddresses([...addresses, savedAddress]);
-      setSelectedAddressId(String(savedAddress.id));
+      const newAddressId = String(savedAddress.id);
+      setSelectedAddressId(newAddressId); // Use new address ID
       setShowNewAddressForm(false);
       setNewAddress({
         fullName: "",
@@ -158,9 +169,8 @@ function ShippingAddress() {
       });
 
       // 2. Select the new address in the backend
-      // This is crucial for the /api/payment/create-order to pick it up later
       await API.put(
-        `/api/user/addresses/select/${savedAddress.id}`,
+        `/api/user/addresses/select/${newAddressId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -192,12 +202,10 @@ function ShippingAddress() {
   // -------------------------- Proceed to Payment --------------------------
   const handleProceedToPayment = async () => {
     const orderTotal = calculateCartTotal();
-
-    // 💡 FIX: Use the most current selected address ID.
-    // Since the state update is asynchronous, we rely on the component having re-rendered
-    // OR we can fetch the currently selected address from the list if needed,
-    // but the simplest fix is to trust the button click happens after state update.
     const addressToUse = selectedAddressId;
+
+    // Final check to see if addressToUse has a value
+    console.log("FINAL CHECK: Sending Address ID:", addressToUse);
 
     if (!addressToUse) {
       alert("Please select a shipping address to proceed.");
@@ -209,15 +217,16 @@ function ShippingAddress() {
       return;
     }
 
+    const numericAddressId = addressToUse ? Number(addressToUse) : null; 
+
     try {
       const token = localStorage.getItem("authToken");
 
-      // 💡 The key is passing the correct addressToUse here (which is selectedAddressId after state update)
       const { data } = await API.post(
         "/api/payment/create-order",
         {
           amount: parseFloat(orderTotal),
-          shippingAddressId: addressToUse,
+          shippingAddressId: numericAddressId,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -235,7 +244,7 @@ function ShippingAddress() {
             razorpayOrderId: response.razorpay_order_id,
             razorpaySignature: response.razorpay_signature,
             totalAmount: orderTotal,
-            shippingAddressId: addressToUse, // Use the correct ID here as well
+            shippingAddressId: addressToUse,
           };
           try {
             const verificationResponse = await API.post(
@@ -431,6 +440,7 @@ function ShippingAddress() {
               className="checkout-btn"
               onClick={handleProceedToPayment}
               disabled={
+                // Button disabled only if NO address is selected OR cart is empty
                 !selectedAddressId || calculateCartTotal() <= 0 || isSaving
               }
             >
