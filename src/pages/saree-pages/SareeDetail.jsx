@@ -55,10 +55,27 @@ function SareeDetail() {
 
     fetchSareeDetailsAndWishlistStatus();
   }, [id, variantId]);
+if (loading)
+  return (
+    <div className="loader-container">
+      <div className="loader"></div>
+      <p>Loading saree details...</p>
+    </div>
+  );
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-  if (!saree) return <p>No details found</p>;
+if (error)
+  return (
+    <div className="loader-container">
+      <p>{error}</p>
+    </div>
+  );
+
+if (!saree)
+  return (
+    <div className="loader-container">
+      <p>No details found.</p>
+    </div>
+  );
 
   const currentVariant = saree.variants[selectedVariantIndex];
   const mediaList = [
