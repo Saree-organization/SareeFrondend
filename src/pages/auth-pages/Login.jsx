@@ -81,6 +81,8 @@ const Login = () => {
 
       const { token } = response.data;
       localStorage.setItem("authToken", token);
+            window.dispatchEvent(new Event("authChange"));
+
 
 
       navigate("/");
