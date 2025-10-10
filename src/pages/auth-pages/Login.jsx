@@ -79,7 +79,9 @@ const Login = () => {
         otp: otp,
       });
 
-      const { token } = response.data;
+const { token, role } = response.data; 
+      localStorage.setItem("userRole", role); 
+
       localStorage.setItem("authToken", token);
             window.dispatchEvent(new Event("authChange"));
 
