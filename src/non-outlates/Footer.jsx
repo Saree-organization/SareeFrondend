@@ -60,7 +60,8 @@ const Footer = () => {
         {/* Contact */}
         <div className="footer-section">
           <h4>Contact</h4>
-          <p>Email: support@sareestore.com</p>
+          <p>Email: chanderisilkelegant@gmail.com</p>
+
           <p>Phone: +91 98765 43210</p>
           <div className="social-icons">
             <a
