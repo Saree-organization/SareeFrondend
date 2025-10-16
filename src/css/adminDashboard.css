@@ -22,7 +22,7 @@ body {
   background: #fff;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .filters label {
@@ -67,13 +67,13 @@ body {
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .summary-cards .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .summary-cards .card h3 {
@@ -100,8 +100,16 @@ body {
   background-color: #fff;
   padding: 15px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   overflow-x: auto; /* allows chart to scroll if small screen */
+}
+
+/* 💡 ADDED: Ensures the content (canvas/svg) inside the chart container scales to 100% width */
+.chart canvas,
+.chart svg {
+    width: 100% !important; 
+    height: auto !important; /* To maintain the chart's aspect ratio */
+    display: block;
 }
 
 .chart h4 {
@@ -129,7 +137,7 @@ body {
   }
 
   .charts-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Stacks charts vertically */
   }
 
   .chart {
