@@ -124,3 +124,96 @@
   border-radius: 4px;
   border: 1px solid #ddd;
 }
+
+
+/* AddSaree.css */
+
+/* Container */
+.add-saree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* Card */
+.add-saree-card {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+/* Titles */
+.add-saree-title {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Grid layout for form fields */
+.add-saree-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Inputs & Selects */
+.add-saree-input,
+.add-saree-grid select,
+.add-saree-grid input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+/* Labels */
+.add-saree-grid label,
+.add-saree-card label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  display: block;
+  color: #555;
+}
+
+/* File Uploads */
+.add-saree-card input[type="file"] {
+  margin-bottom: 10px;
+}
+
+
+
+.add-saree-btn.gray {
+  background-color: #aaa;
+}
+
+.add-saree-btn.gray:hover {
+  background-color: #888;
+}
+
+.add-saree-btn.secondary {
+  background-color: #1976d2;
+}
+
+.add-saree-btn.secondary:hover {
+  background-color: #1976d2;
+  color: white;
+}
+
+/* Button Row */
+.add-saree-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
