@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import API from "../../api/API.jsx";
 import "../../css/AddSaree.css";
 import ColorDropdown from "../../components/ColorDropdown.jsx";
-
 import {
-  fabricsOptions, designOptions, lengthOptions, borderOptions,
-  categoryOptions, weightOptions,
-} from "../../data/sareeAddOrFilters.js"; // create this file and put your arrays here
+  fabricsOptions,
+  designOptions,
+  lengthOptions,
+  borderOptions,
+  categoryOptions,
+  weightOptions,
+} from "../../data/sareeAddOrFilters.js";
 
 function AddSaree() {
   const [step, setStep] = useState(1);
@@ -17,7 +20,7 @@ function AddSaree() {
     description: "",
     border: "",
     category: "",
-    weight: ""
+    weight: "",
   });
 
   const [variants, setVariants] = useState([]);
@@ -30,28 +33,24 @@ function AddSaree() {
     discountPercent: "",
     stock: "",
     images: [],
-    videos: []
+    videos: [],
   });
 
-  // Handle saree text input
   const handleSareeChange = (e) => {
     setSareeData({ ...sareeData, [e.target.name]: e.target.value });
   };
 
-  // Handle variant text input
   const handleVariantChange = (e) => {
     setCurrentVariant({ ...currentVariant, [e.target.name]: e.target.value });
   };
 
-  // Handle file input
   const handleFileChange = (e, type) => {
     setCurrentVariant({
       ...currentVariant,
-      [type]: Array.from(e.target.files)
+      [type]: Array.from(e.target.files),
     });
   };
 
-  // Step 1: Submit saree details
   const submitSareeDetails = async () => {
     try {
       await API.post("/sarees/addSareeDetails", sareeData);
@@ -61,7 +60,6 @@ function AddSaree() {
     }
   };
 
-  // Save current variant and open new form
   const addVariant = async () => {
     const isConfirmed = window.confirm("Do you want to save this variant?");
     if (!isConfirmed) return;
@@ -78,7 +76,7 @@ function AddSaree() {
         discountPercent: "",
         stock: "",
         images: [],
-        videos: []
+        videos: [],
       });
       alert("Variant saved! You can add another.");
     } catch (err) {
@@ -87,7 +85,6 @@ function AddSaree() {
     }
   };
 
-  // Send one variant to backend
   const submitVariant = async (variant) => {
     const formData = new FormData();
     Object.keys(variant).forEach((key) => {
@@ -98,11 +95,10 @@ function AddSaree() {
     (variant.videos || []).forEach((file) => formData.append("videos", file));
 
     await API.post("/sarees/addVariant", formData, {
-      headers: { "Content-Type": "multipart/form-data" }
+      headers: { "Content-Type": "multipart/form-data" },
     });
   };
 
-  // Final save
   const submitFinal = async () => {
     try {
       await submitVariant(currentVariant);
@@ -116,7 +112,7 @@ function AddSaree() {
         description: "",
         border: "",
         category: "",
-        weight: ""
+        weight: "",
       });
       setVariants([]);
       setCurrentVariant({
@@ -128,7 +124,7 @@ function AddSaree() {
         discountPercent: "",
         stock: "",
         images: [],
-        videos: []
+        videos: [],
       });
       alert("Saree saved successfully!");
     } catch {
@@ -137,61 +133,91 @@ function AddSaree() {
   };
 
   return (
-    <div className="form-container">
+    <div className="add-saree-container">
 
       {/* Step 1: Saree Details */}
       {step === 1 && (
-        <div className="form-card">
-          <h3 className="form-title">Saree Details</h3>
-          <div className="form-grid">
+        <div className="add-saree-card">
+          <h3 className="add-saree-title">Saree Details</h3>
+          <div className="add-saree-grid">
 
-            {/* Fabrics */}
-            <select name="fabrics" value={sareeData.fabrics} onChange={handleSareeChange}>
-              <option value="">Select Fabric</option>
-              {fabricsOptions.map(f => <option key={f} value={f}>{f}</option>)}
-            </select>
+            {/* Fabric */}
+            <label>Fabric:</label>
+            <input
+              list="fabricsList"
+              name="fabrics"
+              value={sareeData.fabrics}
+              onChange={handleSareeChange}
+              placeholder="Select or type Fabric"
+            />
+            <datalist id="fabricsList">
+              {fabricsOptions.map(f => <option key={f} value={f} />)}
+            </datalist>
 
             {/* Design */}
-            <select name="design" value={sareeData.design} onChange={handleSareeChange}>
-              <option value="">Select Design</option>
-              {designOptions.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
+            <label>Design:</label>
+            <input
+              list="designList"
+              name="design"
+              value={sareeData.design}
+              onChange={handleSareeChange}
+              placeholder="Select or type Design"
+            />
+            <datalist id="designList">
+              {designOptions.map(d => <option key={d} value={d} />)}
+            </datalist>
 
             {/* Length */}
+            <label>Length:</label>
             <select name="length" value={sareeData.length} onChange={handleSareeChange}>
               <option value="">Select Length (ft)</option>
               {lengthOptions.map(l => <option key={l} value={l}>{l} ft</option>)}
             </select>
 
             {/* Border */}
-            <select name="border" value={sareeData.border} onChange={handleSareeChange}>
-              <option value="">Select Border</option>
-              {borderOptions.map(b => <option key={b} value={b}>{b}</option>)}
-            </select>
+            <label>Border:</label>
+            <input
+              list="borderList"
+              name="border"
+              value={sareeData.border}
+              onChange={handleSareeChange}
+              placeholder="Select or type Border"
+            />
+            <datalist id="borderList">
+              {borderOptions.map(b => <option key={b} value={b} />)}
+            </datalist>
 
             {/* Category */}
-            <select name="category" value={sareeData.category} onChange={handleSareeChange}>
-              <option value="">Select Category</option>
-              {categoryOptions.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <label>Category:</label>
+            <input
+              list="categoryList"
+              name="category"
+              value={sareeData.category}
+              onChange={handleSareeChange}
+              placeholder="Select or type Category"
+            />
+            <datalist id="categoryList">
+              {categoryOptions.map(c => <option key={c} value={c} />)}
+            </datalist>
 
             {/* Weight */}
+            <label>Weight:</label>
             <select name="weight" value={sareeData.weight} onChange={handleSareeChange}>
               <option value="">Select Weight (g)</option>
               {weightOptions.map(w => <option key={w} value={w}>{w} g</option>)}
             </select>
 
             {/* Description */}
+            <label>Description:</label>
             <input
               type="text"
               name="description"
               value={sareeData.description}
               onChange={handleSareeChange}
-              placeholder="Description"
+              placeholder="Enter description"
             />
-
           </div>
-          <button className="btn" onClick={submitSareeDetails}>
+          <button className="add-saree-btn" onClick={submitSareeDetails}>
             Next →
           </button>
         </div>
@@ -199,80 +225,83 @@ function AddSaree() {
 
       {/* Step 2: Variant */}
       {step === 2 && (
-        <div className="form-card">
-          <h3 className="form-title">Add Variant</h3>
+        <div className="add-saree-card">
+          <h3 className="add-saree-title">Add Variant</h3>
+
+          <label>SKU Code:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="skuCode"
             value={currentVariant.skuCode}
             onChange={handleVariantChange}
             placeholder="SKU Code"
           />
+
+          <label>Variant Name:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="name"
             value={currentVariant.name}
             onChange={handleVariantChange}
             placeholder="Name"
           />
 
-          {/* Color Dropdown */}
-
-
+          <label>Color:</label>
           <ColorDropdown
             selectedColor={currentVariant.color}
             onChange={(c) => setCurrentVariant({ ...currentVariant, color: c })}
           />
 
-
-
-
+          <label>Sales Price:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="salesPrice"
             value={currentVariant.salesPrice}
             onChange={handleVariantChange}
             placeholder="Sales Price"
           />
+
+          <label>Cost Price:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="costPrice"
             value={currentVariant.costPrice}
             onChange={handleVariantChange}
             placeholder="Cost Price"
           />
+
+          <label>Discount %:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="discountPercent"
             value={currentVariant.discountPercent}
             onChange={handleVariantChange}
             placeholder="Discount %"
           />
+
+          <label>Stock:</label>
           <input
-            className="input-field"
+            className="add-saree-input"
             name="stock"
             value={currentVariant.stock}
             onChange={handleVariantChange}
             placeholder="Stock"
           />
 
-          <div className="file-upload">
-            <label>Upload Images:</label>
-            <input type="file" multiple accept="image/*" onChange={(e) => handleFileChange(e, "images")} />
-          </div>
-          <div className="file-upload">
-            <label>Upload Videos:</label>
-            <input type="file" multiple accept="video/*" onChange={(e) => handleFileChange(e, "videos")} />
-          </div>
+          <label>Upload Images:</label>
+          <input type="file" multiple accept="image/*" onChange={(e) => handleFileChange(e, "images")} />
 
-          <div className="btn-row">
-            <button className="btn secondary" onClick={addVariant}>
+          <label>Upload Videos:</label>
+          <input type="file" multiple accept="video/*" onChange={(e) => handleFileChange(e, "videos")} />
+
+          <div className="add-saree-btn-row">
+            <button className="add-saree-btn secondary" onClick={addVariant}>
               + Add Another Variant
             </button>
-            <button className="btn gray" onClick={() => setStep(1)}>
+            <button className="add-saree-btn gray" onClick={() => setStep(1)}>
               ← Previous
             </button>
-            <button className="btn" onClick={() => setStep(3)}>
+            <button className="add-saree-btn" onClick={() => setStep(3)}>
               Next →
             </button>
           </div>
@@ -281,13 +310,13 @@ function AddSaree() {
 
       {/* Step 3: Final Save */}
       {step === 3 && (
-        <div className="form-card">
-          <h3 className="form-title">Final Save</h3>
-          <div className="btn-row">
-            <button className="btn gray" onClick={() => setStep(2)}>
+        <div className="add-saree-card">
+          <h3 className="add-saree-title">Final Save</h3>
+          <div className="add-saree-btn-row">
+            <button className="add-saree-btn gray" onClick={() => setStep(2)}>
               ← Previous
             </button>
-            <button className="btn" onClick={submitFinal}>
+            <button className="add-saree-btn" onClick={submitFinal}>
               ✅ Save Saree
             </button>
           </div>

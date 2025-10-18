@@ -4,6 +4,15 @@ import "../css/colorDrop.css"
 
 function ColorDropdown({ selectedColor, onChange }) {
   const [open, setOpen] = useState(false);
+  const [manualColor, setManualColor] = useState("");
+
+  const handleManualChange = () => {
+    if (manualColor.trim() !== "") {
+      onChange(manualColor.trim()); // allow any typed name
+      setManualColor("");
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="color-dropdown">
@@ -15,7 +24,7 @@ function ColorDropdown({ selectedColor, onChange }) {
           <>
             <div
               className="color-box"
-              style={{ backgroundColor: colorMap[selectedColor] }}
+              style={{ backgroundColor: colorMap[selectedColor] || manualColor }}
             ></div>
             {selectedColor}
           </>
@@ -39,6 +48,17 @@ function ColorDropdown({ selectedColor, onChange }) {
               {c}
             </div>
           ))}
+
+          {/* Manual input */}
+          <div className="manual-color">
+            <input
+              type="text"
+              placeholder="Type color name"
+              value={manualColor}
+              onChange={(e) => setManualColor(e.target.value)}
+            />
+            <button type="button" onClick={handleManualChange}>Set</button>
+          </div>
         </div>
       )}
     </div>

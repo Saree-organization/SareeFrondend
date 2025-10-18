@@ -1,207 +1,89 @@
-/* wishlist.css */
+/* File: src/css/Wishlist.css */
 
-.wishlist-container {
-  max-width: 1200px;
-  margin: 40px auto;
+.wishlist-page {
+  font-family: Arial, sans-serif;
   padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.wishlist-container h1 {
-  font-size: 2rem;
+.wishlist-page h2 {
+  text-align: center;
   margin-bottom: 20px;
   color: #333;
 }
 
-/* Loading Spinner */
-.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
+.wishlist-page p {
   text-align: center;
+  color: #666;
 }
 
-.spinner {
-  font-size: 2.5rem;
-  color: #888;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Error Message */
 .error-message {
-  color: #e74c3c;
-  text-align: center;
-  font-size: 1.2rem;
-}
-
-/* Empty Wishlist */
-.empty-wishlist {
-  text-align: center;
-  padding: 40px;
-}
-
-.empty-wishlist h1 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: #555;
-}
-
-.empty-wishlist p {
-  margin-bottom: 20px;
-  color: #777;
-}
-
-.continue-shopping-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #e91e63;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
+  color: #d9534f;
   font-weight: bold;
-  transition: background 0.3s ease;
 }
 
-.continue-shopping-btn:hover {
-  background-color: #c2185b;
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-/* Wishlist Table */
-.wishlist-table-container {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th,
-td {
-  padding: 16px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f9f9f9;
-  font-weight: 600;
-  color: #333;
-}
-
-.product-info {
-  display: flex;
-  align-items: center;
-}
-
-.product-info img.item-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+.wishlist-item {
+  border: 1px solid #ddd;
   border-radius: 8px;
-  margin-right: 15px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  text-align: center;
+  padding-bottom: 10px;
 }
 
-.product-info h3 {
-  font-size: 1rem;
-  margin: 0;
-  color: #444;
+.wishlist-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.product-info h3 a {
+.wishlist-item a {
   text-decoration: none;
+  color: inherit;
+}
+
+.wishlist-item-image {
+  width: 100%;
+  height: 300px; /* Consistent height for all images */
+  object-fit: cover;
+}
+
+.wishlist-item h3 {
+  font-size: 1.2em;
+  margin: 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
+
+.wishlist-item p {
+  font-size: 1.1em;
   color: #333;
+  font-weight: bold;
+  margin: 0 0 10px;
 }
 
-.product-info h3 a:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
-.action-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.move-to-cart-btn,
 .remove-btn {
-  padding: 8px 14px;
+  background-color: #e60023;
+  color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
+  font-size: 1em;
+  font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.move-to-cart-btn {
-  background-color: #4caf50;
-  color: white;
-}
-
-.move-to-cart-btn:hover {
-  background-color: #388e3c;
-}
-
-.remove-btn {
-  background-color: #f44336;
-  color: white;
-}
-
 .remove-btn:hover {
-  background-color: #d32f2f;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .wishlist-container h1 {
-    text-align: center;
-  }
-
-  .product-info {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .product-info img.item-image {
-    margin-bottom: 10px;
-  }
-
-  table thead {
-    display: none;
-  }
-
-  table, tbody, tr, td {
-    display: block;
-    width: 100%;
-  }
-
-  tr {
-    margin-bottom: 15px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-  }
-
-  td[data-label]::before {
-    content: attr(data-label) ": ";
-    font-weight: bold;
-    color: #777;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 6px;
-  }
+  background-color: #c90020;
 }

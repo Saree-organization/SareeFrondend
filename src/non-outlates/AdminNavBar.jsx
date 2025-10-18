@@ -17,6 +17,8 @@ function AdminNavBar() {
     navigate("/login");
   };
 
+
+
   return (
     <header>
       {/* Top Bar */}
@@ -40,6 +42,9 @@ function AdminNavBar() {
         <div className="mobile-menu-icon" onClick={toggleMenu}>
           {menuOpen ? <FaTimes className="icon" /> : <FaBars className="icon" />}
         </div>
+         <button className="mobile-auth-link" onClick={handleLogout}>
+          <FaUser /> Logout
+        </button>
       </nav>
 
       {/* Links */}
@@ -51,9 +56,7 @@ function AdminNavBar() {
         <Link to="/admin/sarees"><FaBox /> Sarees</Link>
         <Link to="/admin/users"><FaUsers /> Users</Link>
         <Link to="/admin/orders"><FaClipboardList /> Orders</Link>
-        <div className="mobile-auth-link" onClick={handleLogout}>
-          <FaUser /> Logout
-        </div>
+       
       </div>
     </header>
   );
