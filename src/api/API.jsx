@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://sareebackend-production.up.railway.app/",
+  baseURL: "http://13.232.101.227:8079/",
 });
 
 // Add token from localStorage to every request
