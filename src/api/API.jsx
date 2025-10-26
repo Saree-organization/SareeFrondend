@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://13.232.101.227:8079/",
+  baseURL: "https://api.sareesloom.in/",
 });
 
 // Add token from localStorage to every request
