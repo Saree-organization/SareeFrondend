@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import API from "../../api/API";
 import "../../css/Cart.css";
 import { useCart } from "../../context/CartContext";
@@ -15,7 +16,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+  const token = Cookies.get("sareesloom-authToken");
       if (!token) {
         setError("Please log in to view your cart.");
         setLoading(false);
@@ -60,7 +61,7 @@ function Cart() {
     setUpdatingItemIds((prev) => [...prev, cartItemId]);
 
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("sareesloom-authToken");
       const response = await API.put(
         `/api/cart/update-quantity/${cartItemId}`,
         { quantity: newQuantity },
@@ -99,7 +100,7 @@ function Cart() {
 
   const handleRemoveItem = async (cartItemId) => {
     try {
-      const token = localStorage.getItem("authToken");
+  const token = Cookies.get("sareesloom-authToken");
       await API.delete(`/api/cart/remove/${cartItemId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -136,7 +137,7 @@ function Cart() {
         return;
       }
 
-      const token = localStorage.getItem("authToken");
+        const token = Cookies.get("sareesloom-authToken");
       const { data } = await API.post(
         "/api/payment/create-order",
         { amount: parseFloat(orderTotal) },

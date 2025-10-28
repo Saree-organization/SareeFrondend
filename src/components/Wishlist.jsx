@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/API";
+import Cookies from "js-cookie";
 import "../css/wishlist.css";
 import { FaSpinner } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
@@ -13,7 +14,7 @@ function Wishlist() {
 
   const fetchWishlist = async () => {
     setLoading(true);
-    const authToken = localStorage.getItem("authToken");
+  const authToken = Cookies.get("sareesloom-authToken");
 
     if (!authToken) {
       setLoading(false);
