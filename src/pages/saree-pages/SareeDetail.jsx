@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../../api/API";
+import Cookies from "js-cookie";
 import "../../css/sareeDetail.css";
 import Reviews from "../../components/Reviews";
 import { useWishlist } from "../../context/WishlistContext";
@@ -40,7 +41,7 @@ function SareeDetail() {
           }
         }
 
-        const token = localStorage.getItem("authToken");
+        const token = Cookies.get("sareesloom-authToken");
         if (token) {
           const wishlistRes = await API.get(`/api/wishlist/check/${id}`);
           setIsWishlisted(wishlistRes.data.isInWishlist);
@@ -55,27 +56,27 @@ function SareeDetail() {
 
     fetchSareeDetailsAndWishlistStatus();
   }, [id, variantId]);
-if (loading)
-  return (
-    <div className="loader-container">
-      <div className="loader"></div>
-      <p>Loading saree details...</p>
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="loader-container">
+        <div className="loader"></div>
+        <p>Loading saree details...</p>
+      </div>
+    );
 
-if (error)
-  return (
-    <div className="loader-container">
-      <p>{error}</p>
-    </div>
-  );
+  if (error)
+    return (
+      <div className="loader-container">
+        <p>{error}</p>
+      </div>
+    );
 
-if (!saree)
-  return (
-    <div className="loader-container">
-      <p>No details found.</p>
-    </div>
-  );
+  if (!saree)
+    return (
+      <div className="loader-container">
+        <p>No details found.</p>
+      </div>
+    );
 
   const currentVariant = saree.variants[selectedVariantIndex];
   const mediaList = [
@@ -114,7 +115,7 @@ if (!saree)
     }
   };
 
-  
+
   const handleAddToCart = async () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -212,9 +213,8 @@ if (!saree)
             {saree.variants.map((v, i) => (
               <button
                 key={i}
-                className={`variant-btn ${
-                  i === selectedVariantIndex ? "active" : ""
-                }`}
+                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""
+                  }`}
                 onClick={() => {
                   setSelectedVariantIndex(i);
                   setSelectedMediaIndex(0);
