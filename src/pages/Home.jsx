@@ -43,9 +43,9 @@ export default function Home() {
     color: []
   });
 
-  const allSareeNav = () => navTo("all-saree");
+  const allSareeNav = () => navTo("/all-saree");
   const sareeVariantNav = (sareeId, variantId) =>
-    navTo(`sarees/${sareeId}/${variantId}`);
+    navTo(`/sarees/${sareeId}/${variantId}`);
 
   const fetchData = () => {
     API.get("/sarees/latestSarees").then((res) =>
