@@ -16,7 +16,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-  const token = Cookies.get("sareesloom-authToken");
+      const token = Cookies.get("sareesloom-authToken");
       if (!token) {
         setError("Please log in to view your cart.");
         setLoading(false);
@@ -100,7 +100,7 @@ function Cart() {
 
   const handleRemoveItem = async (cartItemId) => {
     try {
-  const token = Cookies.get("sareesloom-authToken");
+      const token = Cookies.get("sareesloom-authToken");
       await API.delete(`/api/cart/remove/${cartItemId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -137,7 +137,7 @@ function Cart() {
         return;
       }
 
-        const token = Cookies.get("sareesloom-authToken");
+      const token = Cookies.get("sareesloom-authToken");
       const { data } = await API.post(
         "/api/payment/create-order",
         { amount: parseFloat(orderTotal) },

@@ -1,6 +1,7 @@
 // File: src/context/WishlistContext.js
 
 import React, { createContext, useState, useEffect, useContext } from "react";
+import Cookies from "js-cookie";
 import API from "../api/API"; // Your custom API instance
 
 // 1. Create the Context
@@ -15,7 +16,7 @@ export const WishlistProvider = ({ children }) => {
 
   const fetchWishlistCount = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+         const token = Cookies.get("sareesloom-authToken")
       if (token) {
         const response = await API.get("/api/wishlist");
         setWishlistCount(response.data.length);

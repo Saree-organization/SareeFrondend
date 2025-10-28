@@ -15,6 +15,7 @@ function Wishlist() {
   const fetchWishlist = async () => {
     setLoading(true);
     const authToken = Cookies.get("sareesloom-authToken");
+    console.log(authToken)
 
     if (!authToken) {
       setLoading(false);
@@ -24,6 +25,8 @@ function Wishlist() {
 
     try {
       const response = await API.get("/api/wishlist");
+      console.log(response);
+
       setWishlistItems(response.data);
       setLoading(false);
     } catch (err) {
@@ -37,6 +40,7 @@ function Wishlist() {
     }
   };
 
+  console.log("asdf")
   const handleRemoveFromWishlist = async (sareeId) => {
     try {
       await API.delete(`/api/wishlist/remove/${sareeId}`);
@@ -67,6 +71,7 @@ function Wishlist() {
   // ... (rest of the file)
 
   useEffect(() => {
+    console.log("Asdf")
     fetchWishlist();
 
     const handleStorageChange = () => {
@@ -87,6 +92,7 @@ function Wishlist() {
     };
   }, []);
 
+  
   // ... (rest of the file)
 
   if (loading) {

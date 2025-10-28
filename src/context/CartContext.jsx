@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import API from "../api/API";
+import Cookies from "js-cookie";
 
 const CartContext = createContext();
 
@@ -12,7 +13,7 @@ export const CartProvider = ({ children }) => {
 
   const fetchCartCount = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+     const token = Cookies.get("sareesloom-authToken");
       if (token) {
         const response = await API.get("/api/cart/count");
         setCartCount(response.data.count);

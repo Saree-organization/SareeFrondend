@@ -21,7 +21,8 @@ import {
 const App = () => {
   // 1. New state to manage login status and trigger re-render
   const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem("authToken")
+    !!Cookies.get("sareesloom-authToken")
+
   );
 
 const userRole = Cookies.get("sareesloom-userRole");
@@ -31,7 +32,8 @@ const effectiveRole = userRole ? userRole.toLowerCase() : "user";
   useEffect(() => {
     const handleAuthChange = () => {
       // Re-check the token and update state
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("sareesloom-authToken");
+
       setIsLoggedIn(!!token);
     };
 
