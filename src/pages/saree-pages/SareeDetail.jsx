@@ -118,7 +118,7 @@ function SareeDetail() {
 
 
   const handleAddToCart = async () => {
-    const token = Cookies.get("sareesloom-authToken");
+      const token = Cookies.get("sareesloom-authToken");
     if (!token) {
       alert("Please log in to add items to your cart.");
       return;
