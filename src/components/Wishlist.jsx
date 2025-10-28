@@ -14,7 +14,7 @@ function Wishlist() {
 
   const fetchWishlist = async () => {
     setLoading(true);
-  const authToken = Cookies.get("sareesloom-authToken");
+    const authToken = Cookies.get("sareesloom-authToken");
 
     if (!authToken) {
       setLoading(false);

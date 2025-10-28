@@ -88,7 +88,7 @@ function SareeDetail() {
   // ... (rest of the file)
 
   const handleWishlistToggle = async () => {
-    const token = localStorage.getItem("authToken");
+const token = Cookies.get("sareesloom-authToken");
     if (!token) {
       alert("Please log in to add items to your wishlist.");
       return;
