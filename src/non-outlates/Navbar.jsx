@@ -32,7 +32,7 @@ function Navbar() {
   useEffect(() => {
     // ... (Your existing useEffect logic is correct)
     const checkAuthStatusAndFetchCounts = () => {
-    const token = Cookies.get("sareesloom-authToken");
+      const token = Cookies.get("sareesloom-authToken");
       if (token && token !== "undefined") {
         setIsLoggedIn(true);
         fetchWishlistCount();
@@ -64,17 +64,21 @@ function Navbar() {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const handleLinkClick = () => setMenuOpen(false);
-
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    // Dispatch custom event to trigger Navbar update
-    window.dispatchEvent(new Event("authChange"));
-    alert("You have been logged out. 👋");
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
 
-    // 3. ADD THIS LINE: Navigate to the login page
-    navigate("/login");
+    if (confirmLogout) {
+      // ✅ Remove cookies instead of localStorage
+      Cookies.remove("sareesloom-authToken");
+      Cookies.remove("sareesloom-userRole");
+
+      alert("You have been logged out 👋");
+      window.dispatchEvent(new Event("authChange"));
+      navigate("/login");
+    } else {
+      alert("Logout cancelled.");
+    }
   };
-
   return (
     // ... (Rest of the JSX remains the same)
     <header>
