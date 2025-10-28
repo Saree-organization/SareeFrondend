@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { WishlistProvider } from "../src/context/WishlistContext";
 import { CartProvider } from "../src/context/CartContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Cookies from "js-cookie";
+
 
 // Layouts
 import UserLayout from "./layouts/UserLayout";
@@ -22,8 +24,8 @@ const App = () => {
     !!localStorage.getItem("authToken")
   );
 
-  const userRole = localStorage.getItem("userRole");
-  const effectiveRole = userRole ? userRole.toLowerCase() : "user";
+const userRole = Cookies.get("sareesloom-userRole");
+const effectiveRole = userRole ? userRole.toLowerCase() : "user";
 
   // 2. useEffect to listen for auth changes
   useEffect(() => {

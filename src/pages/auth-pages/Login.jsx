@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Cookies from "js-cookie";
 import API from "../../api/API";
 import "../../css/Login.css";
 import logo from "../../assets/images/image-1.png";
@@ -18,7 +19,6 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-
       navigate("/");
     }
 
@@ -79,11 +79,11 @@ const Login = () => {
         otp: otp,
       });
 
-const { token, role } = response.data; 
-      localStorage.setItem("userRole", role); 
+      const { token, role } = response.data;
 
-      localStorage.setItem("authToken", token);
-            window.dispatchEvent(new Event("authChange"));
+      Cookies.set("sareesloom-userRole", role);
+      Cookies.set("sareesloom-authToken", token, { expires: 7 }); // expires in 7 days
+      window.dispatchEvent(new Event("authChange"));
 
 
 

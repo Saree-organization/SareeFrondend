@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+
 import {
   FaSearch,
   FaUser,
@@ -30,7 +32,7 @@ function Navbar() {
   useEffect(() => {
     // ... (Your existing useEffect logic is correct)
     const checkAuthStatusAndFetchCounts = () => {
-      const token = localStorage.getItem("authToken");
+    const token = Cookies.get("sareesloom-authToken");
       if (token && token !== "undefined") {
         setIsLoggedIn(true);
         fetchWishlistCount();
