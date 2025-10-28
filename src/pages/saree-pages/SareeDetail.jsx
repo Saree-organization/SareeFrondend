@@ -30,6 +30,7 @@ function SareeDetail() {
       window.scrollTo(0, 0);
       try {
         const sareeRes = await API.get(`/sarees/${id}`);
+        console.log(sareeRes.data)
         const sareeData = sareeRes.data;
         setSaree(sareeData);
 
@@ -249,9 +250,7 @@ const token = Cookies.get("sareesloom-authToken");
         <Reviews sareeId={id} />
       </div>
 
-      <div className="related-sarees">{/* <RelatedSaree /> */}</div>
-
-      <div className="related-sarees">{/* <SimilarSarees /> */}</div>
+      <div className="related-sarees"><RelatedSaree /></div>
     </>
   );
 }

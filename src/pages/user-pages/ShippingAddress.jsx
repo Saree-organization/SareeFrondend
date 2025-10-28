@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/API";
 import "../../css/Checkout.css";
+import Cookies from "js-cookie";
 
 function ShippingAddress() {
   const navigate = useNavigate();
@@ -28,7 +29,8 @@ function ShippingAddress() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("authToken");
+        const token = Cookies.get("sareesloom-authToken");
+
         if (!token) {
           setError("Please log in to manage addresses and view your order.");
           setLoading(false);
@@ -108,7 +110,8 @@ function ShippingAddress() {
   // -------------------------- Select Address --------------------------
   const handleSelectAddress = async (addressId) => {
     setSelectedAddressId(addressId);
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("sareesloom-authToken");
+
     if (!token) return;
 
     try {
@@ -143,7 +146,8 @@ function ShippingAddress() {
 
     setIsSaving(true);
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("sareesloom-authToken");
+
       if (!token) {
         alert("Authentication error. Please log in again.");
         return;
@@ -220,7 +224,8 @@ function ShippingAddress() {
     const numericAddressId = addressToUse ? Number(addressToUse) : null; 
 
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("sareesloom-authToken");
+
 
       const { data } = await API.post(
         "/api/payment/create-order",

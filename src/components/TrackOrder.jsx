@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../api/API";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/TrackOrder.css";
+import Cookies from "js-cookie";
 
 function TrackOrder() {
   const [orders, setOrders] = useState([]);
@@ -14,7 +15,7 @@ function TrackOrder() {
   const fetchOrders = async (pageNumber = 0) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("authToken");
+      const token = Cookies.get("sareesloom-authToken");
 
       if (!token) {
         setError("Please log in to view your orders.");
@@ -37,7 +38,9 @@ function TrackOrder() {
       console.error("API call failed:", err);
       if (err.response && err.response.status === 401) {
         setError("Session expired. Please log in again.");
-        localStorage.removeItem("authToken");
+        Cookies.remove("sareesloom-authToken");
+        Cookies.remove("sareesloom-userRole"); localStorage.clear();
+
         setTimeout(() => navigate("/login"), 2000);
       } else {
         setError("Failed to fetch orders. Please try again.");
@@ -188,16 +191,16 @@ function TrackOrder() {
 
           {/* Pagination Buttons */}
           <div className="pagination-container">
-        <button disabled={page === 0} onClick={() => fetchOrders(page - 1)}>
-          Prev
-        </button>
-        <span>
-          Page {page + 1} of {totalPages}
-        </span>
-        <button disabled={page + 1 === totalPages} onClick={() => fetchOrders(page + 1)}>
-          Next
-        </button>
-      </div>
+            <button disabled={page === 0} onClick={() => fetchOrders(page - 1)}>
+              Prev
+            </button>
+            <span>
+              Page {page + 1} of {totalPages}
+            </span>
+            <button disabled={page + 1 === totalPages} onClick={() => fetchOrders(page + 1)}>
+              Next
+            </button>
+          </div>
         </>
       )}
     </div>

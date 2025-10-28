@@ -1,38 +1,43 @@
-import React, { useEffect, useState } from 'react'
-import API from '../api/API';
-import SareeCard from './SareeCard';
-import "../css/relatedSaree.css"
-import ColorDropdown from "../components/ColorDropdown.jsx"
+import React, { useEffect, useState } from "react";
+import API from "../api/API";
+import SareeCard from "./SareeCard";
+import "../css/relatedSaree.css";
 
-function SimilarSarees() {
-    const [sarees, setSarees] = useState([]);
+function SimilarSarees({ color, fabrics, excludeId }) {
+  const [sarees, setSarees] = useState([]);
 
+  useEffect(() => {
+    if (!color && !fabrics) return;
 
-    useEffect(() => {
-        API.get("/sarees/allSarees")
-            .then((res) => {
-                setSarees(res.data);
+    API.get(`/sarees/filters`, {
+      params: {
+        color,
+        fabrics,
+        page: 0,
+        size: 6,
+      },
+    })
+      .then((res) => {
+        // remove the current saree itself from the list
+        console.log(res.data.sarees)
+        const filtered = res.data.sarees;
+        setSarees(filtered);
+      })
+      .catch((err) => console.error(err));
+  }, [color, fabrics, excludeId]);
 
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }, []);
-
-    return (
-        <div className='related-saree-container'>
-            <h3 className="reviews-title">Similar Saree's</h3>
-            <div className='related-saree-list'>
-            {sarees.map((s) => (
-               <>
-                <SareeCard key={s.id} saree={s} />
-
-               </>
-            ))}
-            </div>
-
-        </div>
-    )
+  return (
+    <div className="related-saree-container">
+      <h3 className="reviews-title">Similar Sarees</h3>
+      <div className="related-saree-list">
+        {sarees.length > 0 ? (
+          sarees.map((s) => <SareeCard key={s.id} saree={s} />)
+        ) : (
+          <p>No similar sarees found.</p>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default SimilarSarees;
