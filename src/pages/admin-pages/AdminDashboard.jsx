@@ -49,10 +49,10 @@ function AdminDashboard() {
 
   // summary counts
   const totalOrders = orders.length;
-  const totalRevenue = orders.reduce(
-    (sum, o) => sum + (o.totalAmount || 0),
-    0
-  );
+ const totalRevenue = orders
+  .reduce((sum, o) => sum + (o.totalAmount || 0), 0)
+  .toFixed(2);
+
   const shippingOrders = orders.filter(
     (o) => o.orderStatus?.toUpperCase() === "SHIPPING"
   ).length;
