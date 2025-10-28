@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import API from "../../api/API";
 import Cookies from "js-cookie";
 import "../../css/sareeDetail.css";
@@ -117,7 +118,7 @@ function SareeDetail() {
 
 
   const handleAddToCart = async () => {
-    const token = localStorage.getItem("authToken");
+    const token = Cookies.get("sareesloom-authToken");
     if (!token) {
       alert("Please log in to add items to your cart.");
       return;
