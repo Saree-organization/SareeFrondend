@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const isLocalhost = window.location.hostname === "localhost";
+
 const API = axios.create({
-  baseURL: "https://api.sareesloom.in/",
+  baseURL: isLocalhost 
+    ? "http://localhost:8079/" 
+    : "https://api.sareesloom.in/",
 });
 
 // Add token from localStorage to every request

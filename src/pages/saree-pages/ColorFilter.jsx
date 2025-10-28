@@ -10,11 +10,13 @@ function ColorFilter() {
 
   useEffect(() => {
       if (color) {
-          API.get("/sarees/filter", { params: { color:color } })
-          .then((res) => setSarees(res.data))
+          API.get("/sarees/filters", { params: { color:color } })
+          .then((res) => {
+            console.log(res.data.sarees)
+            setSarees(res.data.sarees)})
           .catch((err) => console.error(err));
         }
-    }, [color]);
+    }, []);
     console.log(sarees)
 
   return (
@@ -25,7 +27,7 @@ function ColorFilter() {
 
       <div className="saree-container">
         {sarees.length > 0 ? (
-          sarees.map((s) => <SareeCard key={s.id} saree={s} />)
+          sarees.map((s) => <SareeCard key={s.variants.id} saree={s} />)
         ) : (
           <p>No sarees found.</p>
         )}

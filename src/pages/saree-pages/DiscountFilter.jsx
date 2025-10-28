@@ -11,8 +11,9 @@ function DiscountFilter() {
   useEffect(() => {
     if (discount) {
       // call filter API with discount param
-      API.get("/sarees/filter", { params: { discount } })
-        .then((res) => setSarees(res.data))
+      API.get("/sarees/filters", { params: { discount } })
+        .then((res) => {console.log(res)
+          setSarees(res.data.sarees)})
         .catch((err) => console.error(err));
     }
   }, [discount]);
@@ -25,7 +26,7 @@ function DiscountFilter() {
 
        <div className="saree-container">
         {sarees.length > 0 ? (
-          sarees.map((s) => <SareeCard key={s.id} saree={s} />)
+          sarees.map((s) => <SareeCard key={s.variants.id} saree={s} />)
         ) : (
           <p>No sarees found.</p>
         )}
