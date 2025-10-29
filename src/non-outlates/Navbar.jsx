@@ -170,6 +170,19 @@ function Navbar() {
         <Link to="/track-order" onClick={handleLinkClick}>
           Track order
         </Link>
+         <Link to="/cart" className="cart-icon">
+            Cart
+            {isLoggedIn && cartCount > 0 && (
+              <span className="cart-count">{cartCount}</span>
+            )}
+          </Link>
+               {/* Wishlist icon with count */}
+          <Link to="/wishlist" className="wishlist-icon">
+            Wishlist
+            {isLoggedIn && wishlistCount > 0 && (
+              <span className="wishlist-count">{wishlistCount}</span>
+            )}
+          </Link>
       </div>
     </header>
   );
