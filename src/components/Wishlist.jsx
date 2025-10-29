@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/API";
 import Cookies from "js-cookie";
-import "../css/wishlist.css";
+import "../css/Wishlist.css";
 import { FaSpinner } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 
@@ -70,7 +70,6 @@ function Wishlist() {
   // ... (rest of the file)
 
   useEffect(() => {
-    console.log("Asdf")
     fetchWishlist();
 
     const handleStorageChange = () => {
