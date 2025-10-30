@@ -1,5 +1,5 @@
 export const fabricsOptions = [
-    "Silk", "Cotton", "Linen", "Chiffon", "Georgette", "Velvet", "Satin", "Crepe", "Organza",
+     "Tissue Silk Saree","Pattu Soft Silk", "Katan Silk Saree", "Linen", "Chiffon", "Georgette", "Velvet", "Satin", "Crepe", "Organza",
     "Banarasi", "Kanchipuram", "Tussar", "Mangalagiri", "Khadi", "Net", "Jacquard", "Brocade", "Rayon", "Polyester"
 ];
 

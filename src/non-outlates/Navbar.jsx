@@ -116,7 +116,7 @@ function Navbar() {
           <Link to="/cart" className="cart-icon">
             <FaShoppingCart className="icon" />
             {isLoggedIn && cartCount > 0 && (
-              <span className="cart-count">{cartCount}</span>
+              <span className="wishlist-count">{cartCount}</span>
             )}
           </Link>
           {/* Wishlist icon with count */}
@@ -155,16 +155,16 @@ function Navbar() {
         <Link to="/all-saree" onClick={handleLinkClick}>
           All saree
         </Link>
-        <Link to="/katan-silk/pattu" onClick={handleLinkClick}>
+        <Link to="/fabrics/Pattu Soft Silk" onClick={handleLinkClick}>
           Pattu Soft Silk saree
         </Link>
-        <Link to="/katan-silk/katan" onClick={handleLinkClick}>
+        <Link to="/fabrics/Katan Silk Saree" onClick={handleLinkClick}>
           Katan & Tissue Silk saree
         </Link>
-        <Link to="/katan-silk/cotton" onClick={handleLinkClick}>
+        <Link to="/fabrics/cotton" onClick={handleLinkClick}>
           Cotton Silk saree
         </Link>
-        <Link to="/katan-silk/printed" onClick={handleLinkClick}>
+        <Link to="/fabrics/printed" onClick={handleLinkClick}>
           Printed saree
         </Link>
         <Link to="/contact" onClick={handleLinkClick}>
@@ -176,7 +176,7 @@ function Navbar() {
          <Link to="/cart" className="cart-icon">
             Cart
             {isLoggedIn && cartCount > 0 && (
-              <span className="cart-count">{cartCount}</span>
+              <span className="wishlist-count">{cartCount}</span>
             )}
           </Link>
                {/* Wishlist icon with count */}

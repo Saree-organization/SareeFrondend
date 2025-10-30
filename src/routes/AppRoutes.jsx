@@ -49,9 +49,9 @@ export const PublicRoutesArray = [
   <Route path="all-saree" element={<AllSaree />} key="all-saree" />,
   <Route path="color/:color" element={<ColorFilter />} key="color" />,
   <Route path="discount/:discount" element={<DiscountFilter />} key="discount" />,
+  <Route path="fabrics/:fabrics" element={<KatanSilk />} key="katan" />,
   <Route path="sarees/:id" element={<SareeDetail />} key="saree-detail" />,
   <Route path="sarees/:id/:variantId" element={<SareeDetail />} key="saree-variant" />,
-  <Route path="katan-silk/:catogry" element={<KatanSilk />} key="katan" />,
   
   // Footer Pages
   <Route path="about-us" element={<AboutUs />} key="about-us" />,
