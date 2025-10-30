@@ -153,19 +153,19 @@ function Navbar() {
           Home
         </Link>
         <Link to="/all-saree" onClick={handleLinkClick}>
-          All saree
+          All Saree
         </Link>
-        <Link to="/katan-silk/pattu" onClick={handleLinkClick}>
-          Pattu Soft Silk saree
+        <Link to="/katan-silk/pattu soft silk" onClick={handleLinkClick}>
+          Pattu Soft Silk Saree
         </Link>
-        <Link to="/katan-silk/katan" onClick={handleLinkClick}>
-          Katan & Tissue Silk saree
+        <Link to="/katan-silk/katan soft silk" onClick={handleLinkClick}>
+          Katan & Tissue Silk Saree
         </Link>
-        <Link to="/katan-silk/cotton" onClick={handleLinkClick}>
-          Cotton Silk saree
+        <Link to="/katan-silk/cotton soft silk" onClick={handleLinkClick}>
+          Cotton Silk Saree
         </Link>
-        <Link to="/katan-silk/printed" onClick={handleLinkClick}>
-          Printed saree
+        <Link to="/katan-silk/printed soft silk" onClick={handleLinkClick}>
+          Printed Saree & Suits
         </Link>
         <Link to="/contact" onClick={handleLinkClick}>
           Contact us
@@ -173,19 +173,19 @@ function Navbar() {
         <Link to="/track-order" onClick={handleLinkClick}>
           Track order
         </Link>
-         <Link to="/cart" className="cart-icon">
-            Cart
-            {isLoggedIn && cartCount > 0 && (
-              <span className="cart-count">{cartCount}</span>
-            )}
-          </Link>
-               {/* Wishlist icon with count */}
-          <Link to="/wishlist" className="wishlist-icon">
-            Wishlist
-            {isLoggedIn && wishlistCount > 0 && (
-              <span className="wishlist-count">{wishlistCount}</span>
-            )}
-          </Link>
+        <Link to="/cart" className="cart-icon">
+          Cart
+          {isLoggedIn && cartCount > 0 && (
+            <span className="cart-count">{cartCount}</span>
+          )}
+        </Link>
+        {/* Wishlist icon with count */}
+        <Link to="/wishlist" className="wishlist-icon">
+          Wishlist
+          {isLoggedIn && wishlistCount > 0 && (
+            <span className="wishlist-count">{wishlistCount}</span>
+          )}
+        </Link>
       </div>
     </header>
   );

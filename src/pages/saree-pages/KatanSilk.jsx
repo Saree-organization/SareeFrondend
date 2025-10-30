@@ -12,7 +12,7 @@ function KatanSilk() {
     // Automatically fetch sarees with the "Silk" fabric filter
     API.get("/sarees/filters", {
       params: {
-        fabrics: {catogry},
+        fabrics: {catogry },
       },
     })
       .then((res) => {

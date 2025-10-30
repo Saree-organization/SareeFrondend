@@ -74,7 +74,7 @@ const Footer = () => {
             </a>
             <a
               className="whatsapp"
-              href="https://wa.me/918962764529"
+              href="https://wa.me/917879899953"
               target="_blank"
               rel="noreferrer"
             >
