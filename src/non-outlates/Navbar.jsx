@@ -155,16 +155,16 @@ function Navbar() {
         <Link to="/all-saree" onClick={handleLinkClick}>
           All Saree
         </Link>
-        <Link to="/katan-silk/pattu soft silk" onClick={handleLinkClick}>
+        <Link to="/fabric/pattu soft silk" onClick={handleLinkClick}>
           Pattu Soft Silk Saree
         </Link>
-        <Link to="/katan-silk/katan soft silk" onClick={handleLinkClick}>
+        <Link to="/fabric/katan soft silk" onClick={handleLinkClick}>
           Katan & Tissue Silk Saree
         </Link>
-        <Link to="/katan-silk/cotton soft silk" onClick={handleLinkClick}>
+        <Link to="/fabric/cotton soft silk" onClick={handleLinkClick}>
           Cotton Silk Saree
         </Link>
-        <Link to="/katan-silk/printed soft silk" onClick={handleLinkClick}>
+        <Link to="/fabric/printed soft silk" onClick={handleLinkClick}>
           Printed Saree & Suits
         </Link>
         <Link to="/contact" onClick={handleLinkClick}>
