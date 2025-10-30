@@ -56,6 +56,7 @@ function AllSaree() {
     })
       .then((res) => {
         if (reset) {
+          console.log(res)
           setSarees(res.data.sarees);
         } else {
           setSarees((prev) => [...prev, ...res.data.sarees]);
