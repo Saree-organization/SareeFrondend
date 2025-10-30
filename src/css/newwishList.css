@@ -1,0 +1,312 @@
+/* --- Global Wishlist Container Styles --- */
+.wishlist-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.wishlist-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* --- Loading and Error States --- */
+.wishlist-container.loading {
+  text-align: center;
+  padding: 5rem 0;
+  font-size: 1.2rem;
+  color: #6c757d; /* Bootstrap secondary color */
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #007bff; /* Bootstrap primary color */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.wishlist-container.error-message {
+  text-align: center;
+  padding: 3rem 0;
+  color: #dc3545; /* Bootstrap danger color */
+  border: 1px solid #dc3545;
+  background-color: #f8d7da;
+  border-radius: 0.25rem;
+}
+
+/* --- Empty Wishlist State --- */
+.empty-wishlist {
+  text-align: center;
+  padding: 4rem 0;
+  border: 1px dashed #ced4da;
+  border-radius: 0.5rem;
+  background-color: #f8f9fa; /* Bootstrap light color */
+}
+
+.empty-wishlist h1 {
+  color: #495057;
+  font-size: 1.8rem;
+}
+
+.empty-wishlist p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.continue-shopping-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745; /* Bootstrap success color */
+  color: white;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.continue-shopping-btn:hover {
+  background-color: #218838;
+}
+
+/* --- Table Styles (Desktop/Tablet) --- */
+.wishlist-table-container {
+  overflow-x: auto; /* Makes the table horizontally scrollable if needed */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Soft shadow */
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+}
+
+thead th {
+  padding: 1rem;
+  text-align: left;
+  background-color: #f8f9fa; /* Light header background */
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dee2e6; /* Light row separator */
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #f2f2f2; /* Hover effect */
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+td {
+  padding: 1rem;
+  vertical-align: middle;
+  color: #343a40;
+}
+
+/* --- Product Column Styling --- */
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  border: 1px solid #e9ecef;
+}
+
+.product-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.product-info h3 a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.product-info h3 a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* --- Price Column Styling --- */
+td[data-label="Price"] {
+  font-weight: bold;
+  color: #28a745; /* Success color for price */
+  font-size: 1.1rem;
+}
+
+/* --- Action Buttons Styling --- */
+.action-buttons {
+  white-space: nowrap; /* Keep buttons on one line */
+}
+
+.move-to-cart-btn,
+.remove-btn {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease; /* Use 'all' for smoother transition */
+}
+
+/* --- Move to Cart Button Fix for Layout Shift --- */
+.move-to-cart-btn {
+  /* Fix 1: Add a transparent border to reserve the 1px space */
+  border: 1px solid transparent; 
+  background-color: #ffc107; /* Bootstrap warning color */
+  color: #212529;
+}
+
+.move-to-cart-btn:hover {
+  background-color: #e0a800;
+  /* Fix 2: Explicitly define the border on hover to maintain 1px space */
+  border: 1px solid #e0a800; 
+}
+
+/* --- Remove Button Fix for Layout Shift --- */
+.remove-btn {
+  /* Fix 1: Define the border size and color clearly in default state */
+  border: 1px solid #dc3545;
+  background-color: #f8d7da; /* Light danger background */
+  color: #dc3545; /* Danger text color */
+}
+
+.remove-btn:hover {
+  background-color: #dc3545;
+  color: white;
+  /* Fix 2: Explicitly define the border on hover to maintain 1px space */
+  border: 1px solid #dc3545; 
+}
+
+
+/* --- Responsive Design (Mobile) --- */
+@media (max-width: 768px) {
+  .wishlist-table-container {
+    box-shadow: none;
+    border-radius: 0;
+    overflow-x: hidden;
+  }
+
+  table {
+    border: none;
+  }
+
+  /* Hide table header */
+  thead {
+    display: none;
+  }
+
+  /* Treat rows as blocks */
+  table, tbody, tr {
+    display: block;
+    width: 100%;
+  }
+
+  tbody tr {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+
+  /* Treat cells as blocks with labels */
+  td {
+    display: block;
+    text-align: right !important;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #f8f9fa;
+    position: relative;
+  }
+
+  /* Add label before cell content */
+  td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    color: #495057;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  
+  /* Special handling for the product info cell */
+  td[data-label="Product"] {
+    text-align: left !important;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  td[data-label="Product"]::before {
+    display: none;
+  }
+
+  .product-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .item-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .product-info h3 {
+    font-size: 1.1rem;
+  }
+
+  /* Action buttons need to be centered or adjusted */
+  td[data-label="Actions"] {
+    text-align: center !important;
+    border-bottom: none;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .move-to-cart-btn,
+  .remove-btn {
+    flex-grow: 1;
+    margin-right: 0;
+  }
+}
+
+/* Ensure padding is consistent on mobile */
+@media (max-width: 576px) {
+  .wishlist-container {
+    padding: 0 0.5rem;
+  }
+  .action-buttons {
+    flex-direction: column;
+  }
+}
