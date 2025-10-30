@@ -62,19 +62,11 @@ const Footer = () => {
           <h4>Contact</h4>
           <p>Email: chanderisilkelegant@gmail.com</p>
 
-          <p>Phone: +91 98765 43210</p>
+          <p>Phone: +91 7879899953,+91 8962764529</p>
           <div className="social-icons">
             <a
-              className="facebook"
-              href="https://facebook.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <CiFacebook />
-            </a>
-            <a
               className="instagram"
-              href="https://instagram.com"
+              href="https://www.instagram.com/chanderi_silk_elegant?igsh=c2l2aDFoaWZtMzYz"
               target="_blank"
               rel="noreferrer"
             >
@@ -82,7 +74,7 @@ const Footer = () => {
             </a>
             <a
               className="whatsapp"
-              href="https://wa.me/919876543210"
+              href="https://wa.me/918962764529"
               target="_blank"
               rel="noreferrer"
             >

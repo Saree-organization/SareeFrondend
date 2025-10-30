@@ -155,14 +155,17 @@ function Navbar() {
         <Link to="/all-saree" onClick={handleLinkClick}>
           All saree
         </Link>
-        <Link to="/katan-silk" onClick={handleLinkClick}>
-          Katan silk saree
+        <Link to="/katan-silk/pattu" onClick={handleLinkClick}>
+          Pattu Soft Silk saree
         </Link>
-        <Link to="/tissue-silk" onClick={handleLinkClick}>
-          Tissue silk saree
+        <Link to="/katan-silk/katan" onClick={handleLinkClick}>
+          Katan & Tissue Silk saree
         </Link>
-        <Link to="/celebrity" onClick={handleLinkClick}>
-          Celebrity saree
+        <Link to="/katan-silk/cotton" onClick={handleLinkClick}>
+          Cotton Silk saree
+        </Link>
+        <Link to="/katan-silk/printed" onClick={handleLinkClick}>
+          Printed saree
         </Link>
         <Link to="/contact" onClick={handleLinkClick}>
           Contact us
