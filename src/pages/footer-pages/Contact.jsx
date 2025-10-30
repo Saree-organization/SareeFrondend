@@ -53,7 +53,7 @@ function Contact() {
         <div className="contact-info">
           <h2>Get in Touch</h2>
           <p>Email: chanderisilkelegant@gmail.com</p>
-          <p>Phone: +91 8962639496</p>
+          <p>Phone: +91 7879899953</p>
           <p>Address: 123 Saree Street, Madhya Pradesh, India</p>
         </div>
 
