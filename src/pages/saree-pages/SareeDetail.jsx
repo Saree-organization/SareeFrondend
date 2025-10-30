@@ -201,7 +201,7 @@ const token = Cookies.get("sareesloom-authToken");
             <strong>Length:</strong> {saree.length} m
           </p>
           <p>
-            <strong>Weight:</strong> {saree.weight} kg
+            <strong>Weight:</strong> {saree.weight} g
           </p>
           <p>
             <strong>Color:</strong> {currentVariant.color}
