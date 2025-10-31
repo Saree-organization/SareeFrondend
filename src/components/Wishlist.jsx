@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/API";
 import Cookies from "js-cookie";
-import "../css/newwishlist.css";
+import "../css/newwishList.css";
+
 import { FaSpinner } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 
