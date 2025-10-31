@@ -6,24 +6,24 @@ import { useParams } from "react-router-dom";
 
 function KatanSilk() {
   const [sarees, setSarees] = useState([]);
-  const {catogry} = useParams();
-  console.log(catogry)
+  const {fabric} = useParams();
+  console.log(fabric)
   useEffect(() => {
-    // Automatically fetch sarees with the "Silk" fabric filter
+    setSarees([]);
     API.get("/sarees/filters", {
       params: {
-        fabrics: {catogry },
+        fabrics : fabric ,
       },
     })
       .then((res) => {
-        setSarees(res.data);
+        setSarees(res.data.sarees);
       })
       .catch((err) => console.error(err));
-  }, []); // The empty array ensures this runs only once on mount
+  }, [fabric]); // The empty array ensures this runs only once on mount
 
   return (
     <div>
-      <h1 className="page-title">{catogry} Silk Saree</h1>
+      <h1 className="page-title">{fabric} Silk Saree</h1>
       <p className="page-description">
         Explore our exquisite collection of Katan silk sarees. Known for their
         luxurious texture and rich luster, these handwoven sarees are a
@@ -34,7 +34,7 @@ function KatanSilk() {
         {sarees.length > 0 ? (
           sarees.map((s) => <SareeCard key={s.id} saree={s} />)
         ) : (
-          <p>No {catogry} Silk sarees found.</p>
+          <p>No {fabric} Silk sarees found.</p>
         )}
       </div>
     </div>
