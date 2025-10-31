@@ -158,7 +158,7 @@ function Navbar() {
         <Link to="/fabric/pattu soft silk" onClick={handleLinkClick}>
           Pattu Soft Silk Saree
         </Link>
-        <Link to="/fabric/katan soft silk" onClick={handleLinkClick}>
+        <Link to="/fabric/tissue silk saree" onClick={handleLinkClick}>
           Katan & Tissue Silk Saree
         </Link>
         <Link to="/fabric/cotton soft silk" onClick={handleLinkClick}>
