@@ -116,7 +116,7 @@ function Navbar() {
           <Link to="/cart" className="cart-icon">
             <FaShoppingCart className="icon" />
             {isLoggedIn && cartCount > 0 && (
-              <span className="cart-count">{cartCount}</span>
+              <span className="wishlist-count">{cartCount}</span>
             )}
           </Link>
           {/* Wishlist icon with count */}
@@ -173,10 +173,10 @@ function Navbar() {
         <Link to="/track-order" onClick={handleLinkClick}>
           Track order
         </Link>
-        <Link to="/cart" className="cart-icon">
+        <Link to="/cart" className="wishlist-icon">
           Cart
           {isLoggedIn && cartCount > 0 && (
-            <span className="cart-count">{cartCount}</span>
+            <span className="wishlist-count">{cartCount}</span>
           )}
         </Link>
         {/* Wishlist icon with count */}
