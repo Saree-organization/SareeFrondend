@@ -1,35 +1,71 @@
-/* remove the big top margin unless you really need space under a fixed navbar */
-body {
-  margin-top: 0 !important;
-}
-
-/* wrapper */
 .slide {
   width: 100%;
+  overflow: hidden;
 }
 
-/* make images scale automatically */
-.slide img {
+/* 🔸 Equal size for all images */
+.slide-img {
   width: 100%;
-  height: auto;                /* let height adjust automatically */
-  max-height: 80vh;            /* optional: don’t exceed viewport */
-  object-fit: cover;           /* fill nicely */
+  height: 80vh; /* same height for all screens */
+  object-fit: cover; /* keeps proportions and crops evenly */
+  object-position: center; /* centers the image */
 }
 
-/* optional: tweak captions for small screens */
-.carousel-caption h3,
-.carousel-caption p {
-  background: rgba(0, 0, 0, 0.4); /* subtle background for readability */
-  padding: 5px 10px;
-  border-radius: 4px;
+/* Caption styling */
+.caption {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 1.2rem 1.5rem;
+  border-radius: 10px;
 }
 
-/* on mobile shrink captions */
+.caption h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.caption p {
+  font-size: 1.1rem;
+}
+
+/* 📱 Responsive breakpoints */
+@media (max-width: 992px) {
+  .slide-img {
+    height: 70vh;
+  }
+  .caption h3 {
+    font-size: 1.8rem;
+  }
+  .caption p {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .carousel-caption h3 {
+  .slide-img {
+    height: 60vh;
+  }
+  .caption {
+    padding: 0.8rem;
+  }
+  .caption h3 {
+    font-size: 1.4rem;
+  }
+  .caption p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .slide-img {
+    height: 50vh;
+  }
+  .caption {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .caption h3 {
     font-size: 1.2rem;
   }
-  .carousel-caption p {
-    font-size: 0.9rem;
+  .caption p {
+    font-size: 0.8rem;
   }
 }
