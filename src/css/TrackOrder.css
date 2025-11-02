@@ -1,137 +1,169 @@
 /* TrackOrder.css */
 
+/* --- General Layout and Container --- */
+
 .track-order-page {
-    font-family: Arial, sans-serif;
-    padding: 2rem;
-    padding-top: 0;
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* To prevent the container from being too wide on extra large screens */
+    max-width: 1200px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding: 0 15px; /* Add padding for better mobile viewing */
 }
 
-.track-order-page h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 2rem;
-}
+/* --- Card & Header Styling --- */
 
-.orders-list {
+.card-header {
+    background-color: #f7f7f7 !important;
+    border-bottom: 1px solid #e0e0e0;
+    /* Ensure flex behavior on smaller screens */
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    flex-direction: column; /* Stack header items by default */
+    gap: 8px;
 }
 
-.order-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.order-header {
-    display: flex;
+.card-header .d-flex {
+    /* Main header line (ID, Payment, Status) */
+    width: 100%;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 0.75rem;
-    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between ID, Payment, Status */
 }
 
-.order-header h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: #555;
+/* Enhances the look of the payment method badge */
+.badge.bg-secondary {
+    background-color: #6c757d;
+    padding: 0.5em 0.8em;
+    font-size: 0.9em;
+    order: 3; /* Push payment method to the right/bottom on small screens */
 }
 
-.order-status {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
+/* --- Status Badge Styling (Colors) --- */
+
+.status-text {
     font-weight: bold;
-    color: #000000;
     text-transform: uppercase;
-    font-size: 0.75rem;
-}
-
-.order-status.pending {
-  background-color: #ffc107; /* Amber */
-}
-
-.order-status.success {
-  background-color: #28a745; /* Green */
-}
-
-.order-status.failed {
-  background-color: #dc3545; /* Red */
-}
-
-/* New custom ones */
-.order-status.request-exchange {
-  background-color: #ff9800; /* Orange */
-}
-
-.order-status.approved-exchange {
-  background-color: #28a745; /* Green */
-}
-
-.order-status.rejected-exchange {
-  background-color: #f44336; /* Red */
-}
-
-.order-card p {
-    margin: 0.5rem 0;
-    color: #666;
-}
-
-.order-items {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed #e0e0e0;
-}
-
-.order-items h4 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: #444;
-}
-
-.order-items ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.order-items li {
-    background-color: #fafafa;
-    border-left: 3px solid #007bff;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    color: #555;
-}
-
-.error-message {
+    padding: 0.4em 0.8em;
+    min-width: 100px; /* Reduced width for better mobile fit */
     text-align: center;
-    color: #dc3545;
-    font-weight: bold;
-    margin-top: 2rem;
+    font-size: 0.85rem; /* Smaller font on mobile */
+    order: 2; /* Position status */
 }
 
-.track-order-page a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+/* Specific Status Colors (Colors kept as suggested before) */
+.status-text.new, .status-text.pending {
+    background-color: #ffc107;
+    color: #333;
+}
+.status-text.shipping, .status-text.out-of-delivery {
+    background-color: #17a2b8;
+    color: white;
+}
+.status-text.delivered {
+    background-color: #28a745;
+    color: white;
+}
+.status-text.cancelled, .status-text.failed {
+    background-color: #dc3545;
+    color: white;
+}
+.status-text.request-for-exchange, .status-text.exchanged {
+    background-color: #6f42c1;
+    color: white;
 }
 
-.track-order-page a:hover {
-    text-decoration: underline;
+
+/* --- Table Item Styling (Mobile Specific Adjustments) --- */
+
+/* Ensures table does not overflow on small screens */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
+
+.table-responsive img.img-thumbnail {
+    width: 40px !important; /* Smaller images on mobile */
+    height: 40px !important;
+}
+
+/* Adjusts the price column alignment in the table */
+.table th:last-child,
+.table td:last-child {
+    text-align: right;
+}
+
+/* Fix for long product names on small screens */
+.table td:nth-child(3) { /* Product Name Column */
+    max-width: 120px;
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.9em;
+}
+
+/* --- Exchange Button Positioning --- */
+
+.card-body .text-end {
+    /* Ensures the button group is correctly aligned */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.card-body .text-end button {
+    font-size: 0.85rem;
+}
+
+
+/* --- Pagination --- */
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 15px;
+    font-size: 0.9rem;
+}
+
+.pagination-container button {
+    background-color: #a52a2a;
+    color: white;
+    border: none;
+    padding: 8px 12px; /* Smaller padding on mobile */
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --- Media Queries for Tablet/Desktop (>= 576px) --- */
+
+@media (min-width: 576px) {
+    .card-header .d-flex {
+        /* On small screens and up, spread out header items */
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 20px;
+    }
+    
+    .status-text {
+        font-size: 1rem;
+        min-width: 120px;
+        order: initial; /* Reset order */
+    }
+    
+    .badge.bg-secondary {
+        order: initial; /* Reset order */
+    }
+}
+
+@media (min-width: 768px) {
+    /* On tablets and up, restore standard table font size */
+    .table td:nth-child(3) {
+        font-size: 1em;
+        max-width: none;
+    }
+    .table-responsive img.img-thumbnail {
+        width: 50px !important;
+        height: 50px !important;
+    }
 }
