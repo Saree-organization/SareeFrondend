@@ -13,7 +13,7 @@ function ShippingAddress() {
   const [addresses, setAddresses] = useState([]); // selectedAddressId will hold the string ID of the selected address
   const [selectedAddressId, setSelectedAddressId] = useState(null);
 
-  // 🎯 COD CHANGES 1: नया स्टेट - सिलेक्टेड पेमेंट मेथड को ट्रैक करने के लिए
+  // 🎯 COD CHANGES 1: New State - To track the selected payment method
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("ONLINE"); // Default to Online
 
   const [newAddress, setNewAddress] = useState({
@@ -25,8 +25,9 @@ function ShippingAddress() {
     phone: "",
   });
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
-  const [isSaving, setIsSaving] = useState(false); // -------------------------- Fetch Cart & Addresses --------------------------
+  const [isSaving, setIsSaving] = useState(false);
 
+  // -------------------------- Fetch Cart & Addresses --------------------------
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,14 +37,16 @@ function ShippingAddress() {
           setError("Please log in to manage addresses and view your order.");
           setLoading(false);
           return;
-        } // Fetch Cart Items
+        }
 
+        // Fetch Cart Items
         const cartResponse = await API.get("/api/cart", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (Array.isArray(cartResponse.data)) setCartItems(cartResponse.data);
-        else setCartItems([]); // Fetch Addresses
+        else setCartItems([]);
 
+        // Fetch Addresses
         const addressResponse = await API.get("/api/user/addresses", {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -52,8 +55,9 @@ function ShippingAddress() {
           Array.isArray(addressResponse.data) &&
           addressResponse.data.length > 0
         ) {
-          setAddresses(addressResponse.data); // 🎯 FIX: Force the selection of the first available address. // This ensures selectedAddressId is NOT null on load.
+          setAddresses(addressResponse.data);
 
+          // FIX: Force the selection of the first available address.
           const defaultAddress = addressResponse.data[0];
           const defaultAddressId = String(defaultAddress.id);
 
@@ -78,15 +82,17 @@ function ShippingAddress() {
       }
     };
 
-    fetchData(); // Load Razorpay script
+    fetchData();
 
+    // Load Razorpay script
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     document.body.appendChild(script);
     return () => document.body.removeChild(script);
-  }, []); // -------------------------- Cart Total --------------------------
+  }, []);
 
+  // -------------------------- Cart Total --------------------------
   const calculateCartTotal = () => {
     if (!Array.isArray(cartItems)) return 0;
     return cartItems.reduce(
@@ -100,8 +106,9 @@ function ShippingAddress() {
 
   const dummyFetchCartCount = () => {
     console.log("Cart count refresh called (dummy function).");
-  }; // -------------------------- Select Address --------------------------
+  };
 
+  // -------------------------- Select Address --------------------------
   const handleSelectAddress = async (addressId) => {
     setSelectedAddressId(addressId);
     const token = Cookies.get("sareesloom-authToken");
@@ -109,7 +116,7 @@ function ShippingAddress() {
     if (!token) return;
 
     try {
-      // Mark as selected in DB (assuming backend handles the 'isSelected' logic)
+      // Mark as selected in DB
       await API.put(
         `/api/user/addresses/select/${addressId}`,
         {},
@@ -119,8 +126,9 @@ function ShippingAddress() {
     } catch (err) {
       console.error("Failed to save selected address:", err);
     }
-  }; // -------------------------- Save New Address --------------------------
+  };
 
+  // -------------------------- Save New Address --------------------------
   const handleSaveNewAddress = async (e) => {
     e.preventDefault();
     if (isSaving) return;
@@ -149,8 +157,9 @@ function ShippingAddress() {
       const response = await API.post("/api/user/addresses", newAddress, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const savedAddress = response.data; // 1. Update local state
+      const savedAddress = response.data;
 
+      // 1. Update local state
       setAddresses([...addresses, savedAddress]);
       const newAddressId = String(savedAddress.id);
       setSelectedAddressId(newAddressId); // Use new address ID
@@ -162,8 +171,9 @@ function ShippingAddress() {
         state: "",
         pincode: "",
         phone: "",
-      }); // 2. Select the new address in the backend
+      });
 
+      // 2. Select the new address in the backend
       await API.put(
         `/api/user/addresses/select/${newAddressId}`,
         {},
@@ -182,22 +192,26 @@ function ShippingAddress() {
     } finally {
       setIsSaving(false);
     }
-  }; // -------------------------- Payment Cancellation --------------------------
+  };
 
+  // -------------------------- Payment Cancellation --------------------------
   const handlePaymentDismissal = async (orderId) => {
     try {
+      // 🎯 NOTE: For online payment dismissal, we use razorpayOrderId here.
       await API.post("/api/payment/cancel-order", { razorpayOrderId: orderId });
       console.log(`Order ${orderId} marked as Cancelled on server.`);
     } catch (err) {
       console.error("Failed to mark order as cancelled on server:", err);
     }
-  }; // -------------------------- Proceed to Payment --------------------------
+  };
 
+  // -------------------------- Proceed to Payment --------------------------
   const handleProceedToPayment = async () => {
     const orderTotal = calculateCartTotal();
     const addressToUse = selectedAddressId;
-    // 🎯 COD CHANGES 2: सिलेक्टेड पेमेंट मेथड प्राप्त करें
-    const paymentMethod = selectedPaymentMethod; // Final check to see if addressToUse has a value
+
+    // 🎯 COD CHANGES 2: Get selected payment method
+    const paymentMethod = selectedPaymentMethod;
 
     console.log("FINAL CHECK: Sending Address ID:", addressToUse);
 
@@ -216,11 +230,11 @@ function ShippingAddress() {
     try {
       const token = Cookies.get("sareesloom-authToken");
 
-      // 🎯 COD CHANGES 3: Request Body में paymentMethod शामिल करें
+      // 🎯 COD CHANGES 3: Include paymentMethod in the request body
       const requestBody = {
         amount: parseFloat(orderTotal),
         shippingAddressId: numericAddressId,
-        paymentMethod: paymentMethod, // Backend को बताने के लिए कि यह COD या ONLINE है
+        paymentMethod: paymentMethod, // Backend checks this value
       };
 
       const { data } = await API.post(
@@ -229,16 +243,16 @@ function ShippingAddress() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // 🎯 COD CHANGES 4: अगर COD है, तो Razorpay को बाईपास करें
+      // 🎯 COD CHANGES 4: If COD is selected, bypass Razorpay and finish checkout
       if (paymentMethod === "COD") {
         alert("Order placed successfully with Cash on Delivery (COD)!");
         dummyFetchCartCount();
         setCartItems([]);
-        navigate("/track-order"); // ऑर्डर ट्रैकिंग पेज पर भेजें
-        return; // Razorpay लॉजिक को चलाने से रोकें
+        navigate("/track-order"); // Redirect to tracking page
+        return; // Stop function execution
       }
 
-      // 🎯 COD CHANGES 5: बाकी लॉजिक सिर्फ ONLINE PAYMENT के लिए (Razorpay)
+      // 🎯 COD CHANGES 5: ONLINE PAYMENT LOGIC (Razorpay continues here)
       const options = {
         key: "rzp_test_RJ1F2vjHY8vjny",
         amount: data.amount,
@@ -272,6 +286,7 @@ function ShippingAddress() {
         },
         modal: {
           ondismiss: function () {
+            // Pass the Razorpay ID for cancellation on dismissal
             handlePaymentDismissal(data.razorpayOrderId);
             alert(
               "Payment was cancelled. Your order has been automatically cancelled."
@@ -292,47 +307,43 @@ function ShippingAddress() {
       console.error("Checkout failed:", err);
       alert(err.response?.data?.message || "Failed to proceed to payment.");
     }
-  }; // -------------------------- Render Logic --------------------------
+  };
+
+  // -------------------------- Render Logic --------------------------
 
   if (loading)
     return (
       <div className="checkout-page">
-               {" "}
         <div className="loader-container">
-                    <div className="loader"></div>         {" "}
-          <p>Loading address options...</p>       {" "}
+          <div className="loader"></div>
+          <p>Loading address options...</p>
         </div>
-             {" "}
       </div>
     );
   if (error)
     return (
       <div className="checkout-page">
-                <p className="error-message">{error}</p>     {" "}
+        <p className="error-message">{error}</p>
       </div>
     );
 
   if (cartItems.length === 0)
     return (
       <div className="checkout-page">
-               {" "}
         <p className="error-message">
-                    Your cart is empty. Please add items to proceed.        {" "}
+          Your cart is empty. Please add items to proceed.
         </p>
-                <button onClick={() => navigate("/cart")}>Go to Cart</button>   
-         {" "}
+        <button onClick={() => navigate("/cart")}>Go to Cart</button>
       </div>
     );
 
   return (
     <div className="checkout-page">
-            <h2>Shipping Address & Payment</h2>     {" "}
+      <h2>Shipping Address & Payment</h2>
       <div className="checkout-content">
-               {" "}
         <div className="address-section">
-                    <h3>1. Select Delivery Address</h3>         {" "}
+          <h3>1. Select Delivery Address</h3>
           <div className="saved-addresses-list">
-                       {" "}
             {addresses.map((addr) => (
               <div
                 key={addr.id}
@@ -343,46 +354,36 @@ function ShippingAddress() {
                 }`}
                 onClick={() => handleSelectAddress(String(addr.id))}
               >
-                               {" "}
                 <input
                   type="radio"
                   name="shippingAddress"
                   checked={String(selectedAddressId) === String(addr.id)}
                   readOnly
                 />
-                               {" "}
                 <label>
-                                    <strong>{addr.fullName}</strong>           
-                       {" "}
+                  <strong>{addr.fullName}</strong>
                   <p>
-                                        {addr.street}, {addr.city}, {addr.state}{" "}
-                    - {addr.pincode}                 {" "}
+                    {addr.street}, {addr.city}, {addr.state} - {addr.pincode}
                   </p>
-                                    <p>Phone: {addr.phone}</p>               {" "}
+                  <p>Phone: {addr.phone}</p>
                 </label>
-                             {" "}
               </div>
             ))}
-                       {" "}
+
             <button
               className="add-new-btn"
               onClick={() => setShowNewAddressForm(!showNewAddressForm)}
               disabled={isSaving}
             >
-                           {" "}
               {showNewAddressForm
                 ? "Cancel New Address"
                 : "+ Add a New Address"}
-                         {" "}
             </button>
-                     {" "}
           </div>
-                   {" "}
+
           {(showNewAddressForm || addresses.length === 0) && (
             <form className="new-address-form" onSubmit={handleSaveNewAddress}>
-                           {" "}
               {addresses.length > 0 && <h4>Enter New Address Details</h4>}
-                           {" "}
               <input
                 type="text"
                 placeholder="Full Name"
@@ -392,7 +393,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Street Address, Area"
@@ -402,7 +402,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="City"
@@ -412,7 +411,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="State"
@@ -422,7 +420,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Pincode"
@@ -432,7 +429,6 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <input
                 type="text"
                 placeholder="Phone Number"
@@ -442,21 +438,18 @@ function ShippingAddress() {
                 }
                 required
               />
-                           {" "}
               <button
                 type="submit"
                 className="save-address-btn"
                 disabled={isSaving}
               >
-                               {" "}
-                {isSaving ? "Saving..." : "Save Address & Select"}             {" "}
+                {isSaving ? "Saving..." : "Save Address & Select"}
               </button>
-                         {" "}
             </form>
           )}
-                 {" "}
         </div>
-        {/* 🎯 COD CHANGES 6: नया पेमेंट मेथड सेलेक्शन सेक्शन */}
+
+        {/* 🎯 COD CHANGES 6: New Payment Method Selection Section */}
         <div className="payment-method-section">
           <h3>2. Select Payment Method</h3>
           <div className="payment-options-list">
@@ -495,26 +488,23 @@ function ShippingAddress() {
             </div>
           </div>
         </div>
-        {/* End of new payment method section */}       {" "}
+        {/* End of new payment method section */}
+
         <div className="order-summary-and-payment">
-                    <h3>3. Order Summary</h3> {/* Heading index updated */}     
-             {" "}
+          <h3>3. Order Summary</h3> {/* Heading index updated */}
           <div className="cart-summary">
-                       {" "}
             <div className="summary-item">
-                            <span>Subtotal:</span>{" "}
-              <span>Rs. {calculateCartTotal()}</span>           {" "}
+              <span>Subtotal:</span>
+              <span>Rs. {calculateCartTotal()}</span>
             </div>
-                       {" "}
             <div className="summary-item">
-                            <span>Shipping:</span> <span>Free</span>           {" "}
+              <span>Shipping:</span> <span>Free</span>
             </div>
-                       {" "}
             <div className="summary-total">
-                            <span>Total:</span>{" "}
-              <span>Rs. {calculateCartTotal()}</span>           {" "}
+              <span>Total:</span>
+              <span>Rs. {calculateCartTotal()}</span>
             </div>
-                       {" "}
+
             <button
               className="checkout-btn"
               onClick={handleProceedToPayment}
@@ -523,24 +513,17 @@ function ShippingAddress() {
                 !selectedAddressId || calculateCartTotal() <= 0 || isSaving
               }
             >
-                           {" "}
+              {/* Dynamically change button text */}
               {selectedPaymentMethod === "COD"
                 ? "Place COD Order"
                 : `Proceed to Payment (Rs. ${calculateCartTotal()})`}
-                         {" "}
             </button>
-                     {" "}
           </div>
-                   {" "}
           <p className="payment-note">
-                        By clicking the button, you agree to our terms.        
-             {" "}
+            By clicking the button, you agree to our terms.
           </p>
-                 {" "}
         </div>
-             {" "}
       </div>
-         {" "}
     </div>
   );
 }
