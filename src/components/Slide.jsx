@@ -1,3 +1,4 @@
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import "../css/slide.css";
@@ -9,37 +10,52 @@ function Slide() {
         <Carousel.Item>
           <img
             className="d-block w-100 slide-img"
-            src="https://www.manyavar.com/on/demandware.static/-/Library-Sites-ManyavarSharedLibrary/default/dwe6547122/Ace_Your_Saree_Banner_D.jpg"
+            src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762832924/safeimagekit-WhatsApp_Image_2025-11-10_at_22.22.48_822c339e_kjpgum.jpg"
             alt="Beautiful Sarees"
           />
-          <Carousel.Caption className="caption">
-            <h3>Beautiful Sarees</h3>
-            <p>Shop the latest traditional collections.</p>
-          </Carousel.Caption>
+
         </Carousel.Item>
 
         <Carousel.Item>
           <img
             className="d-block w-100 slide-img"
-            src="https://manyavar.scene7.com/is/image/manyavar/MOHEY_HOME%20PAGE_Desktop_2500x1042-02_17-09-2024-07-11?$WT_HP%2FMLP%2FWLP_Hero_D$"
+            src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762832986/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.15_9cef56ca_lqkrbp.jpg"
             alt="Elegant Sarees"
           />
-          <Carousel.Caption className="caption">
-            <h3>Elegant Sarees</h3>
-            <p>Find perfect designs for every celebration.</p>
-          </Carousel.Caption>
+
         </Carousel.Item>
 
         <Carousel.Item>
           <img
             className="d-block w-100 slide-img"
-            src="https://www.frontierraas.com/the-voice/wp-content/uploads/2023/07/Blog-Banner-1.jpg"
+            src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833014/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.13_e1af3440_swyoie.jpg"
             alt="Grace in Every Drape"
           />
-          <Carousel.Caption className="caption">
-            <h3>Grace in Every Drape</h3>
-            <p>Discover handpicked sarees for every occasion.</p>
-          </Carousel.Caption>
+        </Carousel.Item>
+
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833041/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.13_04d1fbf0_mv3hmv.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833103/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.12_3781883f_qxacqc.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833132/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.11_b42bbd7d_apo3h9.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833590/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.16_1f68fd70_bxs2gm.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833613/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.17_4db0a5de_mzxzoq.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833623/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.17_5e98c475_ujokdz.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833836/safeimagekit-WhatsApp_Image_2025-11-10_at_15.55.16_7c913791_qujgcv.jpg" alt="Grace in Every Drape" />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100 slide-img" src="https://res.cloudinary.com/dmqa8d6yq/image/upload/v1762833652/safeimagekit-WhatsApp_Image_2025-11-10_at_22.38.01_43220314_p1cngo.jpg" alt="Grace in Every Drape" />
         </Carousel.Item>
       </Carousel>
     </div>
