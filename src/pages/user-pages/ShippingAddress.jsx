@@ -254,7 +254,7 @@ function ShippingAddress() {
 
       // 🎯 COD CHANGES 5: ONLINE PAYMENT LOGIC (Razorpay continues here)
       const options = {
-        key: "rzp_test_RJ1F2vjHY8vjny",
+        key: "rzp_live_Rf9ALbaMH73upF",
         amount: data.amount,
         currency: "INR",
         name: "Saree Shop",
