@@ -67,17 +67,6 @@ function AddSaree() {
     try {
       await submitVariant(currentVariant);
       setVariants([...variants, currentVariant]);
-      setCurrentVariant({
-        skuCode: "",
-        name: "",
-        color: "",
-        salesPrice: "",
-        costPrice: "",
-        discountPercent: "",
-        stock: "",
-        images: [],
-        videos: [],
-      });
       alert("Variant saved! You can add another.");
     } catch (err) {
       console.error(err);
