@@ -57,7 +57,7 @@ function SareeDetail() {
     };
 
     fetchSareeDetailsAndWishlistStatus();
-  }, [id, variantId]);
+  }, [id, variantId, selectedVariantIndex]);
   if (loading)
     return (
       <div className="loader-container">
@@ -89,7 +89,7 @@ function SareeDetail() {
   // ... (rest of the file)
 
   const handleWishlistToggle = async () => {
-const token = Cookies.get("sareesloom-authToken");
+    const token = Cookies.get("sareesloom-authToken");
     if (!token) {
       alert("Please log in to add items to your wishlist.");
       return;
@@ -119,7 +119,7 @@ const token = Cookies.get("sareesloom-authToken");
 
 
   const handleAddToCart = async () => {
-      const token = Cookies.get("sareesloom-authToken");
+    const token = Cookies.get("sareesloom-authToken");
     if (!token) {
       alert("Please log in to add items to your cart.");
       return;
@@ -215,8 +215,7 @@ const token = Cookies.get("sareesloom-authToken");
             {saree.variants.map((v, i) => (
               <button
                 key={i}
-                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""
-                  }`}
+                className={`variant-btn ${i === selectedVariantIndex ? "active" : ""}`}
                 onClick={() => {
                   setSelectedVariantIndex(i);
                   setSelectedMediaIndex(0);
