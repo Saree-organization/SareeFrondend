@@ -6,7 +6,7 @@ import "../css/sareeCard.css";
 function SareeCard({ saree, variantId, callBy }) {   // <– accept variantId also
   const navigate = useNavigate();
   // find which variant to show
-  const currentVariant = saree?.variants?.find(v => v.id === variantId) 
+  const currentVariant = saree?.variants?.find(v => v.id === variantId)
     || saree?.variants?.[0]; // fallback first
 
   const defaultImage = currentVariant?.images?.[0] || "";
@@ -16,12 +16,12 @@ function SareeCard({ saree, variantId, callBy }) {   // <– accept variantId al
   const [avgRating, setAvgRating] = useState({});
 
   // Assume callBy is a variable you have
-const navTo =  callBy == null
-  ? `/sarees/${saree.id}/${currentVariant?.id}`
-  : `/admin/sarees/${saree.id}/${currentVariant?.id}`;
+  const navTo = callBy == null
+    ? `/sarees/${saree.id}/${currentVariant?.id}`
+    : `/admin/sarees/${saree.id}/${currentVariant?.id}`;
 
 
-
+console.log("SareeCard render:", { sareeId: saree.id, variantId, navTo });
   useEffect(() => {
     API.get(`/sarees/avgRating/${saree.id}`)
       .then(res => setAvgRating(res.data.body));

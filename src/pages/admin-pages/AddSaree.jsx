@@ -94,31 +94,20 @@ function AddSaree() {
       setVariants([...variants, currentVariant]);
       await API.post("/sarees/addSaree");
       setStep(1);
-      setSareeData({
-        fabrics: "",
-        design: "",
-        length: "",
-        description: "",
-        border: "",
-        category: "",
-        weight: "",
-      });
-      setVariants([]);
-      setCurrentVariant({
-        skuCode: "",
-        name: "",
-        color: "",
-        salesPrice: "",
-        costPrice: "",
-        discountPercent: "",
-        stock: "",
-        images: [],
-        videos: [],
-      });
+ 
+      
       alert("Saree saved successfully!");
-    } catch {
-      alert("Error in final save");
-    }
+    } catch (error) {
+  console.log("=== ERROR DEBUG START ===");
+  console.log("Error object:", error);
+  console.log("Response:", error.response);
+  console.log("Status:", error?.response?.status);
+  console.log("Data:", error?.response?.data);
+  console.log("Message:", error.message);
+  console.log("=== ERROR DEBUG END ===");
+  alert("Error in final save");
+}
+
   };
 
   return (
