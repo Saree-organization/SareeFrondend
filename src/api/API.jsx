@@ -6,7 +6,7 @@ const API = axios.create({
   // baseURL:"https://api.sareesloom.in/",
   baseURL: isLocalhost
     ? "http://localhost:8079/"
-    : "http://13.201.128.139:8079/",
+    : "https://api.sareesloom.in/",
 });
 
 // Add token from localStorage to every request
