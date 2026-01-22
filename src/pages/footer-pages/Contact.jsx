@@ -54,7 +54,9 @@ function Contact() {
           <h2>Get in Touch</h2>
           <p>Email: chanderisilkelegant@gmail.com</p>
           <p>Phone: +91 7879899953</p>
-          <p>Address: 123 Saree Street, Madhya Pradesh, India</p>
+          <p>
+            H-141 Bahar Sahar , Chanderi Distt-Ashoknagar Madhya Pradesh 473446, India
+          </p>
         </div>
 
         <div className="contact-form">
