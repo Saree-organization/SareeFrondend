@@ -17,6 +17,7 @@ import {
   AdminRoutesArray,
   AuthRoutesArray,
 } from "./routes/AppRoutes.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 
 const App = () => {
   // 1. New state to manage login status and trigger re-render
@@ -52,9 +53,11 @@ const effectiveRole = userRole ? userRole.toLowerCase() : "user";
     <BrowserRouter>
       {/* 💡 FIX APPLIED: Providers moved outside the conditional check */}
       {/* so they are available to all components using UserLayout, regardless of login state. */}
+
       <WishlistProvider>
         <CartProvider>
           {/* 🚫 Guest (not logged in) */}
+          <ScrollToTop />
           {!token && (
             <Routes>
               {AuthRoutesArray}
